@@ -1,0 +1,9 @@
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\HomePage.g.cs
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\LoginPage.g.cs
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\MainWindow.g.cs
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\ParameterPage.g.cs
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\ProfilePage.g.cs
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\App.g.cs
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice_MarkupCompile.cache
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice_MarkupCompile.lref
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.csprojAssemblyReference.cache

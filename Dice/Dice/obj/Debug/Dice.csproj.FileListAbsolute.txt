@@ -7,3 +7,17 @@ C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\App.g.cs
 C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice_MarkupCompile.cache
 C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice_MarkupCompile.lref
 C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.csprojAssemblyReference.cache
+C:\Users\yanno\source\repos\Dice\Dice\bin\Debug\Dice.exe.config
+C:\Users\yanno\source\repos\Dice\Dice\bin\Debug\Dice.exe
+C:\Users\yanno\source\repos\Dice\Dice\bin\Debug\Dice.pdb
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\HomePage.baml
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\LoginPage.baml
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\MainWindow.baml
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\ParameterPage.baml
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Views\ProfilePage.baml
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.g.resources
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.Properties.Resources.resources
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.csproj.GenerateResource.cache
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.csproj.CoreCompileInputs.cache
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.exe
+C:\Users\yanno\source\repos\Dice\Dice\obj\Debug\Dice.pdb

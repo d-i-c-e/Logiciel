@@ -53,6 +53,20 @@ namespace Dice.Views
         #endregion
 
         #region Events
+        private void profile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void parameter_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void logout_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
 
     }

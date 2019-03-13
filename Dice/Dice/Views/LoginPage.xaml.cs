@@ -55,8 +55,24 @@ namespace Dice.Views
         #region Events
         private void loginClick(object sender, RoutedEventArgs e)
         {
+            string accountStatus = "unknow";
+            string loginText = this.loginTxt.Text;
+            string passwordText = this.passwordTxt.Text;
+
             // test compte BDD
-            (this.Parent as Window).Content = new HomePage();
+            if (loginText == "John Doe" && passwordText == "P@ssword")
+            {
+                accountStatus = "know";
+            }
+
+            if (accountStatus == "know")
+            {
+                (this.Parent as Window).Content = new HomePage();
+            }
+            else
+            {
+                // texte erreur
+            }
         }
         #endregion
 

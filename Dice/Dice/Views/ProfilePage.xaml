@@ -33,10 +33,10 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <!--  -->
+            <!--  --><!--
             <Button x:Name="logoutBtn" Background="Transparent" Grid.Column="2" Click="homeBtn">
                 <Image x:Name="logoutImg" Grid.Column="2" Source="Pictures/logout.png"></Image>
-            </Button>
+            </Button>-->
         </Grid>
 
         <!-- Content -->

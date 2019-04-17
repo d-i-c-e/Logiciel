@@ -44,3 +44,11 @@ C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Dice.csproj.GenerateResource.cache
 C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Dice.csproj.CoreCompileInputs.cache
 C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Dice.exe
 C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Dice.pdb
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\CreateCardPage.g.cs
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\CreateGamePage.g.cs
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\JoinGamePage.g.cs
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\RessourcePage.g.cs
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\CreateCardPage.baml
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\CreateGamePage.baml
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\JoinGamePage.baml
+C:\wamp64\www\Logiciel\Dice\Dice\obj\Debug\Views\RessourcePage.baml

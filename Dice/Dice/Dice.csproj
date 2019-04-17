@@ -70,8 +70,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\CreateCardPage.xaml.cs">
+      <DependentUpon>CreateCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateGamePage.xaml.cs">
+      <DependentUpon>CreateGamePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JoinGamePage.xaml.cs">
+      <DependentUpon>JoinGamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ParameterPage.xaml.cs">
       <DependentUpon>ParameterPage.xaml</DependentUpon>
@@ -79,7 +88,22 @@
     <Compile Include="Views\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RessourcePage.xaml.cs">
+      <DependentUpon>RessourcePage.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\CreateCardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CreateGamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JoinGamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,6 +131,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProfilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RessourcePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

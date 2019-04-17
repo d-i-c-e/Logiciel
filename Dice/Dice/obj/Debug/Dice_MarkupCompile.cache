@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\wamp64\www\Logiciel\Dice\Dice\App.xaml
-5717717371
+9244757907
 
-9-1020104624
+131766523666
 131569487696
-Views\HomePage.xaml;Views\LoginPage.xaml;Views\MainWindow.xaml;Views\ParameterPage.xaml;Views\ProfilePage.xaml;
+Views\CreateCardPage.xaml;Views\CreateGamePage.xaml;Views\HomePage.xaml;Views\JoinGamePage.xaml;Views\LoginPage.xaml;Views\MainWindow.xaml;Views\ParameterPage.xaml;Views\ProfilePage.xaml;Views\RessourcePage.xaml;
 
 False
 

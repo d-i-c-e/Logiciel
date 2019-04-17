@@ -55,19 +55,38 @@ namespace Dice.Views
         #region Events
         private void profile_Click(object sender, RoutedEventArgs e)
         {
-
+            (this.Parent as Window).Content = new ProfilePage();
         }
 
         private void parameter_Click(object sender, RoutedEventArgs e)
         {
-
+            (this.Parent as Window).Content = new ParameterPage();
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)
         {
+            (this.Parent as Window).Content = new LoginPage();
+        }
 
+        private void createGame_Click(object sender, RoutedEventArgs e)
+        {
+            (this.Parent as Window).Content = new CreateGamePage();
+        }
+
+        private void createCard_Click(object sender, RoutedEventArgs e)
+        {
+            (this.Parent as Window).Content = new CreateCardPage();
+        }
+
+        private void joinGame_Click(object sender, RoutedEventArgs e)
+        {
+            (this.Parent as Window).Content = new JoinGamePage();
+        }
+
+        private void ressource_Click(object sender, RoutedEventArgs e)
+        {
+            (this.Parent as Window).Content = new RessourcePage();
         }
         #endregion
-
     }
 }

@@ -1,18 +1,17 @@
 
-DROP TABLE IF EXISTS parametre ;
+DROP TABLE IF EXISTS contact ;
 
-CREATE TABLE parametre (Code_parametre int AUTO_INCREMENT NOT NULL,
-parametre_Libelle VARCHAR,
-parametre_Valeur INT,
-parametre_Activable BOOL,
-parametre_Actif BOOL,
-PRIMARY KEY (Code_parametre) ) ENGINE=InnoDB;
+CREATE TABLE contact (Code_contact int AUTO_INCREMENT NOT NULL,
+contact_Statut INT,
+contact_Date_statut DATETIME,
+contact_Date_creation DATETIME,
+PRIMARY KEY (Code_contact) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS joueur ;
 
 CREATE TABLE joueur (Code_joueur int AUTO_INCREMENT NOT NULL,
 joueur_Email VARCHAR,
-joueur_Pseudo VARCHAR,
+joueur_Identifiant VARCHAR,
 joueur_Password VARCHAR,
 joueur_Avatar_Fichier VARCHAR,
 joueur_Date_naissance DATE,
@@ -25,17 +24,17 @@ CREATE TABLE message (Code_message int AUTO_INCREMENT NOT NULL,
 message_Texte TEXT,
 message_Date DATETIME,
 Code_joueur int NOT NULL,
-Code_joueur_g int NOT NULL,
+Code_joueur_c int NOT NULL,
 PRIMARY KEY (Code_message) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS personnage ;
+DROP TABLE IF EXISTS parametre ;
 
-CREATE TABLE personnage (Code_personnage int AUTO_INCREMENT NOT NULL,
-personnage_Ficher_Fichier VARCHAR,
-personnage_Conservation BOOL,
-Code_groupe int NOT NULL,
-Code_joueur int NOT NULL,
-PRIMARY KEY (Code_personnage) ) ENGINE=InnoDB;
+CREATE TABLE parametre (Code_parametre int AUTO_INCREMENT NOT NULL,
+parametre_Libelle VARCHAR,
+parametre_Valeur INT,
+parametre_Activable BOOL,
+parametre_Actif BOOL,
+PRIMARY KEY (Code_parametre) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS groupe ;
 
@@ -43,13 +42,21 @@ CREATE TABLE groupe (Code_groupe int AUTO_INCREMENT NOT NULL,
 groupe_Nom VARCHAR,
 groupe_Description TEXT,
 groupe_Logo_Fichier VARCHAR,
-groupe_Effectif INT,
-groupe_Actif BOOL,
+groupe_Effectif BOOL,
+groupe_Actif INT,
 groupe_Date_creation DATETIME,
 groupe_Delai_suppression_jour INT,
 groupe_Suppression_active BOOL,
-Code_campagne int,
 PRIMARY KEY (Code_groupe) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS personnage ;
+
+CREATE TABLE personnage (Code_personnage int AUTO_INCREMENT NOT NULL,
+personnage_Fichier_Fichier VARCHAR,
+personnage_Conservation BOOL,
+Code_joueur int NOT NULL,
+Code_groupe int NOT NULL,
+PRIMARY KEY (Code_personnage) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS campagne ;
 
@@ -67,11 +74,28 @@ CREATE TABLE tag_campagne (Code_tag_campagne int AUTO_INCREMENT NOT NULL,
 tag_campagne_Libelle VARCHAR,
 PRIMARY KEY (Code_tag_campagne) ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS carte ;
+
+CREATE TABLE carte (Code_carte int AUTO_INCREMENT NOT NULL,
+carte_Nom VARCHAR,
+carte_Hauteur INT,
+carte_Largeur INT,
+carte_Fichier VARCHAR,
+PRIMARY KEY (Code_carte) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS objet ;
+
+CREATE TABLE objet (Code_objet int AUTO_INCREMENT NOT NULL,
+objet_Libelle VARCHAR,
+objet_Image_Fichier VARCHAR,
+Code_type int NOT NULL,
+PRIMARY KEY (Code_objet) ) ENGINE=InnoDB;
+
 DROP TABLE IF EXISTS type ;
 
 CREATE TABLE type (Code_type int AUTO_INCREMENT NOT NULL,
 type_Libelle VARCHAR,
-Code_ressource int NOT NULL,
+Code_tag_ressource int NOT NULL,
 PRIMARY KEY (Code_type) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS ressource ;
@@ -86,86 +110,19 @@ CREATE TABLE tag_ressource (Code_tag_ressource int AUTO_INCREMENT NOT NULL,
 tag_ressource_Libelle VARCHAR,
 PRIMARY KEY (Code_tag_ressource) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS contact ;
+DROP TABLE IF EXISTS a ;
 
-CREATE TABLE contact (contact_Statut INT NOT NULL,
-contact_Date_Status DATETIME,
-contact_Date_creation DATETIME,
-PRIMARY KEY (contact_Statut) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS carte ;
-
-CREATE TABLE carte (Code_carte int AUTO_INCREMENT NOT NULL,
-carte_Nom VARCHAR,
-carte_Hauteur INT,
-carte_Largeur INT,
-carte_Fichier VARCHAR,
-Code_groupe int NOT NULL,
-PRIMARY KEY (Code_carte) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS objet ;
-
-CREATE TABLE objet (Code_objet int AUTO_INCREMENT NOT NULL,
-objet_Libelle VARCHAR,
-objet_Image_Fichier VARCHAR,
-Code_type int NOT NULL,
-PRIMARY KEY (Code_objet) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS i ;
-
-CREATE TABLE i (Code_joueur int AUTO_INCREMENT NOT NULL,
-contact_Statut INT NOT NULL,
+CREATE TABLE a (Code_joueur int AUTO_INCREMENT NOT NULL,
+Code_contact int NOT NULL,
 PRIMARY KEY (Code_joueur,
- contact_Statut) ) ENGINE=InnoDB;
+ Code_contact) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS j ;
+DROP TABLE IF EXISTS b ;
 
-CREATE TABLE j (contact_Statut INT NOT NULL,
+CREATE TABLE b (Code_contact int AUTO_INCREMENT NOT NULL,
 Code_joueur int NOT NULL,
-PRIMARY KEY (contact_Statut,
+PRIMARY KEY (Code_contact,
  Code_joueur) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS a_candidature_joueur_groupe ;
-
-CREATE TABLE a_candidature_joueur_groupe (Code_groupe int AUTO_INCREMENT NOT NULL,
-Code_joueur int NOT NULL,
-a_candidature_joueur_groupe_Message TEXT,
-a_candidature_joueur_groupe_Date_envoi DATETIME,
-PRIMARY KEY (Code_groupe,
- Code_joueur) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS a_membre_joueur_groupe ;
-
-CREATE TABLE a_membre_joueur_groupe (Code_joueur int AUTO_INCREMENT NOT NULL,
-Code_groupe int NOT NULL,
-a_membre_joueur_groupe_Surnom VARCHAR,
-a_membre_joueur_groupe_Grade INT,
-a_membre_joueur_groupe_Date_adhesion DATETIME,
-PRIMARY KEY (Code_joueur,
- Code_groupe) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS a_invitation_joueur_groupe ;
-
-CREATE TABLE a_invitation_joueur_groupe (Code_groupe int AUTO_INCREMENT NOT NULL,
-Code_joueur int NOT NULL,
-a_invitation_joueur_groupe_Message TEXT,
-a_invitation_joueur_groupe_Date_envoi DATETIME,
-PRIMARY KEY (Code_groupe,
- Code_joueur) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS a_ressource_tag_ressource ;
-
-CREATE TABLE a_ressource_tag_ressource (Code_tag_ressource int AUTO_INCREMENT NOT NULL,
-Code_ressource int NOT NULL,
-PRIMARY KEY (Code_tag_ressource,
- Code_ressource) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS a_campagne_tag_campagne ;
-
-CREATE TABLE a_campagne_tag_campagne (Code_tag_campagne int AUTO_INCREMENT NOT NULL,
-Code_campagne int NOT NULL,
-PRIMARY KEY (Code_tag_campagne,
- Code_campagne) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS a_joueur_parametre ;
 
@@ -174,10 +131,66 @@ Code_parametre int NOT NULL,
 PRIMARY KEY (Code_joueur,
  Code_parametre) ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS a_candidature_joueur_groupe ;
+
+CREATE TABLE a_candidature_joueur_groupe (Code_joueur int AUTO_INCREMENT NOT NULL,
+Code_groupe int NOT NULL,
+a_candidature_joueur_groupe_Message TEXT,
+a_candidature_joueur_groupe_Date_envoi DATETIME,
+PRIMARY KEY (Code_joueur,
+ Code_groupe) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS a_membre_joueur_groupe ;
+
+CREATE TABLE a_membre_joueur_groupe (Code_groupe int AUTO_INCREMENT NOT NULL,
+Code_joueur int NOT NULL,
+a_membre_joueur_groupe_Surnom VARCHAR,
+a_membre_joueur_groupe_Grade INT,
+a_membre_joueur_groupe_Date_adhesion DATETIME,
+PRIMARY KEY (Code_groupe,
+ Code_joueur) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS a_invitation_joueur_groupe ;
+
+CREATE TABLE a_invitation_joueur_groupe (Code_joueur int AUTO_INCREMENT NOT NULL,
+Code_groupe int NOT NULL,
+a_invitation_joueur_groupe_Message TEXT,
+a_invitation_joueur_groupe_Date_envoi DATETIME,
+PRIMARY KEY (Code_joueur,
+ Code_groupe) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS h ;
+
+CREATE TABLE h (Code_groupe int AUTO_INCREMENT NOT NULL,
+Code_carte int NOT NULL,
+PRIMARY KEY (Code_groupe,
+ Code_carte) ) ENGINE=InnoDB;
+
 DROP TABLE IF EXISTS a_carte_objet ;
 
 CREATE TABLE a_carte_objet (Code_carte int AUTO_INCREMENT NOT NULL,
 Code_objet int NOT NULL,
 PRIMARY KEY (Code_carte,
  Code_objet) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS a_campagne_tag_campagne ;
+
+CREATE TABLE a_campagne_tag_campagne (Code_tag_campagne int AUTO_INCREMENT NOT NULL,
+Code_campagne int NOT NULL,
+PRIMARY KEY (Code_tag_campagne,
+ Code_campagne) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS g ;
+
+CREATE TABLE g (Code_campagne int AUTO_INCREMENT NOT NULL,
+Code_groupe int NOT NULL,
+PRIMARY KEY (Code_campagne,
+ Code_groupe) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS a_ressource_tag_ressource ;
+
+CREATE TABLE a_ressource_tag_ressource (Code_tag_ressource int AUTO_INCREMENT NOT NULL,
+Code_ressource int NOT NULL,
+PRIMARY KEY (Code_tag_ressource,
+ Code_ressource) ) ENGINE=InnoDB;
 

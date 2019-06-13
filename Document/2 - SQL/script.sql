@@ -1,12 +1,4 @@
 
-DROP TABLE IF EXISTS contact ;
-
-CREATE TABLE contact (Code_contact int AUTO_INCREMENT NOT NULL,
-contact_Statut INT,
-contact_Date_statut DATETIME,
-contact_Date_creation DATETIME,
-PRIMARY KEY (Code_contact) ) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS joueur ;
 
 CREATE TABLE joueur (Code_joueur int AUTO_INCREMENT NOT NULL,
@@ -23,8 +15,8 @@ DROP TABLE IF EXISTS message ;
 CREATE TABLE message (Code_message int AUTO_INCREMENT NOT NULL,
 message_Texte TEXT,
 message_Date DATETIME,
+Code_messagerie int NOT NULL,
 Code_joueur int NOT NULL,
-Code_joueur_c int NOT NULL,
 PRIMARY KEY (Code_message) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS parametre ;
@@ -47,6 +39,7 @@ groupe_Actif INT,
 groupe_Date_creation DATETIME,
 groupe_Delai_suppression_jour INT,
 groupe_Suppression_active BOOL,
+Code_campagne int NOT NULL,
 PRIMARY KEY (Code_groupe) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS personnage ;
@@ -81,6 +74,7 @@ carte_Nom VARCHAR,
 carte_Hauteur INT,
 carte_Largeur INT,
 carte_Fichier VARCHAR,
+Code_groupe int NOT NULL,
 PRIMARY KEY (Code_carte) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS objet ;
@@ -95,7 +89,7 @@ DROP TABLE IF EXISTS type ;
 
 CREATE TABLE type (Code_type int AUTO_INCREMENT NOT NULL,
 type_Libelle VARCHAR,
-Code_tag_ressource int NOT NULL,
+Code_ressource int NOT NULL,
 PRIMARY KEY (Code_type) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS ressource ;
@@ -110,19 +104,18 @@ CREATE TABLE tag_ressource (Code_tag_ressource int AUTO_INCREMENT NOT NULL,
 tag_ressource_Libelle VARCHAR,
 PRIMARY KEY (Code_tag_ressource) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS a ;
+DROP TABLE IF EXISTS messagerie ;
 
-CREATE TABLE a (Code_joueur int AUTO_INCREMENT NOT NULL,
-Code_contact int NOT NULL,
-PRIMARY KEY (Code_joueur,
- Code_contact) ) ENGINE=InnoDB;
+CREATE TABLE messagerie (Code_messagerie int AUTO_INCREMENT NOT NULL,
+Code_joueur int,
+PRIMARY KEY (Code_messagerie) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS b ;
+DROP TABLE IF EXISTS liste_contacts ;
 
-CREATE TABLE b (Code_contact int AUTO_INCREMENT NOT NULL,
+CREATE TABLE liste_contacts (Code_liste_contacts int AUTO_INCREMENT NOT NULL,
+liste_contacts_Nom VARCHAR,
 Code_joueur int NOT NULL,
-PRIMARY KEY (Code_contact,
- Code_joueur) ) ENGINE=InnoDB;
+PRIMARY KEY (Code_liste_contacts) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS a_joueur_parametre ;
 
@@ -159,13 +152,6 @@ a_invitation_joueur_groupe_Date_envoi DATETIME,
 PRIMARY KEY (Code_joueur,
  Code_groupe) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS h ;
-
-CREATE TABLE h (Code_groupe int AUTO_INCREMENT NOT NULL,
-Code_carte int NOT NULL,
-PRIMARY KEY (Code_groupe,
- Code_carte) ) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS a_carte_objet ;
 
 CREATE TABLE a_carte_objet (Code_carte int AUTO_INCREMENT NOT NULL,
@@ -180,17 +166,18 @@ Code_campagne int NOT NULL,
 PRIMARY KEY (Code_tag_campagne,
  Code_campagne) ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS g ;
-
-CREATE TABLE g (Code_campagne int AUTO_INCREMENT NOT NULL,
-Code_groupe int NOT NULL,
-PRIMARY KEY (Code_campagne,
- Code_groupe) ) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS a_ressource_tag_ressource ;
 
 CREATE TABLE a_ressource_tag_ressource (Code_tag_ressource int AUTO_INCREMENT NOT NULL,
 Code_ressource int NOT NULL,
 PRIMARY KEY (Code_tag_ressource,
  Code_ressource) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS a_liste_contact_joueur ;
+
+CREATE TABLE a_liste_contact_joueur (Code_liste_contacts int AUTO_INCREMENT NOT NULL,
+Code_joueur int NOT NULL,
+a_liste_contact_joueur_Date_creation DATETIME,
+PRIMARY KEY (Code_liste_contacts,
+ Code_joueur) ) ENGINE=InnoDB;
 

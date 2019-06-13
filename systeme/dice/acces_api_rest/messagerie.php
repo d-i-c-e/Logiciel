@@ -1,0 +1,7 @@
+<?php
+
+define('API_REST_ACCESS_GET_MESSAGERIE', 'none');
+define('API_REST_ACCESS_POST_MESSAGERIE', 'none');
+define('API_REST_ACCESS_PUT_MESSAGERIE', 'none');
+define('API_REST_ACCESS_DELETE_MESSAGERIE', 'none');
+define('API_REST_ACCESS_OPTIONS_MESSAGERIE', 'all');

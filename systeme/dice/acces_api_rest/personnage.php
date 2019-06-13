@@ -1,0 +1,7 @@
+<?php
+
+define('API_REST_ACCESS_GET_PERSONNAGE', 'none');
+define('API_REST_ACCESS_POST_PERSONNAGE', 'none');
+define('API_REST_ACCESS_PUT_PERSONNAGE', 'none');
+define('API_REST_ACCESS_DELETE_PERSONNAGE', 'none');
+define('API_REST_ACCESS_OPTIONS_PERSONNAGE', 'all');

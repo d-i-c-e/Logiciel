@@ -107,6 +107,7 @@ PRIMARY KEY (Code_tag_ressource) ) ENGINE=InnoDB;
 DROP TABLE IF EXISTS messagerie ;
 
 CREATE TABLE messagerie (Code_messagerie int AUTO_INCREMENT NOT NULL,
+messagerie_Nom VARCHAR,
 Code_joueur int,
 PRIMARY KEY (Code_messagerie) ) ENGINE=InnoDB;
 

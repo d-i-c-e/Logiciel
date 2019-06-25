@@ -402,6 +402,7 @@ function options($id, $options)
     global $mf_droits_defaut;
     $authorization['POST'] = $mf_droits_defaut['messagerie__AJOUTER'];
     $authorization['PUT'] = $mf_droits_defaut['messagerie__MODIFIER'];
+    $authorization['PUT:messagerie_Nom'] = $mf_droits_defaut['api_modifier__messagerie_Nom'];
     $authorization['PUT:Code_joueur'] = $mf_droits_defaut['api_modifier__Code_joueur'];
     $authorization['DELETE'] = $mf_droits_defaut['messagerie__SUPPRIMER'];
     return array('code_erreur' => 0, 'authorization' => $authorization);

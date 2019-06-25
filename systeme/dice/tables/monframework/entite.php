@@ -14,7 +14,7 @@ class entite_monframework extends entite
     +----------+
 */
 
-    protected function mf_tester_existance_Code_joueur( $Code_joueur )
+    protected function mf_tester_existance_Code_joueur( int $Code_joueur )
     {
         $Code_joueur = round($Code_joueur);
         $requete_sql = "SELECT Code_joueur FROM ".inst('joueur')." WHERE Code_joueur = $Code_joueur;";
@@ -29,7 +29,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_joueur_Email( $joueur_Email )
+    protected function rechercher_joueur_Email( string $joueur_Email )
     {
         $Code_joueur = 0;
         $joueur_Email = format_sql('joueur_Email', $joueur_Email);
@@ -40,7 +40,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_joueur = round($row_requete['Code_joueur']);
+                $Code_joueur = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_joueur);
@@ -48,7 +48,7 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
-    protected function rechercher_joueur_Identifiant( $joueur_Identifiant )
+    protected function rechercher_joueur_Identifiant( string $joueur_Identifiant )
     {
         $Code_joueur = 0;
         $joueur_Identifiant = format_sql('joueur_Identifiant', $joueur_Identifiant);
@@ -59,7 +59,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_joueur = round($row_requete['Code_joueur']);
+                $Code_joueur = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_joueur);
@@ -67,7 +67,7 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
-    protected function rechercher_joueur_Password( $joueur_Password )
+    protected function rechercher_joueur_Password( string $joueur_Password )
     {
         $Code_joueur = 0;
         $joueur_Password = format_sql('joueur_Password', $joueur_Password);
@@ -78,7 +78,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_joueur = round($row_requete['Code_joueur']);
+                $Code_joueur = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_joueur);
@@ -86,7 +86,7 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
-    protected function rechercher_joueur_Avatar_Fichier( $joueur_Avatar_Fichier )
+    protected function rechercher_joueur_Avatar_Fichier( string $joueur_Avatar_Fichier )
     {
         $Code_joueur = 0;
         $joueur_Avatar_Fichier = format_sql('joueur_Avatar_Fichier', $joueur_Avatar_Fichier);
@@ -97,7 +97,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_joueur = round($row_requete['Code_joueur']);
+                $Code_joueur = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_joueur);
@@ -105,7 +105,7 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
-    protected function rechercher_joueur_Date_naissance( $joueur_Date_naissance )
+    protected function rechercher_joueur_Date_naissance( string $joueur_Date_naissance )
     {
         $Code_joueur = 0;
         $joueur_Date_naissance = format_sql('joueur_Date_naissance', $joueur_Date_naissance);
@@ -116,7 +116,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_joueur = round($row_requete['Code_joueur']);
+                $Code_joueur = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_joueur);
@@ -124,7 +124,7 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
-    protected function rechercher_joueur_Date_inscription( $joueur_Date_inscription )
+    protected function rechercher_joueur_Date_inscription( string $joueur_Date_inscription )
     {
         $Code_joueur = 0;
         $joueur_Date_inscription = format_sql('joueur_Date_inscription', $joueur_Date_inscription);
@@ -135,7 +135,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_joueur = round($row_requete['Code_joueur']);
+                $Code_joueur = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_joueur);
@@ -143,8 +143,9 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
-    protected function get_liste_Code_joueur($options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_joueur(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("joueur");
         $cle = "joueur__lister_cles";
 
@@ -207,7 +208,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_joueur FROM ".inst('joueur')." WHERE 1".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_joueur']);
+                $liste[] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -215,7 +216,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    private function mf_dupliquer_joueur( $Code_joueur )
+    private function mf_dupliquer_joueur( int $Code_joueur )
     {
         $code_erreur = 0;
         $Code_new_joueur = 0;
@@ -279,7 +280,7 @@ class entite_monframework extends entite
     +-----------+
 */
 
-    protected function mf_tester_existance_Code_message( $Code_message )
+    protected function mf_tester_existance_Code_message( int $Code_message )
     {
         $Code_message = round($Code_message);
         $requete_sql = "SELECT Code_message FROM ".inst('message')." WHERE Code_message = $Code_message;";
@@ -294,7 +295,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_message_Date( $message_Date, $Code_messagerie=0, $Code_joueur=0 )
+    protected function rechercher_message_Date( string $message_Date, ?int $Code_messagerie=null, ?int $Code_joueur=null )
     {
         $Code_message = 0;
         $message_Date = format_sql('message_Date', $message_Date);
@@ -307,7 +308,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_message = round($row_requete['Code_message']);
+                $Code_message = (int) $row_requete['Code_message'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_message);
@@ -315,8 +316,9 @@ class entite_monframework extends entite
         return $Code_message;
     }
 
-    protected function get_liste_Code_message($Code_messagerie=0, $Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_message(?int $Code_messagerie=null, ?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("message");
         $cle = "message__lister_cles";
         $Code_messagerie = round($Code_messagerie);
@@ -378,7 +380,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_message FROM ".inst('message')." WHERE 1".( $Code_messagerie!=0 ? " AND Code_messagerie=$Code_messagerie" : "" )."".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_message']);
+                $liste[] = (int) $row_requete['Code_message'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -386,7 +388,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_message_vers_Code_messagerie( $Code_message )
+    protected function Code_message_vers_Code_messagerie( int $Code_message )
     {
         $Code_message = round($Code_message);
         if ($Code_message<0) $Code_message = 0;
@@ -401,7 +403,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_message'])] = round($row_requete['Code_messagerie']);
+                $conversion[(int) $row_requete['Code_message']] = (int) $row_requete['Code_messagerie'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -409,7 +411,7 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_message]) ? $conversion[$Code_message] : 0 );
     }
 
-    protected function Code_message_vers_Code_joueur( $Code_message )
+    protected function Code_message_vers_Code_joueur( int $Code_message )
     {
         $Code_message = round($Code_message);
         if ($Code_message<0) $Code_message = 0;
@@ -424,7 +426,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_message'])] = round($row_requete['Code_joueur']);
+                $conversion[(int) $row_requete['Code_message']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -432,8 +434,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_message]) ? $conversion[$Code_message] : 0 );
     }
 
-    protected function liste_Code_messagerie_vers_liste_Code_message( $liste_Code_messagerie, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_messagerie_vers_liste_Code_message( array $liste_Code_messagerie, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("message");
         $cle = "liste_Code_messagerie_vers_liste_Code_message__".Sql_Format_Liste($liste_Code_messagerie);
 
@@ -491,7 +494,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_message FROM '.inst('message')." WHERE Code_messagerie IN ".Sql_Format_Liste($liste_Code_messagerie).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_message[] = round($row_requete['Code_message']);
+                $liste_Code_message[] = (int) $row_requete['Code_message'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_message);
@@ -499,8 +502,9 @@ class entite_monframework extends entite
         return $liste_Code_message;
     }
 
-    protected function message__liste_Code_message_vers_liste_Code_messagerie( $liste_Code_message, $options = array( 'cond_mysql' => array() ) )
+    protected function message__liste_Code_message_vers_liste_Code_messagerie( array $liste_Code_message, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("message");
         $cle = "liste_Code_message_vers_liste_Code_messagerie__".Sql_Format_Liste($liste_Code_message);
 
@@ -559,10 +563,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_messagerie FROM ".inst('message')." WHERE Code_message IN ".Sql_Format_Liste($liste_Code_message).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_messagerie'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_messagerie']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_messagerie'])] = 1;
-                    $liste_Code_messagerie[] = round($row_requete['Code_messagerie']);
+                    $controle_doublons[(int) $row_requete['Code_messagerie']] = 1;
+                    $liste_Code_messagerie[] = (int) $row_requete['Code_messagerie'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -571,8 +575,9 @@ class entite_monframework extends entite
         return $liste_Code_messagerie;
     }
 
-    protected function liste_Code_joueur_vers_liste_Code_message( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_joueur_vers_liste_Code_message( array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("message");
         $cle = "liste_Code_joueur_vers_liste_Code_message__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -630,7 +635,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_message FROM '.inst('message')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_message[] = round($row_requete['Code_message']);
+                $liste_Code_message[] = (int) $row_requete['Code_message'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_message);
@@ -638,8 +643,9 @@ class entite_monframework extends entite
         return $liste_Code_message;
     }
 
-    protected function message__liste_Code_message_vers_liste_Code_joueur( $liste_Code_message, $options = array( 'cond_mysql' => array() ) )
+    protected function message__liste_Code_message_vers_liste_Code_joueur( array $liste_Code_message, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("message");
         $cle = "liste_Code_message_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_message);
 
@@ -698,10 +704,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_joueur FROM ".inst('message')." WHERE Code_message IN ".Sql_Format_Liste($liste_Code_message).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_joueur'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_joueur']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_joueur'])] = 1;
-                    $liste_Code_joueur[] = round($row_requete['Code_joueur']);
+                    $controle_doublons[(int) $row_requete['Code_joueur']] = 1;
+                    $liste_Code_joueur[] = (int) $row_requete['Code_joueur'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -710,7 +716,7 @@ class entite_monframework extends entite
         return $liste_Code_joueur;
     }
 
-    private function mf_dupliquer_message( $Code_message )
+    private function mf_dupliquer_message( int $Code_message )
     {
         $code_erreur = 0;
         $Code_new_message = 0;
@@ -751,7 +757,7 @@ class entite_monframework extends entite
     +-------------+
 */
 
-    protected function mf_tester_existance_Code_parametre( $Code_parametre )
+    protected function mf_tester_existance_Code_parametre( int $Code_parametre )
     {
         $Code_parametre = round($Code_parametre);
         $requete_sql = "SELECT Code_parametre FROM ".inst('parametre')." WHERE Code_parametre = $Code_parametre;";
@@ -766,7 +772,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_parametre_Libelle( $parametre_Libelle )
+    protected function rechercher_parametre_Libelle( string $parametre_Libelle )
     {
         $Code_parametre = 0;
         $parametre_Libelle = format_sql('parametre_Libelle', $parametre_Libelle);
@@ -777,7 +783,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_parametre = round($row_requete['Code_parametre']);
+                $Code_parametre = (int) $row_requete['Code_parametre'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_parametre);
@@ -785,7 +791,7 @@ class entite_monframework extends entite
         return $Code_parametre;
     }
 
-    protected function rechercher_parametre_Valeur( $parametre_Valeur )
+    protected function rechercher_parametre_Valeur( int $parametre_Valeur )
     {
         $Code_parametre = 0;
         $parametre_Valeur = format_sql('parametre_Valeur', $parametre_Valeur);
@@ -796,7 +802,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_parametre = round($row_requete['Code_parametre']);
+                $Code_parametre = (int) $row_requete['Code_parametre'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_parametre);
@@ -804,7 +810,7 @@ class entite_monframework extends entite
         return $Code_parametre;
     }
 
-    protected function rechercher_parametre_Activable( $parametre_Activable )
+    protected function rechercher_parametre_Activable( bool $parametre_Activable )
     {
         $Code_parametre = 0;
         $parametre_Activable = format_sql('parametre_Activable', $parametre_Activable);
@@ -815,7 +821,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_parametre = round($row_requete['Code_parametre']);
+                $Code_parametre = (int) $row_requete['Code_parametre'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_parametre);
@@ -823,7 +829,7 @@ class entite_monframework extends entite
         return $Code_parametre;
     }
 
-    protected function rechercher_parametre_Actif( $parametre_Actif )
+    protected function rechercher_parametre_Actif( bool $parametre_Actif )
     {
         $Code_parametre = 0;
         $parametre_Actif = format_sql('parametre_Actif', $parametre_Actif);
@@ -834,7 +840,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_parametre = round($row_requete['Code_parametre']);
+                $Code_parametre = (int) $row_requete['Code_parametre'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_parametre);
@@ -842,8 +848,9 @@ class entite_monframework extends entite
         return $Code_parametre;
     }
 
-    protected function get_liste_Code_parametre($options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_parametre(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("parametre");
         $cle = "parametre__lister_cles";
 
@@ -904,7 +911,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_parametre FROM ".inst('parametre')." WHERE 1".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_parametre']);
+                $liste[] = (int) $row_requete['Code_parametre'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -912,7 +919,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    private function mf_dupliquer_parametre( $Code_parametre )
+    private function mf_dupliquer_parametre( int $Code_parametre )
     {
         $code_erreur = 0;
         $Code_new_parametre = 0;
@@ -951,7 +958,7 @@ class entite_monframework extends entite
     +----------+
 */
 
-    protected function mf_tester_existance_Code_groupe( $Code_groupe )
+    protected function mf_tester_existance_Code_groupe( int $Code_groupe )
     {
         $Code_groupe = round($Code_groupe);
         $requete_sql = "SELECT Code_groupe FROM ".inst('groupe')." WHERE Code_groupe = $Code_groupe;";
@@ -966,7 +973,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_groupe_Nom( $groupe_Nom, $Code_campagne=0 )
+    protected function rechercher_groupe_Nom( string $groupe_Nom, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Nom = format_sql('groupe_Nom', $groupe_Nom);
@@ -978,7 +985,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -986,7 +993,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Logo_Fichier( $groupe_Logo_Fichier, $Code_campagne=0 )
+    protected function rechercher_groupe_Logo_Fichier( string $groupe_Logo_Fichier, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Logo_Fichier = format_sql('groupe_Logo_Fichier', $groupe_Logo_Fichier);
@@ -998,7 +1005,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -1006,7 +1013,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Effectif( $groupe_Effectif, $Code_campagne=0 )
+    protected function rechercher_groupe_Effectif( bool $groupe_Effectif, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Effectif = format_sql('groupe_Effectif', $groupe_Effectif);
@@ -1018,7 +1025,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -1026,7 +1033,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Actif( $groupe_Actif, $Code_campagne=0 )
+    protected function rechercher_groupe_Actif( int $groupe_Actif, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Actif = format_sql('groupe_Actif', $groupe_Actif);
@@ -1038,7 +1045,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -1046,7 +1053,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Date_creation( $groupe_Date_creation, $Code_campagne=0 )
+    protected function rechercher_groupe_Date_creation( string $groupe_Date_creation, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Date_creation = format_sql('groupe_Date_creation', $groupe_Date_creation);
@@ -1058,7 +1065,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -1066,7 +1073,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Delai_suppression_jour( $groupe_Delai_suppression_jour, $Code_campagne=0 )
+    protected function rechercher_groupe_Delai_suppression_jour( int $groupe_Delai_suppression_jour, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Delai_suppression_jour = format_sql('groupe_Delai_suppression_jour', $groupe_Delai_suppression_jour);
@@ -1078,7 +1085,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -1086,7 +1093,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Suppression_active( $groupe_Suppression_active, $Code_campagne=0 )
+    protected function rechercher_groupe_Suppression_active( bool $groupe_Suppression_active, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Suppression_active = format_sql('groupe_Suppression_active', $groupe_Suppression_active);
@@ -1098,7 +1105,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_groupe = round($row_requete['Code_groupe']);
+                $Code_groupe = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_groupe);
@@ -1106,8 +1113,9 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function get_liste_Code_groupe($Code_campagne=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_groupe(?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("groupe");
         $cle = "groupe__lister_cles";
         $Code_campagne = round($Code_campagne);
@@ -1173,7 +1181,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_groupe FROM ".inst('groupe')." WHERE 1".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_groupe']);
+                $liste[] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -1181,7 +1189,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_groupe_vers_Code_campagne( $Code_groupe )
+    protected function Code_groupe_vers_Code_campagne( int $Code_groupe )
     {
         $Code_groupe = round($Code_groupe);
         if ($Code_groupe<0) $Code_groupe = 0;
@@ -1196,7 +1204,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_groupe'])] = round($row_requete['Code_campagne']);
+                $conversion[(int) $row_requete['Code_groupe']] = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -1204,8 +1212,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_groupe]) ? $conversion[$Code_groupe] : 0 );
     }
 
-    protected function liste_Code_campagne_vers_liste_Code_groupe( $liste_Code_campagne, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_campagne_vers_liste_Code_groupe( array $liste_Code_campagne, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("groupe");
         $cle = "liste_Code_campagne_vers_liste_Code_groupe__".Sql_Format_Liste($liste_Code_campagne);
 
@@ -1269,7 +1278,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_groupe FROM '.inst('groupe')." WHERE Code_campagne IN ".Sql_Format_Liste($liste_Code_campagne).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_groupe[] = round($row_requete['Code_groupe']);
+                $liste_Code_groupe[] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_groupe);
@@ -1277,8 +1286,9 @@ class entite_monframework extends entite
         return $liste_Code_groupe;
     }
 
-    protected function groupe__liste_Code_groupe_vers_liste_Code_campagne( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    protected function groupe__liste_Code_groupe_vers_liste_Code_campagne( array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("groupe");
         $cle = "liste_Code_groupe_vers_liste_Code_campagne__".Sql_Format_Liste($liste_Code_groupe);
 
@@ -1343,10 +1353,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_campagne FROM ".inst('groupe')." WHERE Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_campagne'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_campagne']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_campagne'])] = 1;
-                    $liste_Code_campagne[] = round($row_requete['Code_campagne']);
+                    $controle_doublons[(int) $row_requete['Code_campagne']] = 1;
+                    $liste_Code_campagne[] = (int) $row_requete['Code_campagne'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -1355,7 +1365,7 @@ class entite_monframework extends entite
         return $liste_Code_campagne;
     }
 
-    private function mf_dupliquer_groupe( $Code_groupe )
+    private function mf_dupliquer_groupe( int $Code_groupe )
     {
         $code_erreur = 0;
         $Code_new_groupe = 0;
@@ -1415,7 +1425,7 @@ class entite_monframework extends entite
     +--------------+
 */
 
-    protected function mf_tester_existance_Code_personnage( $Code_personnage )
+    protected function mf_tester_existance_Code_personnage( int $Code_personnage )
     {
         $Code_personnage = round($Code_personnage);
         $requete_sql = "SELECT Code_personnage FROM ".inst('personnage')." WHERE Code_personnage = $Code_personnage;";
@@ -1430,7 +1440,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_personnage_Fichier_Fichier( $personnage_Fichier_Fichier, $Code_joueur=0, $Code_groupe=0 )
+    protected function rechercher_personnage_Fichier_Fichier( string $personnage_Fichier_Fichier, ?int $Code_joueur=null, ?int $Code_groupe=null )
     {
         $Code_personnage = 0;
         $personnage_Fichier_Fichier = format_sql('personnage_Fichier_Fichier', $personnage_Fichier_Fichier);
@@ -1443,7 +1453,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_personnage = round($row_requete['Code_personnage']);
+                $Code_personnage = (int) $row_requete['Code_personnage'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_personnage);
@@ -1451,7 +1461,7 @@ class entite_monframework extends entite
         return $Code_personnage;
     }
 
-    protected function rechercher_personnage_Conservation( $personnage_Conservation, $Code_joueur=0, $Code_groupe=0 )
+    protected function rechercher_personnage_Conservation( bool $personnage_Conservation, ?int $Code_joueur=null, ?int $Code_groupe=null )
     {
         $Code_personnage = 0;
         $personnage_Conservation = format_sql('personnage_Conservation', $personnage_Conservation);
@@ -1464,7 +1474,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_personnage = round($row_requete['Code_personnage']);
+                $Code_personnage = (int) $row_requete['Code_personnage'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_personnage);
@@ -1472,8 +1482,9 @@ class entite_monframework extends entite
         return $Code_personnage;
     }
 
-    protected function get_liste_Code_personnage($Code_joueur=0, $Code_groupe=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_personnage(?int $Code_joueur=null, ?int $Code_groupe=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("personnage");
         $cle = "personnage__lister_cles";
         $Code_joueur = round($Code_joueur);
@@ -1536,7 +1547,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_personnage FROM ".inst('personnage')." WHERE 1".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."".( $Code_groupe!=0 ? " AND Code_groupe=$Code_groupe" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_personnage']);
+                $liste[] = (int) $row_requete['Code_personnage'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -1544,7 +1555,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_personnage_vers_Code_joueur( $Code_personnage )
+    protected function Code_personnage_vers_Code_joueur( int $Code_personnage )
     {
         $Code_personnage = round($Code_personnage);
         if ($Code_personnage<0) $Code_personnage = 0;
@@ -1559,7 +1570,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_personnage'])] = round($row_requete['Code_joueur']);
+                $conversion[(int) $row_requete['Code_personnage']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -1567,7 +1578,7 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_personnage]) ? $conversion[$Code_personnage] : 0 );
     }
 
-    protected function Code_personnage_vers_Code_groupe( $Code_personnage )
+    protected function Code_personnage_vers_Code_groupe( int $Code_personnage )
     {
         $Code_personnage = round($Code_personnage);
         if ($Code_personnage<0) $Code_personnage = 0;
@@ -1582,7 +1593,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_personnage'])] = round($row_requete['Code_groupe']);
+                $conversion[(int) $row_requete['Code_personnage']] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -1590,8 +1601,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_personnage]) ? $conversion[$Code_personnage] : 0 );
     }
 
-    protected function liste_Code_joueur_vers_liste_Code_personnage( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_joueur_vers_liste_Code_personnage( array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("personnage");
         $cle = "liste_Code_joueur_vers_liste_Code_personnage__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -1650,7 +1662,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_personnage FROM '.inst('personnage')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_personnage[] = round($row_requete['Code_personnage']);
+                $liste_Code_personnage[] = (int) $row_requete['Code_personnage'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_personnage);
@@ -1658,8 +1670,9 @@ class entite_monframework extends entite
         return $liste_Code_personnage;
     }
 
-    protected function personnage__liste_Code_personnage_vers_liste_Code_joueur( $liste_Code_personnage, $options = array( 'cond_mysql' => array() ) )
+    protected function personnage__liste_Code_personnage_vers_liste_Code_joueur( array $liste_Code_personnage, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("personnage");
         $cle = "liste_Code_personnage_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_personnage);
 
@@ -1719,10 +1732,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_joueur FROM ".inst('personnage')." WHERE Code_personnage IN ".Sql_Format_Liste($liste_Code_personnage).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_joueur'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_joueur']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_joueur'])] = 1;
-                    $liste_Code_joueur[] = round($row_requete['Code_joueur']);
+                    $controle_doublons[(int) $row_requete['Code_joueur']] = 1;
+                    $liste_Code_joueur[] = (int) $row_requete['Code_joueur'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -1731,8 +1744,9 @@ class entite_monframework extends entite
         return $liste_Code_joueur;
     }
 
-    protected function liste_Code_groupe_vers_liste_Code_personnage( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_groupe_vers_liste_Code_personnage( array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("personnage");
         $cle = "liste_Code_groupe_vers_liste_Code_personnage__".Sql_Format_Liste($liste_Code_groupe);
 
@@ -1791,7 +1805,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_personnage FROM '.inst('personnage')." WHERE Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_personnage[] = round($row_requete['Code_personnage']);
+                $liste_Code_personnage[] = (int) $row_requete['Code_personnage'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_personnage);
@@ -1799,8 +1813,9 @@ class entite_monframework extends entite
         return $liste_Code_personnage;
     }
 
-    protected function personnage__liste_Code_personnage_vers_liste_Code_groupe( $liste_Code_personnage, $options = array( 'cond_mysql' => array() ) )
+    protected function personnage__liste_Code_personnage_vers_liste_Code_groupe( array $liste_Code_personnage, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("personnage");
         $cle = "liste_Code_personnage_vers_liste_Code_groupe__".Sql_Format_Liste($liste_Code_personnage);
 
@@ -1860,10 +1875,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_groupe FROM ".inst('personnage')." WHERE Code_personnage IN ".Sql_Format_Liste($liste_Code_personnage).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_groupe'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_groupe']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_groupe'])] = 1;
-                    $liste_Code_groupe[] = round($row_requete['Code_groupe']);
+                    $controle_doublons[(int) $row_requete['Code_groupe']] = 1;
+                    $liste_Code_groupe[] = (int) $row_requete['Code_groupe'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -1872,7 +1887,7 @@ class entite_monframework extends entite
         return $liste_Code_groupe;
     }
 
-    private function mf_dupliquer_personnage( $Code_personnage )
+    private function mf_dupliquer_personnage( int $Code_personnage )
     {
         $code_erreur = 0;
         $Code_new_personnage = 0;
@@ -1913,7 +1928,7 @@ class entite_monframework extends entite
     +------------+
 */
 
-    protected function mf_tester_existance_Code_campagne( $Code_campagne )
+    protected function mf_tester_existance_Code_campagne( int $Code_campagne )
     {
         $Code_campagne = round($Code_campagne);
         $requete_sql = "SELECT Code_campagne FROM ".inst('campagne')." WHERE Code_campagne = $Code_campagne;";
@@ -1928,7 +1943,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_campagne_Nom( $campagne_Nom )
+    protected function rechercher_campagne_Nom( string $campagne_Nom )
     {
         $Code_campagne = 0;
         $campagne_Nom = format_sql('campagne_Nom', $campagne_Nom);
@@ -1939,7 +1954,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_campagne = round($row_requete['Code_campagne']);
+                $Code_campagne = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_campagne);
@@ -1947,7 +1962,7 @@ class entite_monframework extends entite
         return $Code_campagne;
     }
 
-    protected function rechercher_campagne_Image_Fichier( $campagne_Image_Fichier )
+    protected function rechercher_campagne_Image_Fichier( string $campagne_Image_Fichier )
     {
         $Code_campagne = 0;
         $campagne_Image_Fichier = format_sql('campagne_Image_Fichier', $campagne_Image_Fichier);
@@ -1958,7 +1973,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_campagne = round($row_requete['Code_campagne']);
+                $Code_campagne = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_campagne);
@@ -1966,7 +1981,7 @@ class entite_monframework extends entite
         return $Code_campagne;
     }
 
-    protected function rechercher_campagne_Nombre_joueur( $campagne_Nombre_joueur )
+    protected function rechercher_campagne_Nombre_joueur( int $campagne_Nombre_joueur )
     {
         $Code_campagne = 0;
         $campagne_Nombre_joueur = format_sql('campagne_Nombre_joueur', $campagne_Nombre_joueur);
@@ -1977,7 +1992,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_campagne = round($row_requete['Code_campagne']);
+                $Code_campagne = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_campagne);
@@ -1985,7 +2000,7 @@ class entite_monframework extends entite
         return $Code_campagne;
     }
 
-    protected function rechercher_campagne_Nombre_mj( $campagne_Nombre_mj )
+    protected function rechercher_campagne_Nombre_mj( int $campagne_Nombre_mj )
     {
         $Code_campagne = 0;
         $campagne_Nombre_mj = format_sql('campagne_Nombre_mj', $campagne_Nombre_mj);
@@ -1996,7 +2011,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_campagne = round($row_requete['Code_campagne']);
+                $Code_campagne = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_campagne);
@@ -2004,8 +2019,9 @@ class entite_monframework extends entite
         return $Code_campagne;
     }
 
-    protected function get_liste_Code_campagne($options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_campagne(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("campagne");
         $cle = "campagne__lister_cles";
 
@@ -2066,7 +2082,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_campagne FROM ".inst('campagne')." WHERE 1".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_campagne']);
+                $liste[] = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -2074,7 +2090,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    private function mf_dupliquer_campagne( $Code_campagne )
+    private function mf_dupliquer_campagne( int $Code_campagne )
     {
         $code_erreur = 0;
         $Code_new_campagne = 0;
@@ -2120,7 +2136,7 @@ class entite_monframework extends entite
     +----------------+
 */
 
-    protected function mf_tester_existance_Code_tag_campagne( $Code_tag_campagne )
+    protected function mf_tester_existance_Code_tag_campagne( int $Code_tag_campagne )
     {
         $Code_tag_campagne = round($Code_tag_campagne);
         $requete_sql = "SELECT Code_tag_campagne FROM ".inst('tag_campagne')." WHERE Code_tag_campagne = $Code_tag_campagne;";
@@ -2135,7 +2151,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_tag_campagne_Libelle( $tag_campagne_Libelle )
+    protected function rechercher_tag_campagne_Libelle( string $tag_campagne_Libelle )
     {
         $Code_tag_campagne = 0;
         $tag_campagne_Libelle = format_sql('tag_campagne_Libelle', $tag_campagne_Libelle);
@@ -2146,7 +2162,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_tag_campagne = round($row_requete['Code_tag_campagne']);
+                $Code_tag_campagne = (int) $row_requete['Code_tag_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_tag_campagne);
@@ -2154,8 +2170,9 @@ class entite_monframework extends entite
         return $Code_tag_campagne;
     }
 
-    protected function get_liste_Code_tag_campagne($options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_tag_campagne(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("tag_campagne");
         $cle = "tag_campagne__lister_cles";
 
@@ -2213,7 +2230,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_tag_campagne FROM ".inst('tag_campagne')." WHERE 1".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_tag_campagne']);
+                $liste[] = (int) $row_requete['Code_tag_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -2221,7 +2238,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    private function mf_dupliquer_tag_campagne( $Code_tag_campagne )
+    private function mf_dupliquer_tag_campagne( int $Code_tag_campagne )
     {
         $code_erreur = 0;
         $Code_new_tag_campagne = 0;
@@ -2254,7 +2271,7 @@ class entite_monframework extends entite
     +---------+
 */
 
-    protected function mf_tester_existance_Code_carte( $Code_carte )
+    protected function mf_tester_existance_Code_carte( int $Code_carte )
     {
         $Code_carte = round($Code_carte);
         $requete_sql = "SELECT Code_carte FROM ".inst('carte')." WHERE Code_carte = $Code_carte;";
@@ -2269,7 +2286,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_carte_Nom( $carte_Nom, $Code_groupe=0 )
+    protected function rechercher_carte_Nom( string $carte_Nom, ?int $Code_groupe=null )
     {
         $Code_carte = 0;
         $carte_Nom = format_sql('carte_Nom', $carte_Nom);
@@ -2281,7 +2298,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_carte = round($row_requete['Code_carte']);
+                $Code_carte = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_carte);
@@ -2289,7 +2306,7 @@ class entite_monframework extends entite
         return $Code_carte;
     }
 
-    protected function rechercher_carte_Hauteur( $carte_Hauteur, $Code_groupe=0 )
+    protected function rechercher_carte_Hauteur( int $carte_Hauteur, ?int $Code_groupe=null )
     {
         $Code_carte = 0;
         $carte_Hauteur = format_sql('carte_Hauteur', $carte_Hauteur);
@@ -2301,7 +2318,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_carte = round($row_requete['Code_carte']);
+                $Code_carte = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_carte);
@@ -2309,7 +2326,7 @@ class entite_monframework extends entite
         return $Code_carte;
     }
 
-    protected function rechercher_carte_Largeur( $carte_Largeur, $Code_groupe=0 )
+    protected function rechercher_carte_Largeur( int $carte_Largeur, ?int $Code_groupe=null )
     {
         $Code_carte = 0;
         $carte_Largeur = format_sql('carte_Largeur', $carte_Largeur);
@@ -2321,7 +2338,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_carte = round($row_requete['Code_carte']);
+                $Code_carte = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_carte);
@@ -2329,7 +2346,7 @@ class entite_monframework extends entite
         return $Code_carte;
     }
 
-    protected function rechercher_carte_Fichier( $carte_Fichier, $Code_groupe=0 )
+    protected function rechercher_carte_Fichier( string $carte_Fichier, ?int $Code_groupe=null )
     {
         $Code_carte = 0;
         $carte_Fichier = format_sql('carte_Fichier', $carte_Fichier);
@@ -2341,7 +2358,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_carte = round($row_requete['Code_carte']);
+                $Code_carte = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_carte);
@@ -2349,8 +2366,9 @@ class entite_monframework extends entite
         return $Code_carte;
     }
 
-    protected function get_liste_Code_carte($Code_groupe=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_carte(?int $Code_groupe=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("carte");
         $cle = "carte__lister_cles";
         $Code_groupe = round($Code_groupe);
@@ -2413,7 +2431,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_carte FROM ".inst('carte')." WHERE 1".( $Code_groupe!=0 ? " AND Code_groupe=$Code_groupe" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_carte']);
+                $liste[] = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -2421,7 +2439,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_carte_vers_Code_groupe( $Code_carte )
+    protected function Code_carte_vers_Code_groupe( int $Code_carte )
     {
         $Code_carte = round($Code_carte);
         if ($Code_carte<0) $Code_carte = 0;
@@ -2436,7 +2454,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_carte'])] = round($row_requete['Code_groupe']);
+                $conversion[(int) $row_requete['Code_carte']] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -2444,8 +2462,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_carte]) ? $conversion[$Code_carte] : 0 );
     }
 
-    protected function liste_Code_groupe_vers_liste_Code_carte( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_groupe_vers_liste_Code_carte( array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("carte");
         $cle = "liste_Code_groupe_vers_liste_Code_carte__".Sql_Format_Liste($liste_Code_groupe);
 
@@ -2506,7 +2525,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_carte FROM '.inst('carte')." WHERE Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_carte[] = round($row_requete['Code_carte']);
+                $liste_Code_carte[] = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_carte);
@@ -2514,8 +2533,9 @@ class entite_monframework extends entite
         return $liste_Code_carte;
     }
 
-    protected function carte__liste_Code_carte_vers_liste_Code_groupe( $liste_Code_carte, $options = array( 'cond_mysql' => array() ) )
+    protected function carte__liste_Code_carte_vers_liste_Code_groupe( array $liste_Code_carte, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("carte");
         $cle = "liste_Code_carte_vers_liste_Code_groupe__".Sql_Format_Liste($liste_Code_carte);
 
@@ -2577,10 +2597,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_groupe FROM ".inst('carte')." WHERE Code_carte IN ".Sql_Format_Liste($liste_Code_carte).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_groupe'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_groupe']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_groupe'])] = 1;
-                    $liste_Code_groupe[] = round($row_requete['Code_groupe']);
+                    $controle_doublons[(int) $row_requete['Code_groupe']] = 1;
+                    $liste_Code_groupe[] = (int) $row_requete['Code_groupe'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -2589,7 +2609,7 @@ class entite_monframework extends entite
         return $liste_Code_groupe;
     }
 
-    private function mf_dupliquer_carte( $Code_carte )
+    private function mf_dupliquer_carte( int $Code_carte )
     {
         $code_erreur = 0;
         $Code_new_carte = 0;
@@ -2631,7 +2651,7 @@ class entite_monframework extends entite
     +---------+
 */
 
-    protected function mf_tester_existance_Code_objet( $Code_objet )
+    protected function mf_tester_existance_Code_objet( int $Code_objet )
     {
         $Code_objet = round($Code_objet);
         $requete_sql = "SELECT Code_objet FROM ".inst('objet')." WHERE Code_objet = $Code_objet;";
@@ -2646,7 +2666,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_objet_Libelle( $objet_Libelle, $Code_type=0 )
+    protected function rechercher_objet_Libelle( string $objet_Libelle, ?int $Code_type=null )
     {
         $Code_objet = 0;
         $objet_Libelle = format_sql('objet_Libelle', $objet_Libelle);
@@ -2658,7 +2678,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_objet = round($row_requete['Code_objet']);
+                $Code_objet = (int) $row_requete['Code_objet'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_objet);
@@ -2666,7 +2686,7 @@ class entite_monframework extends entite
         return $Code_objet;
     }
 
-    protected function rechercher_objet_Image_Fichier( $objet_Image_Fichier, $Code_type=0 )
+    protected function rechercher_objet_Image_Fichier( string $objet_Image_Fichier, ?int $Code_type=null )
     {
         $Code_objet = 0;
         $objet_Image_Fichier = format_sql('objet_Image_Fichier', $objet_Image_Fichier);
@@ -2678,7 +2698,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_objet = round($row_requete['Code_objet']);
+                $Code_objet = (int) $row_requete['Code_objet'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_objet);
@@ -2686,8 +2706,9 @@ class entite_monframework extends entite
         return $Code_objet;
     }
 
-    protected function get_liste_Code_objet($Code_type=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_objet(?int $Code_type=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("objet");
         $cle = "objet__lister_cles";
         $Code_type = round($Code_type);
@@ -2748,7 +2769,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_objet FROM ".inst('objet')." WHERE 1".( $Code_type!=0 ? " AND Code_type=$Code_type" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_objet']);
+                $liste[] = (int) $row_requete['Code_objet'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -2756,7 +2777,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_objet_vers_Code_type( $Code_objet )
+    protected function Code_objet_vers_Code_type( int $Code_objet )
     {
         $Code_objet = round($Code_objet);
         if ($Code_objet<0) $Code_objet = 0;
@@ -2771,7 +2792,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_objet'])] = round($row_requete['Code_type']);
+                $conversion[(int) $row_requete['Code_objet']] = (int) $row_requete['Code_type'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -2779,8 +2800,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_objet]) ? $conversion[$Code_objet] : 0 );
     }
 
-    protected function liste_Code_type_vers_liste_Code_objet( $liste_Code_type, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_type_vers_liste_Code_objet( array $liste_Code_type, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("objet");
         $cle = "liste_Code_type_vers_liste_Code_objet__".Sql_Format_Liste($liste_Code_type);
 
@@ -2839,7 +2861,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_objet FROM '.inst('objet')." WHERE Code_type IN ".Sql_Format_Liste($liste_Code_type).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_objet[] = round($row_requete['Code_objet']);
+                $liste_Code_objet[] = (int) $row_requete['Code_objet'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_objet);
@@ -2847,8 +2869,9 @@ class entite_monframework extends entite
         return $liste_Code_objet;
     }
 
-    protected function objet__liste_Code_objet_vers_liste_Code_type( $liste_Code_objet, $options = array( 'cond_mysql' => array() ) )
+    protected function objet__liste_Code_objet_vers_liste_Code_type( array $liste_Code_objet, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("objet");
         $cle = "liste_Code_objet_vers_liste_Code_type__".Sql_Format_Liste($liste_Code_objet);
 
@@ -2908,10 +2931,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_type FROM ".inst('objet')." WHERE Code_objet IN ".Sql_Format_Liste($liste_Code_objet).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_type'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_type']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_type'])] = 1;
-                    $liste_Code_type[] = round($row_requete['Code_type']);
+                    $controle_doublons[(int) $row_requete['Code_type']] = 1;
+                    $liste_Code_type[] = (int) $row_requete['Code_type'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -2920,7 +2943,7 @@ class entite_monframework extends entite
         return $liste_Code_type;
     }
 
-    private function mf_dupliquer_objet( $Code_objet )
+    private function mf_dupliquer_objet( int $Code_objet )
     {
         $code_erreur = 0;
         $Code_new_objet = 0;
@@ -2958,7 +2981,7 @@ class entite_monframework extends entite
     +--------+
 */
 
-    protected function mf_tester_existance_Code_type( $Code_type )
+    protected function mf_tester_existance_Code_type( int $Code_type )
     {
         $Code_type = round($Code_type);
         $requete_sql = "SELECT Code_type FROM ".inst('type')." WHERE Code_type = $Code_type;";
@@ -2973,7 +2996,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_type_Libelle( $type_Libelle, $Code_ressource=0 )
+    protected function rechercher_type_Libelle( string $type_Libelle, ?int $Code_ressource=null )
     {
         $Code_type = 0;
         $type_Libelle = format_sql('type_Libelle', $type_Libelle);
@@ -2985,7 +3008,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_type = round($row_requete['Code_type']);
+                $Code_type = (int) $row_requete['Code_type'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_type);
@@ -2993,8 +3016,9 @@ class entite_monframework extends entite
         return $Code_type;
     }
 
-    protected function get_liste_Code_type($Code_ressource=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_type(?int $Code_ressource=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("type");
         $cle = "type__lister_cles";
         $Code_ressource = round($Code_ressource);
@@ -3054,7 +3078,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_type FROM ".inst('type')." WHERE 1".( $Code_ressource!=0 ? " AND Code_ressource=$Code_ressource" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_type']);
+                $liste[] = (int) $row_requete['Code_type'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -3062,7 +3086,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_type_vers_Code_ressource( $Code_type )
+    protected function Code_type_vers_Code_ressource( int $Code_type )
     {
         $Code_type = round($Code_type);
         if ($Code_type<0) $Code_type = 0;
@@ -3077,7 +3101,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_type'])] = round($row_requete['Code_ressource']);
+                $conversion[(int) $row_requete['Code_type']] = (int) $row_requete['Code_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -3085,8 +3109,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_type]) ? $conversion[$Code_type] : 0 );
     }
 
-    protected function liste_Code_ressource_vers_liste_Code_type( $liste_Code_ressource, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_ressource_vers_liste_Code_type( array $liste_Code_ressource, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("type");
         $cle = "liste_Code_ressource_vers_liste_Code_type__".Sql_Format_Liste($liste_Code_ressource);
 
@@ -3144,7 +3169,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_type FROM '.inst('type')." WHERE Code_ressource IN ".Sql_Format_Liste($liste_Code_ressource).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_type[] = round($row_requete['Code_type']);
+                $liste_Code_type[] = (int) $row_requete['Code_type'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_type);
@@ -3152,8 +3177,9 @@ class entite_monframework extends entite
         return $liste_Code_type;
     }
 
-    protected function type__liste_Code_type_vers_liste_Code_ressource( $liste_Code_type, $options = array( 'cond_mysql' => array() ) )
+    protected function type__liste_Code_type_vers_liste_Code_ressource( array $liste_Code_type, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("type");
         $cle = "liste_Code_type_vers_liste_Code_ressource__".Sql_Format_Liste($liste_Code_type);
 
@@ -3212,10 +3238,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_ressource FROM ".inst('type')." WHERE Code_type IN ".Sql_Format_Liste($liste_Code_type).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_ressource'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_ressource']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_ressource'])] = 1;
-                    $liste_Code_ressource[] = round($row_requete['Code_ressource']);
+                    $controle_doublons[(int) $row_requete['Code_ressource']] = 1;
+                    $liste_Code_ressource[] = (int) $row_requete['Code_ressource'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -3224,7 +3250,7 @@ class entite_monframework extends entite
         return $liste_Code_ressource;
     }
 
-    private function mf_dupliquer_type( $Code_type )
+    private function mf_dupliquer_type( int $Code_type )
     {
         $code_erreur = 0;
         $Code_new_type = 0;
@@ -3265,7 +3291,7 @@ class entite_monframework extends entite
     +-------------+
 */
 
-    protected function mf_tester_existance_Code_ressource( $Code_ressource )
+    protected function mf_tester_existance_Code_ressource( int $Code_ressource )
     {
         $Code_ressource = round($Code_ressource);
         $requete_sql = "SELECT Code_ressource FROM ".inst('ressource')." WHERE Code_ressource = $Code_ressource;";
@@ -3280,7 +3306,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_ressource_Nom( $ressource_Nom )
+    protected function rechercher_ressource_Nom( string $ressource_Nom )
     {
         $Code_ressource = 0;
         $ressource_Nom = format_sql('ressource_Nom', $ressource_Nom);
@@ -3291,7 +3317,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_ressource = round($row_requete['Code_ressource']);
+                $Code_ressource = (int) $row_requete['Code_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_ressource);
@@ -3299,8 +3325,9 @@ class entite_monframework extends entite
         return $Code_ressource;
     }
 
-    protected function get_liste_Code_ressource($options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_ressource(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("ressource");
         $cle = "ressource__lister_cles";
 
@@ -3358,7 +3385,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_ressource FROM ".inst('ressource')." WHERE 1".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_ressource']);
+                $liste[] = (int) $row_requete['Code_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -3366,7 +3393,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    private function mf_dupliquer_ressource( $Code_ressource )
+    private function mf_dupliquer_ressource( int $Code_ressource )
     {
         $code_erreur = 0;
         $Code_new_ressource = 0;
@@ -3404,7 +3431,7 @@ class entite_monframework extends entite
     +-----------------+
 */
 
-    protected function mf_tester_existance_Code_tag_ressource( $Code_tag_ressource )
+    protected function mf_tester_existance_Code_tag_ressource( int $Code_tag_ressource )
     {
         $Code_tag_ressource = round($Code_tag_ressource);
         $requete_sql = "SELECT Code_tag_ressource FROM ".inst('tag_ressource')." WHERE Code_tag_ressource = $Code_tag_ressource;";
@@ -3419,7 +3446,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_tag_ressource_Libelle( $tag_ressource_Libelle )
+    protected function rechercher_tag_ressource_Libelle( string $tag_ressource_Libelle )
     {
         $Code_tag_ressource = 0;
         $tag_ressource_Libelle = format_sql('tag_ressource_Libelle', $tag_ressource_Libelle);
@@ -3430,7 +3457,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_tag_ressource = round($row_requete['Code_tag_ressource']);
+                $Code_tag_ressource = (int) $row_requete['Code_tag_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_tag_ressource);
@@ -3438,8 +3465,9 @@ class entite_monframework extends entite
         return $Code_tag_ressource;
     }
 
-    protected function get_liste_Code_tag_ressource($options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_tag_ressource(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("tag_ressource");
         $cle = "tag_ressource__lister_cles";
 
@@ -3497,7 +3525,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_tag_ressource FROM ".inst('tag_ressource')." WHERE 1".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_tag_ressource']);
+                $liste[] = (int) $row_requete['Code_tag_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -3505,7 +3533,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    private function mf_dupliquer_tag_ressource( $Code_tag_ressource )
+    private function mf_dupliquer_tag_ressource( int $Code_tag_ressource )
     {
         $code_erreur = 0;
         $Code_new_tag_ressource = 0;
@@ -3538,7 +3566,7 @@ class entite_monframework extends entite
     +--------------+
 */
 
-    protected function mf_tester_existance_Code_messagerie( $Code_messagerie )
+    protected function mf_tester_existance_Code_messagerie( int $Code_messagerie )
     {
         $Code_messagerie = round($Code_messagerie);
         $requete_sql = "SELECT Code_messagerie FROM ".inst('messagerie')." WHERE Code_messagerie = $Code_messagerie;";
@@ -3553,8 +3581,29 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function get_liste_Code_messagerie($Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    protected function rechercher_messagerie_Nom( string $messagerie_Nom, ?int $Code_joueur=null )
     {
+        $Code_messagerie = 0;
+        $messagerie_Nom = format_sql('messagerie_Nom', $messagerie_Nom);
+        $Code_joueur = round($Code_joueur);
+        $requete_sql = 'SELECT Code_messagerie FROM '.inst('messagerie')." WHERE messagerie_Nom = $messagerie_Nom".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )." LIMIT 0, 1;";
+        $cache_db = new Mf_Cachedb('messagerie');
+        if ( ! $Code_messagerie = $cache_db->read($requete_sql) )
+        {
+            $res_requete = executer_requete_mysql($requete_sql, false);
+            if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                $Code_messagerie = (int) $row_requete['Code_messagerie'];
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($requete_sql, $Code_messagerie);
+        }
+        return $Code_messagerie;
+    }
+
+    protected function get_liste_Code_messagerie(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
+    {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("messagerie");
         $cle = "messagerie__lister_cles";
         $Code_joueur = round($Code_joueur);
@@ -3579,6 +3628,7 @@ class entite_monframework extends entite
             $liste_colonnes_a_indexer = [];
             if ( $argument_cond!='' )
             {
+                if ( strpos($argument_cond, 'messagerie_Nom')!==false ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -3613,7 +3663,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_messagerie FROM ".inst('messagerie')." WHERE 1".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_messagerie']);
+                $liste[] = (int) $row_requete['Code_messagerie'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -3621,7 +3671,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_messagerie_vers_Code_joueur( $Code_messagerie )
+    protected function Code_messagerie_vers_Code_joueur( int $Code_messagerie )
     {
         $Code_messagerie = round($Code_messagerie);
         if ($Code_messagerie<0) $Code_messagerie = 0;
@@ -3636,7 +3686,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_messagerie'])] = round($row_requete['Code_joueur']);
+                $conversion[(int) $row_requete['Code_messagerie']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -3644,8 +3694,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_messagerie]) ? $conversion[$Code_messagerie] : 0 );
     }
 
-    protected function liste_Code_joueur_vers_liste_Code_messagerie( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_joueur_vers_liste_Code_messagerie( array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("messagerie");
         $cle = "liste_Code_joueur_vers_liste_Code_messagerie__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -3668,6 +3719,7 @@ class entite_monframework extends entite
             $liste_colonnes_a_indexer = [];
             if ( $argument_cond!='' )
             {
+                if ( strpos($argument_cond, 'messagerie_Nom')!==false ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -3702,7 +3754,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_messagerie FROM '.inst('messagerie')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_messagerie[] = round($row_requete['Code_messagerie']);
+                $liste_Code_messagerie[] = (int) $row_requete['Code_messagerie'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_messagerie);
@@ -3710,8 +3762,9 @@ class entite_monframework extends entite
         return $liste_Code_messagerie;
     }
 
-    protected function messagerie__liste_Code_messagerie_vers_liste_Code_joueur( $liste_Code_messagerie, $options = array( 'cond_mysql' => array() ) )
+    protected function messagerie__liste_Code_messagerie_vers_liste_Code_joueur( array $liste_Code_messagerie, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("messagerie");
         $cle = "liste_Code_messagerie_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_messagerie);
 
@@ -3734,6 +3787,7 @@ class entite_monframework extends entite
             $liste_colonnes_a_indexer = [];
             if ( $argument_cond!='' )
             {
+                if ( strpos($argument_cond, 'messagerie_Nom')!==false ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -3769,10 +3823,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_joueur FROM ".inst('messagerie')." WHERE Code_messagerie IN ".Sql_Format_Liste($liste_Code_messagerie).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_joueur'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_joueur']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_joueur'])] = 1;
-                    $liste_Code_joueur[] = round($row_requete['Code_joueur']);
+                    $controle_doublons[(int) $row_requete['Code_joueur']] = 1;
+                    $liste_Code_joueur[] = (int) $row_requete['Code_joueur'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -3781,7 +3835,7 @@ class entite_monframework extends entite
         return $liste_Code_joueur;
     }
 
-    private function mf_dupliquer_messagerie( $Code_messagerie )
+    private function mf_dupliquer_messagerie( int $Code_messagerie )
     {
         $code_erreur = 0;
         $Code_new_messagerie = 0;
@@ -3790,10 +3844,12 @@ class entite_monframework extends entite
         else
         {
             $donnees_a_copier = $this->mf_get($Code_messagerie, array('autocompletion' => false));
+            $messagerie_Nom = $donnees_a_copier['messagerie_Nom'];
+            $messagerie_Nom = text_sql($messagerie_Nom);
             $Code_joueur = round($donnees_a_copier['Code_joueur']);
             if ( isset($this->mf_dupliquer_table_de_conversion['Code_joueur'][$Code_joueur]) ) $Code_joueur = $this->mf_dupliquer_table_de_conversion['Code_joueur'][$Code_joueur];
             elseif ( isset($this->mf_dupliquer_table_de_conversion['Code_joueur'][0]) ) $Code_joueur = $this->mf_dupliquer_table_de_conversion['Code_joueur'][0];
-            executer_requete_mysql("INSERT INTO messagerie ( Code_joueur ) VALUES ( $Code_joueur );", true);
+            executer_requete_mysql("INSERT INTO messagerie ( messagerie_Nom, Code_joueur ) VALUES ( '$messagerie_Nom', $Code_joueur );", true);
             $Code_new_messagerie = requete_mysql_insert_id();
             if ($Code_new_messagerie==0)
             {
@@ -3820,7 +3876,7 @@ class entite_monframework extends entite
     +------------------+
 */
 
-    protected function mf_tester_existance_Code_liste_contacts( $Code_liste_contacts )
+    protected function mf_tester_existance_Code_liste_contacts( int $Code_liste_contacts )
     {
         $Code_liste_contacts = round($Code_liste_contacts);
         $requete_sql = "SELECT Code_liste_contacts FROM ".inst('liste_contacts')." WHERE Code_liste_contacts = $Code_liste_contacts;";
@@ -3835,7 +3891,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    protected function rechercher_liste_contacts_Nom( $liste_contacts_Nom, $Code_joueur=0 )
+    protected function rechercher_liste_contacts_Nom( string $liste_contacts_Nom, ?int $Code_joueur=null )
     {
         $Code_liste_contacts = 0;
         $liste_contacts_Nom = format_sql('liste_contacts_Nom', $liste_contacts_Nom);
@@ -3847,7 +3903,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql($requete_sql, false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $Code_liste_contacts = round($row_requete['Code_liste_contacts']);
+                $Code_liste_contacts = (int) $row_requete['Code_liste_contacts'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($requete_sql, $Code_liste_contacts);
@@ -3855,8 +3911,9 @@ class entite_monframework extends entite
         return $Code_liste_contacts;
     }
 
-    protected function get_liste_Code_liste_contacts($Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    protected function get_liste_Code_liste_contacts(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("liste_contacts");
         $cle = "liste_contacts__lister_cles";
         $Code_joueur = round($Code_joueur);
@@ -3916,7 +3973,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_liste_contacts FROM ".inst('liste_contacts')." WHERE 1".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."".$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[]=round($row_requete['Code_liste_contacts']);
+                $liste[] = (int) $row_requete['Code_liste_contacts'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste);
@@ -3924,7 +3981,7 @@ class entite_monframework extends entite
         return $liste;
     }
 
-    protected function Code_liste_contacts_vers_Code_joueur( $Code_liste_contacts )
+    protected function Code_liste_contacts_vers_Code_joueur( int $Code_liste_contacts )
     {
         $Code_liste_contacts = round($Code_liste_contacts);
         if ($Code_liste_contacts<0) $Code_liste_contacts = 0;
@@ -3939,7 +3996,7 @@ class entite_monframework extends entite
             $conversion = array();
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $conversion[round($row_requete['Code_liste_contacts'])] = round($row_requete['Code_joueur']);
+                $conversion[(int) $row_requete['Code_liste_contacts']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $conversion);
@@ -3947,8 +4004,9 @@ class entite_monframework extends entite
         return ( isset($conversion[$Code_liste_contacts]) ? $conversion[$Code_liste_contacts] : 0 );
     }
 
-    protected function liste_Code_joueur_vers_liste_Code_liste_contacts( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_Code_joueur_vers_liste_Code_liste_contacts( array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("liste_contacts");
         $cle = "liste_Code_joueur_vers_liste_Code_liste_contacts__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -4006,7 +4064,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_liste_contacts FROM '.inst('liste_contacts')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_liste_contacts[] = round($row_requete['Code_liste_contacts']);
+                $liste_Code_liste_contacts[] = (int) $row_requete['Code_liste_contacts'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_liste_contacts);
@@ -4014,8 +4072,9 @@ class entite_monframework extends entite
         return $liste_Code_liste_contacts;
     }
 
-    protected function liste_contacts__liste_Code_liste_contacts_vers_liste_Code_joueur( $liste_Code_liste_contacts, $options = array( 'cond_mysql' => array() ) )
+    protected function liste_contacts__liste_Code_liste_contacts_vers_liste_Code_joueur( array $liste_Code_liste_contacts, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("liste_contacts");
         $cle = "liste_Code_liste_contacts_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_liste_contacts);
 
@@ -4074,10 +4133,10 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql("SELECT Code_joueur FROM ".inst('liste_contacts')." WHERE Code_liste_contacts IN ".Sql_Format_Liste($liste_Code_liste_contacts).$argument_cond.";", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                if ( ! isset($controle_doublons[round($row_requete['Code_joueur'])]) )
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_joueur']]) )
                 {
-                    $controle_doublons[round($row_requete['Code_joueur'])] = 1;
-                    $liste_Code_joueur[] = round($row_requete['Code_joueur']);
+                    $controle_doublons[(int) $row_requete['Code_joueur']] = 1;
+                    $liste_Code_joueur[] = (int) $row_requete['Code_joueur'];
                 }
             }
             mysqli_free_result($res_requete);
@@ -4086,7 +4145,7 @@ class entite_monframework extends entite
         return $liste_Code_joueur;
     }
 
-    private function mf_dupliquer_liste_contacts( $Code_liste_contacts )
+    private function mf_dupliquer_liste_contacts( int $Code_liste_contacts )
     {
         $code_erreur = 0;
         $Code_new_liste_contacts = 0;
@@ -4122,7 +4181,7 @@ class entite_monframework extends entite
     +----------------------+
 */
 
-    protected function mf_tester_existance_a_joueur_parametre( $Code_joueur, $Code_parametre )
+    protected function mf_tester_existance_a_joueur_parametre( int $Code_joueur, int $Code_parametre )
     {
         $Code_joueur = round($Code_joueur);
         $Code_parametre = round($Code_parametre);
@@ -4138,7 +4197,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_joueur_parametre($Code_joueur, $Code_parametre)
+    private function mf_dupliquer_a_joueur_parametre(int $Code_joueur, int $Code_parametre)
     {
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
@@ -4164,8 +4223,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_joueur_parametre_liste_Code_joueur_vers_liste_Code_parametre( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function a_joueur_parametre_liste_Code_joueur_vers_liste_Code_parametre(  array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_joueur_parametre");
         $cle = "liste_Code_joueur_vers_liste_Code_parametre__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -4222,7 +4282,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_parametre FROM '.inst('a_joueur_parametre')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_parametre[round($row_requete['Code_parametre'])] = round($row_requete['Code_parametre']);
+                $liste_Code_parametre[(int) $row_requete['Code_parametre']] = (int) $row_requete['Code_parametre'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_parametre);
@@ -4230,8 +4290,9 @@ class entite_monframework extends entite
         return $liste_Code_parametre;
     }
 
-    protected function a_joueur_parametre_liste_Code_parametre_vers_liste_Code_joueur( $liste_Code_parametre, $options = array( 'cond_mysql' => array() ) )
+    protected function a_joueur_parametre_liste_Code_parametre_vers_liste_Code_joueur(  array $liste_Code_parametre, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_joueur_parametre");
         $cle = "liste_Code_parametre_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_parametre);
 
@@ -4288,7 +4349,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_joueur FROM '.inst('a_joueur_parametre')." WHERE Code_parametre IN ".Sql_Format_Liste($liste_Code_parametre).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_joueur[round($row_requete['Code_joueur'])] = round($row_requete['Code_joueur']);
+                $liste_Code_joueur[(int) $row_requete['Code_joueur']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_joueur);
@@ -4302,7 +4363,7 @@ class entite_monframework extends entite
     +-------------------------------+
 */
 
-    protected function mf_tester_existance_a_candidature_joueur_groupe( $Code_joueur, $Code_groupe )
+    protected function mf_tester_existance_a_candidature_joueur_groupe( int $Code_joueur, int $Code_groupe )
     {
         $Code_joueur = round($Code_joueur);
         $Code_groupe = round($Code_groupe);
@@ -4318,7 +4379,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_candidature_joueur_groupe($Code_joueur, $Code_groupe)
+    private function mf_dupliquer_a_candidature_joueur_groupe(int $Code_joueur, int $Code_groupe)
     {
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
@@ -4349,8 +4410,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_candidature_joueur_groupe_liste_Code_joueur_vers_liste_Code_groupe( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function a_candidature_joueur_groupe_liste_Code_joueur_vers_liste_Code_groupe(  array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_candidature_joueur_groupe");
         $cle = "liste_Code_joueur_vers_liste_Code_groupe__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -4408,7 +4470,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_groupe FROM '.inst('a_candidature_joueur_groupe')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_groupe[round($row_requete['Code_groupe'])] = round($row_requete['Code_groupe']);
+                $liste_Code_groupe[(int) $row_requete['Code_groupe']] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_groupe);
@@ -4416,8 +4478,9 @@ class entite_monframework extends entite
         return $liste_Code_groupe;
     }
 
-    protected function a_candidature_joueur_groupe_liste_Code_groupe_vers_liste_Code_joueur( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    protected function a_candidature_joueur_groupe_liste_Code_groupe_vers_liste_Code_joueur(  array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_candidature_joueur_groupe");
         $cle = "liste_Code_groupe_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_groupe);
 
@@ -4475,7 +4538,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_joueur FROM '.inst('a_candidature_joueur_groupe')." WHERE Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_joueur[round($row_requete['Code_joueur'])] = round($row_requete['Code_joueur']);
+                $liste_Code_joueur[(int) $row_requete['Code_joueur']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_joueur);
@@ -4489,7 +4552,7 @@ class entite_monframework extends entite
     +--------------------------+
 */
 
-    protected function mf_tester_existance_a_membre_joueur_groupe( $Code_groupe, $Code_joueur )
+    protected function mf_tester_existance_a_membre_joueur_groupe( int $Code_groupe, int $Code_joueur )
     {
         $Code_groupe = round($Code_groupe);
         $Code_joueur = round($Code_joueur);
@@ -4505,7 +4568,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_membre_joueur_groupe($Code_groupe, $Code_joueur)
+    private function mf_dupliquer_a_membre_joueur_groupe(int $Code_groupe, int $Code_joueur)
     {
         $code_erreur = 0;
         $Code_groupe = round($Code_groupe);
@@ -4538,8 +4601,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_membre_joueur_groupe_liste_Code_groupe_vers_liste_Code_joueur( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    protected function a_membre_joueur_groupe_liste_Code_groupe_vers_liste_Code_joueur(  array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_membre_joueur_groupe");
         $cle = "liste_Code_groupe_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_groupe);
 
@@ -4599,7 +4663,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_joueur FROM '.inst('a_membre_joueur_groupe')." WHERE Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_joueur[round($row_requete['Code_joueur'])] = round($row_requete['Code_joueur']);
+                $liste_Code_joueur[(int) $row_requete['Code_joueur']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_joueur);
@@ -4607,8 +4671,9 @@ class entite_monframework extends entite
         return $liste_Code_joueur;
     }
 
-    protected function a_membre_joueur_groupe_liste_Code_joueur_vers_liste_Code_groupe( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function a_membre_joueur_groupe_liste_Code_joueur_vers_liste_Code_groupe(  array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_membre_joueur_groupe");
         $cle = "liste_Code_joueur_vers_liste_Code_groupe__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -4668,7 +4733,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_groupe FROM '.inst('a_membre_joueur_groupe')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_groupe[round($row_requete['Code_groupe'])] = round($row_requete['Code_groupe']);
+                $liste_Code_groupe[(int) $row_requete['Code_groupe']] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_groupe);
@@ -4682,7 +4747,7 @@ class entite_monframework extends entite
     +------------------------------+
 */
 
-    protected function mf_tester_existance_a_invitation_joueur_groupe( $Code_joueur, $Code_groupe )
+    protected function mf_tester_existance_a_invitation_joueur_groupe( int $Code_joueur, int $Code_groupe )
     {
         $Code_joueur = round($Code_joueur);
         $Code_groupe = round($Code_groupe);
@@ -4698,7 +4763,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_invitation_joueur_groupe($Code_joueur, $Code_groupe)
+    private function mf_dupliquer_a_invitation_joueur_groupe(int $Code_joueur, int $Code_groupe)
     {
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
@@ -4729,8 +4794,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_invitation_joueur_groupe_liste_Code_joueur_vers_liste_Code_groupe( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function a_invitation_joueur_groupe_liste_Code_joueur_vers_liste_Code_groupe(  array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_invitation_joueur_groupe");
         $cle = "liste_Code_joueur_vers_liste_Code_groupe__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -4788,7 +4854,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_groupe FROM '.inst('a_invitation_joueur_groupe')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_groupe[round($row_requete['Code_groupe'])] = round($row_requete['Code_groupe']);
+                $liste_Code_groupe[(int) $row_requete['Code_groupe']] = (int) $row_requete['Code_groupe'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_groupe);
@@ -4796,8 +4862,9 @@ class entite_monframework extends entite
         return $liste_Code_groupe;
     }
 
-    protected function a_invitation_joueur_groupe_liste_Code_groupe_vers_liste_Code_joueur( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    protected function a_invitation_joueur_groupe_liste_Code_groupe_vers_liste_Code_joueur(  array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_invitation_joueur_groupe");
         $cle = "liste_Code_groupe_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_groupe);
 
@@ -4855,7 +4922,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_joueur FROM '.inst('a_invitation_joueur_groupe')." WHERE Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_joueur[round($row_requete['Code_joueur'])] = round($row_requete['Code_joueur']);
+                $liste_Code_joueur[(int) $row_requete['Code_joueur']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_joueur);
@@ -4869,7 +4936,7 @@ class entite_monframework extends entite
     +-----------------+
 */
 
-    protected function mf_tester_existance_a_carte_objet( $Code_carte, $Code_objet )
+    protected function mf_tester_existance_a_carte_objet( int $Code_carte, int $Code_objet )
     {
         $Code_carte = round($Code_carte);
         $Code_objet = round($Code_objet);
@@ -4885,7 +4952,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_carte_objet($Code_carte, $Code_objet)
+    private function mf_dupliquer_a_carte_objet(int $Code_carte, int $Code_objet)
     {
         $code_erreur = 0;
         $Code_carte = round($Code_carte);
@@ -4911,8 +4978,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_carte_objet_liste_Code_carte_vers_liste_Code_objet( $liste_Code_carte, $options = array( 'cond_mysql' => array() ) )
+    protected function a_carte_objet_liste_Code_carte_vers_liste_Code_objet(  array $liste_Code_carte, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_carte_objet");
         $cle = "liste_Code_carte_vers_liste_Code_objet__".Sql_Format_Liste($liste_Code_carte);
 
@@ -4969,7 +5037,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_objet FROM '.inst('a_carte_objet')." WHERE Code_carte IN ".Sql_Format_Liste($liste_Code_carte).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_objet[round($row_requete['Code_objet'])] = round($row_requete['Code_objet']);
+                $liste_Code_objet[(int) $row_requete['Code_objet']] = (int) $row_requete['Code_objet'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_objet);
@@ -4977,8 +5045,9 @@ class entite_monframework extends entite
         return $liste_Code_objet;
     }
 
-    protected function a_carte_objet_liste_Code_objet_vers_liste_Code_carte( $liste_Code_objet, $options = array( 'cond_mysql' => array() ) )
+    protected function a_carte_objet_liste_Code_objet_vers_liste_Code_carte(  array $liste_Code_objet, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_carte_objet");
         $cle = "liste_Code_objet_vers_liste_Code_carte__".Sql_Format_Liste($liste_Code_objet);
 
@@ -5035,7 +5104,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_carte FROM '.inst('a_carte_objet')." WHERE Code_objet IN ".Sql_Format_Liste($liste_Code_objet).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_carte[round($row_requete['Code_carte'])] = round($row_requete['Code_carte']);
+                $liste_Code_carte[(int) $row_requete['Code_carte']] = (int) $row_requete['Code_carte'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_carte);
@@ -5049,7 +5118,7 @@ class entite_monframework extends entite
     +---------------------------+
 */
 
-    protected function mf_tester_existance_a_campagne_tag_campagne( $Code_tag_campagne, $Code_campagne )
+    protected function mf_tester_existance_a_campagne_tag_campagne( int $Code_tag_campagne, int $Code_campagne )
     {
         $Code_tag_campagne = round($Code_tag_campagne);
         $Code_campagne = round($Code_campagne);
@@ -5065,7 +5134,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_campagne_tag_campagne($Code_tag_campagne, $Code_campagne)
+    private function mf_dupliquer_a_campagne_tag_campagne(int $Code_tag_campagne, int $Code_campagne)
     {
         $code_erreur = 0;
         $Code_tag_campagne = round($Code_tag_campagne);
@@ -5091,8 +5160,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_campagne_tag_campagne_liste_Code_tag_campagne_vers_liste_Code_campagne( $liste_Code_tag_campagne, $options = array( 'cond_mysql' => array() ) )
+    protected function a_campagne_tag_campagne_liste_Code_tag_campagne_vers_liste_Code_campagne(  array $liste_Code_tag_campagne, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_campagne_tag_campagne");
         $cle = "liste_Code_tag_campagne_vers_liste_Code_campagne__".Sql_Format_Liste($liste_Code_tag_campagne);
 
@@ -5149,7 +5219,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_campagne FROM '.inst('a_campagne_tag_campagne')." WHERE Code_tag_campagne IN ".Sql_Format_Liste($liste_Code_tag_campagne).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_campagne[round($row_requete['Code_campagne'])] = round($row_requete['Code_campagne']);
+                $liste_Code_campagne[(int) $row_requete['Code_campagne']] = (int) $row_requete['Code_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_campagne);
@@ -5157,8 +5227,9 @@ class entite_monframework extends entite
         return $liste_Code_campagne;
     }
 
-    protected function a_campagne_tag_campagne_liste_Code_campagne_vers_liste_Code_tag_campagne( $liste_Code_campagne, $options = array( 'cond_mysql' => array() ) )
+    protected function a_campagne_tag_campagne_liste_Code_campagne_vers_liste_Code_tag_campagne(  array $liste_Code_campagne, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_campagne_tag_campagne");
         $cle = "liste_Code_campagne_vers_liste_Code_tag_campagne__".Sql_Format_Liste($liste_Code_campagne);
 
@@ -5215,7 +5286,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_tag_campagne FROM '.inst('a_campagne_tag_campagne')." WHERE Code_campagne IN ".Sql_Format_Liste($liste_Code_campagne).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_tag_campagne[round($row_requete['Code_tag_campagne'])] = round($row_requete['Code_tag_campagne']);
+                $liste_Code_tag_campagne[(int) $row_requete['Code_tag_campagne']] = (int) $row_requete['Code_tag_campagne'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_tag_campagne);
@@ -5229,7 +5300,7 @@ class entite_monframework extends entite
     +-----------------------------+
 */
 
-    protected function mf_tester_existance_a_ressource_tag_ressource( $Code_tag_ressource, $Code_ressource )
+    protected function mf_tester_existance_a_ressource_tag_ressource( int $Code_tag_ressource, int $Code_ressource )
     {
         $Code_tag_ressource = round($Code_tag_ressource);
         $Code_ressource = round($Code_ressource);
@@ -5245,7 +5316,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_ressource_tag_ressource($Code_tag_ressource, $Code_ressource)
+    private function mf_dupliquer_a_ressource_tag_ressource(int $Code_tag_ressource, int $Code_ressource)
     {
         $code_erreur = 0;
         $Code_tag_ressource = round($Code_tag_ressource);
@@ -5271,8 +5342,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_ressource_tag_ressource_liste_Code_tag_ressource_vers_liste_Code_ressource( $liste_Code_tag_ressource, $options = array( 'cond_mysql' => array() ) )
+    protected function a_ressource_tag_ressource_liste_Code_tag_ressource_vers_liste_Code_ressource(  array $liste_Code_tag_ressource, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_ressource_tag_ressource");
         $cle = "liste_Code_tag_ressource_vers_liste_Code_ressource__".Sql_Format_Liste($liste_Code_tag_ressource);
 
@@ -5329,7 +5401,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_ressource FROM '.inst('a_ressource_tag_ressource')." WHERE Code_tag_ressource IN ".Sql_Format_Liste($liste_Code_tag_ressource).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_ressource[round($row_requete['Code_ressource'])] = round($row_requete['Code_ressource']);
+                $liste_Code_ressource[(int) $row_requete['Code_ressource']] = (int) $row_requete['Code_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_ressource);
@@ -5337,8 +5409,9 @@ class entite_monframework extends entite
         return $liste_Code_ressource;
     }
 
-    protected function a_ressource_tag_ressource_liste_Code_ressource_vers_liste_Code_tag_ressource( $liste_Code_ressource, $options = array( 'cond_mysql' => array() ) )
+    protected function a_ressource_tag_ressource_liste_Code_ressource_vers_liste_Code_tag_ressource(  array $liste_Code_ressource, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_ressource_tag_ressource");
         $cle = "liste_Code_ressource_vers_liste_Code_tag_ressource__".Sql_Format_Liste($liste_Code_ressource);
 
@@ -5395,7 +5468,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_tag_ressource FROM '.inst('a_ressource_tag_ressource')." WHERE Code_ressource IN ".Sql_Format_Liste($liste_Code_ressource).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_tag_ressource[round($row_requete['Code_tag_ressource'])] = round($row_requete['Code_tag_ressource']);
+                $liste_Code_tag_ressource[(int) $row_requete['Code_tag_ressource']] = (int) $row_requete['Code_tag_ressource'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_tag_ressource);
@@ -5409,7 +5482,7 @@ class entite_monframework extends entite
     +--------------------------+
 */
 
-    protected function mf_tester_existance_a_liste_contact_joueur( $Code_liste_contacts, $Code_joueur )
+    protected function mf_tester_existance_a_liste_contact_joueur( int $Code_liste_contacts, int $Code_joueur )
     {
         $Code_liste_contacts = round($Code_liste_contacts);
         $Code_joueur = round($Code_joueur);
@@ -5425,7 +5498,7 @@ class entite_monframework extends entite
         return $r=='o';
     }
 
-    private function mf_dupliquer_a_liste_contact_joueur($Code_liste_contacts, $Code_joueur)
+    private function mf_dupliquer_a_liste_contact_joueur(int $Code_liste_contacts, int $Code_joueur)
     {
         $code_erreur = 0;
         $Code_liste_contacts = round($Code_liste_contacts);
@@ -5454,8 +5527,9 @@ class entite_monframework extends entite
         return array('code_erreur' => $code_erreur);
     }
 
-    protected function a_liste_contact_joueur_liste_Code_liste_contacts_vers_liste_Code_joueur( $liste_Code_liste_contacts, $options = array( 'cond_mysql' => array() ) )
+    protected function a_liste_contact_joueur_liste_Code_liste_contacts_vers_liste_Code_joueur(  array $liste_Code_liste_contacts, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_liste_contact_joueur");
         $cle = "liste_Code_liste_contacts_vers_liste_Code_joueur__".Sql_Format_Liste($liste_Code_liste_contacts);
 
@@ -5513,7 +5587,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_joueur FROM '.inst('a_liste_contact_joueur')." WHERE Code_liste_contacts IN ".Sql_Format_Liste($liste_Code_liste_contacts).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_joueur[round($row_requete['Code_joueur'])] = round($row_requete['Code_joueur']);
+                $liste_Code_joueur[(int) $row_requete['Code_joueur']] = (int) $row_requete['Code_joueur'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_joueur);
@@ -5521,8 +5595,9 @@ class entite_monframework extends entite
         return $liste_Code_joueur;
     }
 
-    protected function a_liste_contact_joueur_liste_Code_joueur_vers_liste_Code_liste_contacts( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    protected function a_liste_contact_joueur_liste_Code_joueur_vers_liste_Code_liste_contacts(  array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $cache_db = new Mf_Cachedb("a_liste_contact_joueur");
         $cle = "liste_Code_joueur_vers_liste_Code_liste_contacts__".Sql_Format_Liste($liste_Code_joueur);
 
@@ -5580,7 +5655,7 @@ class entite_monframework extends entite
             $res_requete = executer_requete_mysql('SELECT Code_liste_contacts FROM '.inst('a_liste_contact_joueur')." WHERE Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur).$argument_cond.';', false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste_Code_liste_contacts[round($row_requete['Code_liste_contacts'])] = round($row_requete['Code_liste_contacts']);
+                $liste_Code_liste_contacts[(int) $row_requete['Code_liste_contacts']] = (int) $row_requete['Code_liste_contacts'];
             }
             mysqli_free_result($res_requete);
             $cache_db->write($cle, $liste_Code_liste_contacts);
@@ -5654,7 +5729,7 @@ class entite_monframework extends entite
         $this->mf_type_table_enfant['a_liste_contact_joueur']='association';
     }
 
-    protected function get_liste_tables_enfants($table)
+    protected function get_liste_tables_enfants( string $table )
     {
         $liste_tables_enfants = array();
         if ( isset($this->mf_dependances[$table]) )
@@ -5667,7 +5742,7 @@ class entite_monframework extends entite
         return $liste_tables_enfants;
     }
 
-    private function get_liste_tables_parents($table)
+    private function get_liste_tables_parents( string $table )
     {
         $liste_tables_parents = array();
         foreach ( $this->mf_dependances as $table_parent => $tables_enfants )
@@ -5683,7 +5758,7 @@ class entite_monframework extends entite
         return $liste_tables_parents;
     }
 
-    private function test_table_ancetre($table_enfant, $table_ancetre)
+    private function test_table_ancetre( string $table_enfant, string $table_ancetre )
     {
         $liste_table=array();
         $liste_table[$table_ancetre]=$table_ancetre;
@@ -5706,7 +5781,7 @@ class entite_monframework extends entite
         } while ( count($liste_table)>0 );
     }
 
-    protected function supprimer_donnes_en_cascade($nom_table, $liste_codes)
+    protected function supprimer_donnes_en_cascade( string $nom_table, array $liste_codes )
     {
         if ($this->mf_dependances==null)
         {

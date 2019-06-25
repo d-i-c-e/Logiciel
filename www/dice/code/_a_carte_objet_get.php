@@ -11,6 +11,8 @@
         $trans['{bouton_supprimer_a_carte_objet}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_supprimer_a_carte_objet', BOUTON_CLASSE_SUPPRIMER) : '';
 
     /* prec_et_suiv */
+    if ( $table_a_carte_objet->mf_compter((isset($est_charge['carte']) ? $mf_contexte['Code_carte'] : 0), (isset($est_charge['objet']) ? $mf_contexte['Code_objet'] : 0))<100 )
+    {
         $liste_a_carte_objet = $table_a_carte_objet->mf_lister_contexte();
         // prec
         $prec_et_suiv = prec_suiv($liste_a_carte_objet, $a_carte_objet['Code_carte'].'-'.$a_carte_objet['Code_objet']);
@@ -28,6 +30,11 @@
             $suiv['title'] = htmlspecialchars(get_titre_ligne_table('a_carte_objet', $prec_et_suiv['suiv']));
         }
         $trans['{pager_a_carte_objet}'] = get_code_pager($prec, $suiv);
+    }
+    else
+    {
+        $trans['{pager_a_carte_objet}'] = '';
+    }
 
     /* Code_carte */
         $trans['{Code_carte}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_carte'=>$a_carte_objet['Code_carte'], 'Code_objet'=>$a_carte_objet['Code_objet']) , 'DB_name' => 'Code_carte' , 'valeur_initiale' => $a_carte_objet['Code_carte'] ]);

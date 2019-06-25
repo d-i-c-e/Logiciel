@@ -12,12 +12,12 @@ class Hook_liste_contacts{
         // ici le code
     }
 
-    static function pre_controller(&$liste_contacts_Nom, &$Code_joueur, $Code_liste_contacts=0)
+    static function pre_controller(string &$liste_contacts_Nom, int &$Code_joueur, ?int $Code_liste_contacts=null)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_joueur=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_joueur=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,34 +30,34 @@ class Hook_liste_contacts{
         // ici le code
     }
 
-    static function autorisation_ajout($liste_contacts_Nom, $Code_joueur)
+    static function autorisation_ajout(string $liste_contacts_Nom, int $Code_joueur)
     {
         return true;
     }
 
-    static function data_controller(&$liste_contacts_Nom, &$Code_joueur, $Code_liste_contacts=0)
+    static function data_controller(string &$liste_contacts_Nom, int &$Code_joueur, ?int $Code_liste_contacts=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($liste_contacts_Nom, $Code_joueur)
+    static function calcul_signature(string $liste_contacts_Nom, int $Code_joueur)
     {
         return md5($liste_contacts_Nom.'-'.$Code_joueur);
     }
 
-    static function calcul_cle_unique($liste_contacts_Nom, $Code_joueur)
+    static function calcul_cle_unique(string $liste_contacts_Nom, int $Code_joueur)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return $Code_joueur.'.'.sha1($liste_contacts_Nom);
     }
 
-    static function ajouter($Code_liste_contacts)
+    static function ajouter(int $Code_liste_contacts)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_liste_contacts=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_liste_contacts=null)
     {
         global $mf_droits_defaut;
         /*
@@ -73,31 +73,31 @@ class Hook_liste_contacts{
         // ici le code
     }
 
-    static function autorisation_modification($Code_liste_contacts, $liste_contacts_Nom__new, $Code_joueur__new)
+    static function autorisation_modification(int $Code_liste_contacts, string $liste_contacts_Nom__new, int $Code_joueur__new)
     {
         return true;
     }
 
-    static function data_controller__liste_contacts_Nom($old, &$new, $Code_liste_contacts)
+    static function data_controller__liste_contacts_Nom(string $old, string &$new, int $Code_liste_contacts)
     {
         // ici le code
     }
 
-    static function data_controller__Code_joueur($old, &$new, $Code_liste_contacts)
+    static function data_controller__Code_joueur(int $old, int &$new, int $Code_liste_contacts)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_liste_contacts permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_liste_contacts, $bool__liste_contacts_Nom, $bool__Code_joueur)
+    static function modifier(int $Code_liste_contacts, bool $bool__liste_contacts_Nom, bool $bool__Code_joueur)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_liste_contacts=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_liste_contacts=null)
     {
         global $mf_droits_defaut;
         /*
@@ -113,17 +113,17 @@ class Hook_liste_contacts{
         }
     }
 
-    static function autorisation_suppression($Code_liste_contacts)
+    static function autorisation_suppression(int $Code_liste_contacts)
     {
         return true;
     }
 
-    static function supprimer($copie__liste_contacts)
+    static function supprimer(array $copie__liste_contacts)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_liste_contacts)
+    static function supprimer_2(array $copie__liste_liste_contacts)
     {
         foreach ($copie__liste_liste_contacts as &$copie__liste_contacts)
         {
@@ -132,7 +132,7 @@ class Hook_liste_contacts{
         unset($copie__liste_contacts);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -143,12 +143,12 @@ class Hook_liste_contacts{
         return true;
     }
 
-    static function mettre_a_jour($liste_liste_contacts)
+    static function mettre_a_jour(array $liste_liste_contacts)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -162,12 +162,12 @@ class Hook_liste_contacts{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_liste_contacts)
+    static function callback_post(int $Code_liste_contacts)
     {
         return null;
     }
 
-    static function callback_put($Code_liste_contacts)
+    static function callback_put(int $Code_liste_contacts)
     {
         return null;
     }

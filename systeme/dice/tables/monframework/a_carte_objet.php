@@ -58,7 +58,7 @@ class a_carte_objet_monframework extends entite_monframework
 
     }
 
-    public function mfi_ajouter_auto($interface)
+    public function mfi_ajouter_auto(array $interface)
     {
         if (isset($interface['Code_carte'])) { $liste_Code_carte = array($interface['Code_carte']); }
         elseif (isset($interface['liste_Code_carte'])) { $liste_Code_carte = $interface['liste_Code_carte']; }
@@ -77,7 +77,7 @@ class a_carte_objet_monframework extends entite_monframework
         return $this->mf_ajouter_3($liste_a_carte_objet);
     }
 
-    public function mfi_supprimer_auto($interface)
+    public function mfi_supprimer_auto(array $interface)
     {
         if (isset($interface['Code_carte'])) { $liste_Code_carte = array($interface['Code_carte']); }
         elseif (isset($interface['liste_Code_carte'])) { $liste_Code_carte = $interface['liste_Code_carte']; }
@@ -94,8 +94,9 @@ class a_carte_objet_monframework extends entite_monframework
         }
     }
 
-    public function mf_ajouter($Code_carte, $Code_objet, $force=false)
+    public function mf_ajouter(int $Code_carte, int $Code_objet, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_carte = round($Code_carte);
         $Code_objet = round($Code_objet);
@@ -148,15 +149,16 @@ class a_carte_objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur==0 ? Hook_a_carte_objet::callback_post($Code_carte, $Code_objet) : null ));
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, ?bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_carte = (isset($ligne['Code_carte'])?round($ligne['Code_carte']):0);
-        $Code_objet = (isset($ligne['Code_objet'])?round($ligne['Code_objet']):0);
+        $Code_carte = (int)(isset($ligne['Code_carte'])?round($ligne['Code_carte']):0);
+        $Code_objet = (int)(isset($ligne['Code_objet'])?round($ligne['Code_objet']):0);
         return $this->mf_ajouter($Code_carte, $Code_objet, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
@@ -202,8 +204,9 @@ class a_carte_objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_carte=0, $Code_objet=0, $force=false)
+    public function mf_supprimer(?int $Code_carte=null, ?int $Code_objet=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_carte = round($Code_carte);
         $Code_objet = round($Code_objet);
@@ -260,7 +263,7 @@ class a_carte_objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($Code_carte=0, $Code_objet=0)
+    public function mf_supprimer_2(?int $Code_carte=null, ?int $Code_objet=null)
     {
         $code_erreur = 0;
         $Code_carte = round($Code_carte);
@@ -293,14 +296,16 @@ class a_carte_objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         return $this->mf_lister(isset($est_charge['carte']) ? $mf_contexte['Code_carte'] : 0, isset($est_charge['objet']) ? $mf_contexte['Code_objet'] : 0, $options);
     }
 
-    public function mf_lister($Code_carte=0, $Code_objet=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_carte=null, ?int $Code_objet=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $liste = $this->mf_lister_2($Code_carte, $Code_objet, $options);
 
         // controle_acces_donnees
@@ -321,8 +326,9 @@ class a_carte_objet_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($Code_carte=0, $Code_objet=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(?int $Code_carte=null, ?int $Code_objet=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "a_carte_objet__lister";
         $Code_carte = round($Code_carte);
         $cle.="_{$Code_carte}";
@@ -453,7 +459,8 @@ class a_carte_objet_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM '.inst('a_carte_objet')." WHERE 1{$argument_cond}".( $Code_carte!=0 ? " AND Code_carte=$Code_carte" : "" )."".( $Code_objet!=0 ? " AND Code_objet=$Code_objet" : "" )."{$argument_tris}{$argument_limit};", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[$row_requete['Code_carte'].'-'.$row_requete['Code_objet']]=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $liste[$row_requete['Code_carte'].'-'.$row_requete['Code_objet']] = $row_requete;
             }
             mysqli_free_result($res_requete);
             if (count($options['tris'])==1)
@@ -482,8 +489,9 @@ class a_carte_objet_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_get($Code_carte, $Code_objet, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_carte, int $Code_objet, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "a_carte_objet__get";
         $Code_carte = round($Code_carte);
         $cle.="_{$Code_carte}";
@@ -547,8 +555,9 @@ class a_carte_objet_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_carte, $Code_objet, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_carte, int $Code_objet, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "a_carte_objet__get";
         $Code_carte = round($Code_carte);
         $cle.="_{$Code_carte}";
@@ -609,8 +618,9 @@ class a_carte_objet_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_compter($Code_carte=0, $Code_objet=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_carte=null, ?int $Code_objet=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'a_carte_objet__compter';
         $Code_carte = round($Code_carte);
         $cle.='_{'.$Code_carte.'}';
@@ -669,19 +679,21 @@ class a_carte_objet_monframework extends entite_monframework
             $res_requete = executer_requete_mysql("SELECT COUNT(CONCAT(Code_carte,'|',Code_objet)) as nb FROM ".inst('a_carte_objet')." WHERE 1{$argument_cond}".( $Code_carte!=0 ? " AND Code_carte=$Code_carte" : "" )."".( $Code_objet!=0 ? " AND Code_objet=$Code_objet" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mf_liste_Code_carte_vers_liste_Code_objet( $liste_Code_carte, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_carte_vers_liste_Code_objet( array $liste_Code_carte, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->a_carte_objet_liste_Code_carte_vers_liste_Code_objet( $liste_Code_carte , $options );
     }
 
-    public function mf_liste_Code_objet_vers_liste_Code_carte( $liste_Code_objet, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_objet_vers_liste_Code_carte( array $liste_Code_objet, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->a_carte_objet_liste_Code_objet_vers_liste_Code_carte( $liste_Code_objet , $options );
     }
 

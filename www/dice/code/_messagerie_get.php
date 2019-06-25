@@ -16,6 +16,13 @@
         }
         $trans['{bouton_supprimer_messagerie}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_supprimer_messagerie', BOUTON_CLASSE_SUPPRIMER) : '';
 
+        // messagerie_Nom
+        if ( $mf_droits_defaut['api_modifier__messagerie_Nom'] )
+        {
+            $menu_a_droite->ajouter_bouton( BOUTON_LIBELLE_MODIFIER_PREC . get_nom_colonne('bouton_modifier_messagerie_Nom') . BOUTON_LIBELLE_MODIFIER_SUIV, get_nom_page_courante().'?act=modifier_messagerie_Nom&Code_messagerie='.$Code_messagerie, 'lien', 'bouton_modifier_messagerie_Nom');
+        }
+        $trans['{bouton_modifier_messagerie_Nom}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_messagerie_Nom') : '';
+
         // Code_joueur
         if ( $mf_droits_defaut['api_modifier_ref__messagerie__Code_joueur'] )
         {
@@ -48,6 +55,12 @@
     {
         $trans['{pager_messagerie}'] = '';
     }
+
+    /* messagerie_Nom */
+        if ( $mf_droits_defaut['api_modifier__messagerie_Nom'] )
+            $trans['{messagerie_Nom}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_messagerie' => $messagerie['Code_messagerie']) , 'DB_name' => 'messagerie_Nom' , 'valeur_initiale' => $messagerie['messagerie_Nom'] ]);
+        else
+            $trans['{messagerie_Nom}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_messagerie' => $messagerie['Code_messagerie']) , 'DB_name' => 'messagerie_Nom' , 'valeur_initiale' => $messagerie['messagerie_Nom'] ]);
 
     /* Code_joueur */
         if ( $mf_droits_defaut['api_modifier_ref__messagerie__Code_joueur'] )

@@ -496,15 +496,17 @@
 
     function test_si_table_existe($nom_table)
     {
-        $res_requete = executer_requete_mysql('show tables');
+        $retour = false;
+        $res_requete = executer_requete_mysql('SHOW TABLES WHERE `Tables_in_' . DB_NAME . '` = \'' . $nom_table . '\'');
         while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_NUM) )
         {
             if ( $row_requete[0]==$nom_table )
             {
-                return true;
+                $retour = true;
             }
         }
-        return false;
+        mysqli_free_result($res_requete);
+        return $retour;
     }
 
     function lister_les_colonnes($nom_table)
@@ -515,6 +517,7 @@
         {
             $liste[$row_requete['Field']] = $row_requete;
         }
+        mysqli_free_result($res_requete);
         return $liste; // Field, Type, Null, Key, Default, Extra
     }
 
@@ -666,68 +669,61 @@
 
 /* autres fonctions */
 
-    $ttsuc_colonne = '';
-    $ttsuc_tri = '';
-    function trier_tableau_suivant_une_colonne(&$liste, $colonne, $tri)
-    {
-        global $ttsuc_colonne, $ttsuc_tri;
-        $ttsuc_colonne = $colonne;
-        $ttsuc_tri = $tri;
-        if (!function_exists('ttsc_cmp'))
-        {
-            function ttsc_cmp($a, $b)
-            {
-                global $ttsuc_colonne, $ttsuc_tri;
-                $v_a = $a[$ttsuc_colonne];
-                $v_b = $b[$ttsuc_colonne];
-                if ( $v_a==$v_b )
-                {
-                    return 0;
-                }
-                if ($ttsuc_tri=='ASC')
-                {
-                    return ( $v_a > $v_b ) ? +1 : -1;
-                }
-                else
-                {
-                    return ( $v_a > $v_b ) ? -1 : +1;
-                }
-            }
-        }
-        uasort($liste, 'ttsc_cmp');
-    }
+$ttsuc_colonne = '';
+$ttsuc_tri = '';
 
-    $ttspc_colonnes = '';
-    function trier_tableau_suivant_plusieurs_colonnes(&$liste, $colonnes) // $colonnes = [ 'Colonne A' => ASC, 'Colonne B' => ASC, ... ]
-    {
-        global $ttspc_colonnes;
-        $ttspc_colonnes = $colonnes;
-        if (!function_exists('ttsc_cmp'))
+function trier_tableau_suivant_une_colonne(&$liste, $colonne, $tri)
+{
+    global $ttsuc_colonne, $ttsuc_tri;
+    $ttsuc_colonne = $colonne;
+    $ttsuc_tri = $tri;
+    uasort($liste, 'ttsc_cmp');
+}
+
+function ttsc_cmp($a, $b)
+{
+    global $ttsuc_colonne, $ttsuc_tri;
+    $v_a = $a[$ttsuc_colonne];
+    $v_b = $b[$ttsuc_colonne];
+    if ($v_a == $v_b) {
+        return 0;
+    }
+    if ($ttsuc_tri == 'ASC') {
+        return ($v_a > $v_b) ? + 1 : - 1;
+    } else {
+        return ($v_a > $v_b) ? - 1 : + 1;
+    }
+}
+
+$ttspc_colonnes = [];
+
+function trier_tableau_suivant_plusieurs_colonnes(&$liste, $colonnes) // $colonnes = [ 'Colonne A' => ASC, 'Colonne B' => ASC, ... ]
+{
+    global $ttspc_colonnes;
+    $ttspc_colonnes = $colonnes;
+    uasort($liste, 'ttspc_cmp');
+}
+
+function ttspc_cmp($a, $b)
+{
+    if (! isset($a['tri_agence'])) {
+        var_dump($a);
+    }
+    global $ttspc_colonnes;
+    foreach ($ttspc_colonnes as $colonne => $tri) {
+        $v_a = $a[$colonne];
+        $v_b = $b[$colonne];
+        if ($v_a != $v_b) // si $a != $b alors, on a un résultat non null, sinon, on passe à la colonne suivante
         {
-            function ttsc_cmp($a, $b)
-            {
-                global $ttspc_colonnes;
-                foreach ($ttspc_colonnes as $colonne => $tri)
-                {
-                    $v_a = $a[$colonne];
-                    $v_b = $b[$colonne];
-                    if ( $v_a!=$v_b ) // si $a != $b alors, on a un résultat non null, sinon, on passe à la colonne suivante
-                    {
-                        if ($tri=='ASC')
-                        {
-                            return ( $v_a > $v_b ) ? +1 : -1;
-                        }
-                        else
-                        {
-                            return ( $v_a > $v_b ) ? -1 : +1;
-                        }
-                    }
-                }
-                return 0;
+            if ($tri == 'ASC') {
+                return ($v_a > $v_b) ? + 1 : - 1;
+            } else {
+                return ($v_a > $v_b) ? - 1 : + 1;
             }
         }
-        uasort($liste, 'ttsc_cmp');
     }
+    return 0;
+}
 
     function lecture_parametre_api($nom, $val_non_lue=null)
     {
@@ -1790,7 +1786,7 @@
     }
 
     // Transformer image
-    function transformer_image($nom_fichier_image, $format_png=false, $width=IMAGES_LARGEUR_MAXI, $height=IMAGES_HAUTEUR_MAXI, $troncage=false, $rotate=0, $zoom=100, $xpos=50, $ypos=50, $qualite=75, $ecraser_fichier=false)
+    function transformer_image($nom_fichier_image, $format_png=false, $width=IMAGES_LARGEUR_MAXI, $height=IMAGES_HAUTEUR_MAXI, $troncage=false, $rotate=0, $zoom=100, $xpos=50, $ypos=50, $qualite=75, $ecraser_fichier=false, $pourcentage_color=100)
     {
         $fichier = new Fichier();
         $ext = $fichier->get_extention($nom_fichier_image);
@@ -1834,6 +1830,11 @@
         //dimentions actuelles
         $old_width = imagesx($image);
         $old_height = imagesy($image);
+        // en noir et blanc
+        if ( $pourcentage_color>=0 && $pourcentage_color<100 )
+        {
+            imagecopymergegray($image, $image, 0, 0, 0, 0, $old_width, $old_height, $pourcentage_color);
+        }
         //choix du zoom
         if ($troncage)
         {
@@ -1957,6 +1958,11 @@
         return ( isset($_SESSION[PREFIXE_SESSION]['parametres'][$name]) ? $_SESSION[PREFIXE_SESSION]['parametres'][$name] : $undifundefined_value );
     }
 
+    function mf_set_value_session($name, $value)
+    {
+        $_SESSION[PREFIXE_SESSION]['parametres'][$name] = $value;
+    }
+
     function mf_get_trace_session()
     {
         if ( isset($_SESSION[PREFIXE_SESSION]['parametres']) )
@@ -1973,6 +1979,31 @@
             return '';
         }
     }
+
+function mf_formatage_db_type_php(array &$donnees): void
+{
+    global $mf_dictionnaire_db;
+    foreach ($donnees as $colonne => &$value) {
+        if (isset($mf_dictionnaire_db[$colonne])) {
+            switch ($mf_dictionnaire_db[$colonne]) {
+                case 'BOOL':
+                    $value = (bool) $value;
+                    break;
+                case 'INT':
+                case 'INTEGER':
+                    $value = (int) $value;
+                    break;
+                case 'DOUBLE':
+                case 'FLOAT':
+                    $value = (float) $value;
+                    break;
+                default:
+                    $value = (string) $value;
+                    break;
+            }
+        }
+    }
+}
 
 /* Colonnes de la base de données */
 
@@ -2059,6 +2090,7 @@
 
     // MESSAGERIE
     define('MF_MESSAGERIE__ID', 'Code_messagerie');
+    define('MF_MESSAGERIE_NOM', 'messagerie_Nom');
     define('MF_MESSAGERIE_CODE_JOUEUR', 'Code_joueur');
 
     // LISTE_CONTACTS

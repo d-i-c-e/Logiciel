@@ -41,12 +41,28 @@ class messagerie_monframework extends entite_monframework
 
     static function initialiser_structure()
     {
+        global $mf_initialisation;
+
         if ( ! test_si_table_existe(inst('messagerie')) )
         {
             executer_requete_mysql('CREATE TABLE '.inst('messagerie').'(Code_messagerie INT AUTO_INCREMENT NOT NULL, PRIMARY KEY (Code_messagerie)) ENGINE=MyISAM;', true);
         }
 
         $liste_colonnes = lister_les_colonnes(inst('messagerie'));
+
+        if ( isset($liste_colonnes['messagerie_Nom']) )
+        {
+            if ( typeMyql2Sql($liste_colonnes['messagerie_Nom']['Type'])!='VARCHAR' )
+            {
+                executer_requete_mysql('ALTER TABLE '.inst('messagerie').' CHANGE messagerie_Nom messagerie_Nom VARCHAR(255);', true);
+            }
+            unset($liste_colonnes['messagerie_Nom']);
+        }
+        else
+        {
+            executer_requete_mysql('ALTER TABLE '.inst('messagerie').' ADD messagerie_Nom VARCHAR(255);', true);
+            executer_requete_mysql('UPDATE '.inst('messagerie').' SET messagerie_Nom=' . format_sql('messagerie_Nom', $mf_initialisation['messagerie_Nom']) . ';', true);
+        }
 
         if ( isset($liste_colonnes['Code_joueur']) )
         {
@@ -106,12 +122,13 @@ class messagerie_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($Code_joueur, $force=false)
+    public function mf_ajouter(string $messagerie_Nom, int $Code_joueur, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_messagerie = 0;
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
-        Hook_messagerie::pre_controller($Code_joueur);
+        Hook_messagerie::pre_controller($messagerie_Nom, $Code_joueur);
         if (!$force)
         {
             if (!self::$maj_droits_ajouter_en_cours)
@@ -124,13 +141,14 @@ class messagerie_monframework extends entite_monframework
         if ( !$force && !mf_matrice_droits(['messagerie__AJOUTER']) ) $code_erreur = REFUS_MESSAGERIE__AJOUTER;
         elseif ( !$this->mf_tester_existance_Code_joueur($Code_joueur) ) $code_erreur = ERR_MESSAGERIE__AJOUTER__CODE_JOUEUR_INEXISTANT;
         elseif ( CONTROLE_ACCES_DONNEES_DEFAUT && !Hook_mf_systeme::controle_acces_donnees('Code_joueur', $Code_joueur) ) $code_erreur = ACCES_CODE_JOUEUR_REFUSE;
-        elseif ( !Hook_messagerie::autorisation_ajout($Code_joueur) ) $code_erreur = REFUS_MESSAGERIE__AJOUT_BLOQUEE;
+        elseif ( !Hook_messagerie::autorisation_ajout($messagerie_Nom, $Code_joueur) ) $code_erreur = REFUS_MESSAGERIE__AJOUT_BLOQUEE;
         else
         {
-            Hook_messagerie::data_controller($Code_joueur);
-            $mf_signature = text_sql(Hook_messagerie::calcul_signature($Code_joueur));
-            $mf_cle_unique = text_sql(Hook_messagerie::calcul_cle_unique($Code_joueur));
-            $requete = "INSERT INTO ".inst('messagerie')." ( mf_signature, mf_cle_unique, mf_date_creation, mf_date_modification, Code_joueur ) VALUES ( '$mf_signature', '$mf_cle_unique', '".get_now()."', '".get_now()."', $Code_joueur );";
+            Hook_messagerie::data_controller($messagerie_Nom, $Code_joueur);
+            $mf_signature = text_sql(Hook_messagerie::calcul_signature($messagerie_Nom, $Code_joueur));
+            $mf_cle_unique = text_sql(Hook_messagerie::calcul_cle_unique($messagerie_Nom, $Code_joueur));
+            $messagerie_Nom = text_sql($messagerie_Nom);
+            $requete = "INSERT INTO ".inst('messagerie')." ( mf_signature, mf_cle_unique, mf_date_creation, mf_date_modification, messagerie_Nom, Code_joueur ) VALUES ( '$mf_signature', '$mf_cle_unique', '".get_now()."', '".get_now()."', '$messagerie_Nom', $Code_joueur );";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql($requete, true);
@@ -159,36 +177,41 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_messagerie' => $Code_messagerie, 'callback' => ( $code_erreur==0 ? Hook_messagerie::callback_post($Code_messagerie) : null ));
     }
 
-    public function mf_creer($Code_joueur, $force=false)
+    public function mf_creer(int $Code_joueur, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["messagerie__AJOUTER"] = $mf_droits_defaut["messagerie__CREER"];
-        return $this->mf_ajouter($Code_joueur, $force);
+        $messagerie_Nom = $mf_initialisation['messagerie_Nom'];
+        return $this->mf_ajouter($messagerie_Nom, $Code_joueur, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_joueur = (isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
-        return $this->mf_ajouter($Code_joueur, $force);
+        $Code_joueur = (int)(isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
+        $messagerie_Nom = (string)(isset($ligne['messagerie_Nom'])?$ligne['messagerie_Nom']:$mf_initialisation['messagerie_Nom']);
+        return $this->mf_ajouter($messagerie_Nom, $Code_joueur, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
         $values = '';
         foreach ($lignes as $ligne)
         {
-            $Code_joueur = (isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):0);
+            $Code_joueur = (int)(isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):0);
+            $messagerie_Nom = text_sql(isset($ligne['messagerie_Nom'])?$ligne['messagerie_Nom']:$mf_initialisation['messagerie_Nom']);
             if ($Code_joueur != 0)
             {
-                $values.=($values!="" ? "," : "")."($Code_joueur)";
+                $values.=($values!="" ? "," : "")."('$messagerie_Nom', $Code_joueur)";
             }
         }
         if ($values!='')
         {
-            $requete = "INSERT INTO ".inst('messagerie')." ( Code_joueur ) VALUES $values;";
+            $requete = "INSERT INTO ".inst('messagerie')." ( messagerie_Nom, Code_joueur ) VALUES $values;";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -215,12 +238,13 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_messagerie, $Code_joueur=0, $force=false)
+    public function mf_modifier( int $Code_messagerie, string $messagerie_Nom, ?int $Code_joueur=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_messagerie = round($Code_messagerie);
         $Code_joueur = round($Code_joueur);
-        Hook_messagerie::pre_controller($Code_joueur, $Code_messagerie);
+        Hook_messagerie::pre_controller($messagerie_Nom, $Code_joueur, $Code_messagerie);
         if (!$force)
         {
             if (!self::$maj_droits_modifier_en_cours)
@@ -235,16 +259,17 @@ class messagerie_monframework extends entite_monframework
         elseif ( $Code_joueur!=0 && !$this->mf_tester_existance_Code_joueur($Code_joueur) ) $code_erreur = ERR_MESSAGERIE__MODIFIER__CODE_JOUEUR_INEXISTANT;
         elseif ( CONTROLE_ACCES_DONNEES_DEFAUT && !Hook_mf_systeme::controle_acces_donnees('Code_messagerie', $Code_messagerie) ) $code_erreur = ACCES_CODE_MESSAGERIE_REFUSE;
         elseif ( $Code_joueur!=0 && CONTROLE_ACCES_DONNEES_DEFAUT && !Hook_mf_systeme::controle_acces_donnees('Code_joueur', $Code_joueur) ) $code_erreur = ACCES_CODE_JOUEUR_REFUSE;
-        elseif ( !Hook_messagerie::autorisation_modification($Code_messagerie, $Code_joueur) ) $code_erreur = REFUS_MESSAGERIE__MODIFICATION_BLOQUEE;
+        elseif ( !Hook_messagerie::autorisation_modification($Code_messagerie, $messagerie_Nom, $Code_joueur) ) $code_erreur = REFUS_MESSAGERIE__MODIFICATION_BLOQUEE;
         else
         {
-            Hook_messagerie::data_controller($Code_joueur, $Code_messagerie);
+            Hook_messagerie::data_controller($messagerie_Nom, $Code_joueur, $Code_messagerie);
             $messagerie = $this->mf_get_2( $Code_messagerie, array('autocompletion' => false, 'masquer_mdp' => false) );
             $mf_colonnes_a_modifier=[];
+            $bool__messagerie_Nom = false; if ( $messagerie_Nom!=$messagerie['messagerie_Nom'] ) { Hook_messagerie::data_controller__messagerie_Nom($messagerie['messagerie_Nom'], $messagerie_Nom, $Code_messagerie); if ( $messagerie_Nom!=$messagerie['messagerie_Nom'] ) { $mf_colonnes_a_modifier[] = 'messagerie_Nom=' . format_sql('messagerie_Nom', $messagerie_Nom); $bool__messagerie_Nom = true; } }
             $bool__Code_joueur = false; if ( $Code_joueur!=0 && $Code_joueur!=$messagerie['Code_joueur'] ) { Hook_messagerie::data_controller__Code_joueur($messagerie['Code_joueur'], $Code_joueur, $Code_messagerie); if ( $Code_joueur!=0 && $Code_joueur!=$messagerie['Code_joueur'] ) { $mf_colonnes_a_modifier[] = 'Code_joueur=' . $Code_joueur; $bool__Code_joueur = true; } }
             if (count($mf_colonnes_a_modifier)>0) {
-                $mf_signature = text_sql(Hook_messagerie::calcul_signature($Code_joueur));
-                $mf_cle_unique = text_sql(Hook_messagerie::calcul_cle_unique($Code_joueur));
+                $mf_signature = text_sql(Hook_messagerie::calcul_signature($messagerie_Nom, $Code_joueur));
+                $mf_cle_unique = text_sql(Hook_messagerie::calcul_cle_unique($messagerie_Nom, $Code_joueur));
                 $mf_colonnes_a_modifier[] = 'mf_signature=\'' . $mf_signature . '\'';
                 $mf_colonnes_a_modifier[] = 'mf_cle_unique=\'' . $mf_cle_unique . '\'';
                 $mf_colonnes_a_modifier[] = 'mf_date_modification=\'' . get_now() . '\'';
@@ -261,7 +286,7 @@ class messagerie_monframework extends entite_monframework
                 {
                     self::$cache_db->clear();
                     self::$cache_db->reprendre($cle);
-                    Hook_messagerie::modifier($Code_messagerie, $bool__Code_joueur);
+                    Hook_messagerie::modifier($Code_messagerie, $bool__messagerie_Nom, $bool__Code_joueur);
                 }
             }
             else
@@ -281,14 +306,15 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_messagerie::callback_put($Code_messagerie) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_messagerie => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_messagerie => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_messagerie => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_messagerie = round($Code_messagerie);
+                $Code_messagerie = (int)round($Code_messagerie);
                 $messagerie = $this->mf_get_2($Code_messagerie, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -300,7 +326,8 @@ class messagerie_monframework extends entite_monframework
                     }
                 }
                 $Code_joueur = ( isset($colonnes['Code_joueur']) && ( $force || mf_matrice_droits(['api_modifier_ref__messagerie__Code_joueur', 'messagerie__MODIFIER']) ) ? $colonnes['Code_joueur'] : (isset($messagerie['Code_joueur']) ? $messagerie['Code_joueur'] : 0 ));
-                $retour = $this->mf_modifier($Code_messagerie, $Code_joueur, true);
+                $messagerie_Nom = (string)( isset($colonnes['messagerie_Nom']) && ( $force || mf_matrice_droits(['api_modifier__messagerie_Nom', 'messagerie__MODIFIER']) ) ? $colonnes['messagerie_Nom'] : ( isset($messagerie['messagerie_Nom']) ? $messagerie['messagerie_Nom'] : '' ) );
+                $retour = $this->mf_modifier($Code_messagerie, $messagerie_Nom, $Code_joueur, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_MESSAGERIE__MODIFIER__AUCUN_CHANGEMENT )
                 {
                     $code_erreur = $retour['code_erreur'];
@@ -323,7 +350,7 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_messagerie => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_messagerie => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -336,7 +363,7 @@ class messagerie_monframework extends entite_monframework
         {
             foreach ($colonnes as $colonne => $valeur)
             {
-                if ( $colonne=='Code_joueur' )
+                if ( $colonne=='messagerie_Nom' || $colonne=='Code_joueur' )
                 {
                     $valeurs_en_colonnes[$colonne][$Code_messagerie]=$valeur;
                     $indices_par_colonne[$colonne][]=$Code_messagerie;
@@ -400,8 +427,53 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_messagerie, $force=false)
+    public function mf_modifier_4( int $Code_joueur, array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
+        $code_erreur = 0;
+        $Code_joueur = round($Code_joueur);
+        $mf_colonnes_a_modifier=[];
+        if ( isset($data['messagerie_Nom']) ) { $mf_colonnes_a_modifier[] = 'messagerie_Nom = ' . format_sql('messagerie_Nom', $data['messagerie_Nom']); }
+        if ( count($mf_colonnes_a_modifier)>0 )
+        {
+            // cond_mysql
+            $argument_cond = '';
+            if (isset($options['cond_mysql']))
+            {
+                foreach ($options['cond_mysql'] as &$condition)
+                {
+                    $argument_cond.= ' AND ('.$condition.')';
+                }
+                unset($condition);
+            }
+
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('messagerie') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
+            $cle = md5($requete).salt(10);
+            self::$cache_db->pause($cle);
+            executer_requete_mysql( $requete , true);
+            if ( requete_mysqli_affected_rows()==0 )
+            {
+                $code_erreur = ERR_MESSAGERIE__MODIFIER_4__AUCUN_CHANGEMENT;
+            }
+            else
+            {
+                self::$cache_db->clear();
+            }
+            self::$cache_db->reprendre($cle);
+        }
+        return array('code_erreur' => $code_erreur);
+    }
+
+    public function mf_supprimer( int $Code_messagerie, ?bool $force=null )
+    {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_messagerie = round($Code_messagerie);
         if (!$force)
@@ -449,8 +521,9 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_messagerie, $force=false)
+    public function mf_supprimer_2(array $liste_Code_messagerie, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_messagerie = $this->mf_lister_2($liste_Code_messagerie, array('autocompletion' => false));
         $liste_Code_messagerie=array();
@@ -503,7 +576,7 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_messagerie)
+    public function mf_supprimer_3(array $liste_Code_messagerie)
     {
         $code_erreur=0;
         if ( count($liste_Code_messagerie)>0 )
@@ -535,8 +608,10 @@ class messagerie_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_messagerie']!=0 )
         {
@@ -549,8 +624,9 @@ class messagerie_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($Code_joueur=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "messagerie__lister";
         $Code_joueur = round($Code_joueur);
         $cle.="_{$Code_joueur}";
@@ -638,9 +714,11 @@ class messagerie_monframework extends entite_monframework
                 $liste_colonnes_a_indexer = [];
                 if ( $argument_cond!='' )
                 {
+                    if ( strpos($argument_cond, 'messagerie_Nom')!==false ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
                 }
                 if ( isset($options['tris']) )
                 {
+                    if ( isset($options['tris']['messagerie_Nom']) ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
                 }
                 if ( count($liste_colonnes_a_indexer)>0 )
                 {
@@ -675,16 +753,17 @@ class messagerie_monframework extends entite_monframework
                 $liste_messagerie_pas_a_jour = array();
                 if ($toutes_colonnes)
                 {
-                    $colonnes='Code_messagerie, Code_joueur';
+                    $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
                 }
                 else
                 {
-                    $colonnes='Code_messagerie, Code_joueur';
+                    $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
                 }
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('messagerie')." WHERE 1{$argument_cond}".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_messagerie']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_messagerie']] = $row_requete;
                     if ( $maj && ! Hook_messagerie::est_a_jour( $row_requete ) )
                     {
                         $liste_messagerie_pas_a_jour[$row_requete['Code_messagerie']] = $row_requete;
@@ -734,8 +813,9 @@ class messagerie_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_messagerie, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_messagerie, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_messagerie)>0 )
         {
             $cle = "messagerie__mf_lister_2_".Sql_Format_Liste($liste_Code_messagerie);
@@ -823,9 +903,11 @@ class messagerie_monframework extends entite_monframework
                     $liste_colonnes_a_indexer = [];
                     if ( $argument_cond!='' )
                     {
+                        if ( strpos($argument_cond, 'messagerie_Nom')!==false ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
                     }
                     if ( isset($options['tris']) )
                     {
+                        if ( isset($options['tris']['messagerie_Nom']) ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
                     }
                     if ( count($liste_colonnes_a_indexer)>0 )
                     {
@@ -860,16 +942,17 @@ class messagerie_monframework extends entite_monframework
                     $liste_messagerie_pas_a_jour = array();
                     if ($toutes_colonnes)
                     {
-                        $colonnes='Code_messagerie, Code_joueur';
+                        $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
                     }
                     else
                     {
-                        $colonnes='Code_messagerie, Code_joueur';
+                        $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
                     }
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('messagerie')." WHERE 1{$argument_cond} AND Code_messagerie IN ".Sql_Format_Liste($liste_Code_messagerie)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_messagerie']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_messagerie']] = $row_requete;
                         if ( $maj && ! Hook_messagerie::est_a_jour( $row_requete ) )
                         {
                             $liste_messagerie_pas_a_jour[$row_requete['Code_messagerie']] = $row_requete;
@@ -924,8 +1007,9 @@ class messagerie_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_messagerie, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_messagerie, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_messagerie = round($Code_messagerie);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_messagerie', $Code_messagerie) )
@@ -963,16 +1047,17 @@ class messagerie_monframework extends entite_monframework
                 {
                     if ($toutes_colonnes)
                     {
-                        $colonnes='Code_messagerie, Code_joueur';
+                        $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
                     }
                     else
                     {
-                        $colonnes='Code_messagerie, Code_joueur';
+                        $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
                     }
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('messagerie') . ' WHERE Code_messagerie = ' . $Code_messagerie . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_messagerie::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1002,8 +1087,9 @@ class messagerie_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($Code_joueur=0, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?int $Code_joueur=null, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "messagerie__get_last";
         $Code_joueur = round($Code_joueur);
         $cle.='_' . $Code_joueur;
@@ -1022,8 +1108,9 @@ class messagerie_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_messagerie, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_messagerie, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_messagerie = round($Code_messagerie);
         $retour = array();
         $cle = 'messagerie__get_'.$Code_messagerie;
@@ -1055,16 +1142,17 @@ class messagerie_monframework extends entite_monframework
         {
             if ($toutes_colonnes)
             {
-                $colonnes='Code_messagerie, Code_joueur';
+                $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
             }
             else
             {
-                $colonnes='Code_messagerie, Code_joueur';
+                $colonnes='Code_messagerie, messagerie_Nom, Code_joueur';
             }
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('messagerie')." WHERE Code_messagerie = $Code_messagerie;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1081,15 +1169,17 @@ class messagerie_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_messagerie, $Code_joueur=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_messagerie, ?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_messagerie = round($Code_messagerie);
         $liste = $this->mf_lister($Code_joueur, $options);
         return prec_suiv($liste, $Code_messagerie);
     }
 
-    public function mf_compter($Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'messagerie__compter';
         $Code_joueur = round($Code_joueur);
         $cle.='_{'.$Code_joueur.'}';
@@ -1113,6 +1203,7 @@ class messagerie_monframework extends entite_monframework
             $liste_colonnes_a_indexer = [];
             if ( $argument_cond!='' )
             {
+                if ( strpos($argument_cond, 'messagerie_Nom')!==false ) { $liste_colonnes_a_indexer['messagerie_Nom'] = 'messagerie_Nom'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -1143,38 +1234,42 @@ class messagerie_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_messagerie) as nb FROM ".inst('messagerie')." WHERE 1{$argument_cond}".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" ).";", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_messagerie) as nb FROM ' . inst('messagerie')." WHERE 1{$argument_cond}".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $Code_joueur = isset($interface['Code_joueur']) ? round($interface['Code_joueur']) : 0;
         return $this->mf_compter( $Code_joueur, $options );
     }
 
-    public function mf_liste_Code_messagerie($Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_messagerie(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_messagerie($Code_joueur, $options);
     }
 
-    public function mf_convertir_Code_messagerie_vers_Code_joueur( $Code_messagerie )
+    public function mf_convertir_Code_messagerie_vers_Code_joueur( int $Code_messagerie )
     {
         return $this->Code_messagerie_vers_Code_joueur( $Code_messagerie );
     }
 
-    public function mf_liste_Code_joueur_vers_liste_Code_messagerie( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_joueur_vers_liste_Code_messagerie( array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->liste_Code_joueur_vers_liste_Code_messagerie( $liste_Code_joueur, $options );
     }
 
-    public function mf_liste_Code_messagerie_vers_liste_Code_joueur( $liste_Code_messagerie, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_messagerie_vers_liste_Code_joueur( array $liste_Code_messagerie, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->messagerie__liste_Code_messagerie_vers_liste_Code_joueur( $liste_Code_messagerie, $options );
     }
 
@@ -1188,9 +1283,15 @@ class messagerie_monframework extends entite_monframework
         return array('Code_joueur');
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche, $Code_joueur=0 )
+    public function mf_search_messagerie_Nom( string $messagerie_Nom, ?int $Code_joueur=null )
+    {
+        return $this->rechercher_messagerie_Nom( $messagerie_Nom, $Code_joueur );
+    }
+
+    public function mf_search__colonne( string $colonne_db, $recherche, ?int $Code_joueur=null )
     {
         switch ($colonne_db) {
+            case 'messagerie_Nom': return $this->mf_search_messagerie_Nom( $recherche, $Code_joueur ); break;
         }
     }
 
@@ -1202,12 +1303,13 @@ class messagerie_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $Code_joueur = (isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
-        Hook_messagerie::pre_controller($Code_joueur);
-        $mf_cle_unique = Hook_messagerie::calcul_cle_unique($Code_joueur);
+        $Code_joueur = (int)(isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
+        $messagerie_Nom = (string)(isset($ligne['messagerie_Nom'])?$ligne['messagerie_Nom']:$mf_initialisation['messagerie_Nom']);
+        Hook_messagerie::pre_controller($messagerie_Nom, $Code_joueur);
+        $mf_cle_unique = Hook_messagerie::calcul_cle_unique($messagerie_Nom, $Code_joueur);
         $res_requete = executer_requete_mysql('SELECT Code_messagerie FROM ' . inst('messagerie') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);
         if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
         {

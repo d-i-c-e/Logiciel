@@ -12,7 +12,7 @@ class Hook_tag_ressource{
         // ici le code
     }
 
-    static function pre_controller(&$tag_ressource_Libelle, $Code_tag_ressource=0)
+    static function pre_controller(string &$tag_ressource_Libelle, ?int $Code_tag_ressource=null)
     {
         // ici le code
     }
@@ -30,34 +30,34 @@ class Hook_tag_ressource{
         // ici le code
     }
 
-    static function autorisation_ajout($tag_ressource_Libelle)
+    static function autorisation_ajout(string $tag_ressource_Libelle)
     {
         return true;
     }
 
-    static function data_controller(&$tag_ressource_Libelle, $Code_tag_ressource=0)
+    static function data_controller(string &$tag_ressource_Libelle, ?int $Code_tag_ressource=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($tag_ressource_Libelle)
+    static function calcul_signature(string $tag_ressource_Libelle)
     {
         return md5($tag_ressource_Libelle);
     }
 
-    static function calcul_cle_unique($tag_ressource_Libelle)
+    static function calcul_cle_unique(string $tag_ressource_Libelle)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return sha1($tag_ressource_Libelle);
     }
 
-    static function ajouter($Code_tag_ressource)
+    static function ajouter(int $Code_tag_ressource)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_tag_ressource=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_tag_ressource=null)
     {
         global $mf_droits_defaut;
         /*
@@ -71,26 +71,26 @@ class Hook_tag_ressource{
         // ici le code
     }
 
-    static function autorisation_modification($Code_tag_ressource, $tag_ressource_Libelle__new)
+    static function autorisation_modification(int $Code_tag_ressource, string $tag_ressource_Libelle__new)
     {
         return true;
     }
 
-    static function data_controller__tag_ressource_Libelle($old, &$new, $Code_tag_ressource)
+    static function data_controller__tag_ressource_Libelle(string $old, string &$new, int $Code_tag_ressource)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_tag_ressource permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_tag_ressource, $bool__tag_ressource_Libelle)
+    static function modifier(int $Code_tag_ressource, bool $bool__tag_ressource_Libelle)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_tag_ressource=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_tag_ressource=null)
     {
         global $mf_droits_defaut;
         /*
@@ -106,17 +106,17 @@ class Hook_tag_ressource{
         }
     }
 
-    static function autorisation_suppression($Code_tag_ressource)
+    static function autorisation_suppression(int $Code_tag_ressource)
     {
         return true;
     }
 
-    static function supprimer($copie__tag_ressource)
+    static function supprimer(array $copie__tag_ressource)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_tag_ressource)
+    static function supprimer_2(array $copie__liste_tag_ressource)
     {
         foreach ($copie__liste_tag_ressource as &$copie__tag_ressource)
         {
@@ -125,7 +125,7 @@ class Hook_tag_ressource{
         unset($copie__tag_ressource);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -135,12 +135,12 @@ class Hook_tag_ressource{
         return true;
     }
 
-    static function mettre_a_jour($liste_tag_ressource)
+    static function mettre_a_jour(array $liste_tag_ressource)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -153,12 +153,12 @@ class Hook_tag_ressource{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_tag_ressource)
+    static function callback_post(int $Code_tag_ressource)
     {
         return null;
     }
 
-    static function callback_put($Code_tag_ressource)
+    static function callback_put(int $Code_tag_ressource)
     {
         return null;
     }

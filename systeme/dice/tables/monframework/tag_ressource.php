@@ -113,8 +113,9 @@ class tag_ressource_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($tag_ressource_Libelle, $force=false)
+    public function mf_ajouter(string $tag_ressource_Libelle, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_tag_ressource = 0;
         $code_erreur = 0;
         Hook_tag_ressource::pre_controller($tag_ressource_Libelle);
@@ -164,22 +165,24 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_tag_ressource' => $Code_tag_ressource, 'callback' => ( $code_erreur==0 ? Hook_tag_ressource::callback_post($Code_tag_ressource) : null ));
     }
 
-    public function mf_creer($force=false)
+    public function mf_creer(?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["tag_ressource__AJOUTER"] = $mf_droits_defaut["tag_ressource__CREER"];
         $tag_ressource_Libelle = $mf_initialisation['tag_ressource_Libelle'];
         return $this->mf_ajouter($tag_ressource_Libelle, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $tag_ressource_Libelle = (isset($ligne['tag_ressource_Libelle'])?$ligne['tag_ressource_Libelle']:$mf_initialisation['tag_ressource_Libelle']);
+        $tag_ressource_Libelle = (string)(isset($ligne['tag_ressource_Libelle'])?$ligne['tag_ressource_Libelle']:$mf_initialisation['tag_ressource_Libelle']);
         return $this->mf_ajouter($tag_ressource_Libelle, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
@@ -218,8 +221,9 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_tag_ressource, $tag_ressource_Libelle, $force=false)
+    public function mf_modifier( int $Code_tag_ressource, string $tag_ressource_Libelle, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_tag_ressource = round($Code_tag_ressource);
         Hook_tag_ressource::pre_controller($tag_ressource_Libelle, $Code_tag_ressource);
@@ -281,14 +285,15 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_tag_ressource::callback_put($Code_tag_ressource) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_tag_ressource => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_tag_ressource => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_tag_ressource => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_tag_ressource = round($Code_tag_ressource);
+                $Code_tag_ressource = (int)round($Code_tag_ressource);
                 $tag_ressource = $this->mf_get_2($Code_tag_ressource, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -299,7 +304,7 @@ class tag_ressource_monframework extends entite_monframework
                         self::$maj_droits_modifier_en_cours = false;
                     }
                 }
-                $tag_ressource_Libelle = ( isset($colonnes['tag_ressource_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__tag_ressource_Libelle', 'tag_ressource__MODIFIER']) ) ? $colonnes['tag_ressource_Libelle'] : ( isset($tag_ressource['tag_ressource_Libelle']) ? $tag_ressource['tag_ressource_Libelle'] : '' ) );
+                $tag_ressource_Libelle = (string)( isset($colonnes['tag_ressource_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__tag_ressource_Libelle', 'tag_ressource__MODIFIER']) ) ? $colonnes['tag_ressource_Libelle'] : ( isset($tag_ressource['tag_ressource_Libelle']) ? $tag_ressource['tag_ressource_Libelle'] : '' ) );
                 $retour = $this->mf_modifier($Code_tag_ressource, $tag_ressource_Libelle, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_TAG_RESSOURCE__MODIFIER__AUCUN_CHANGEMENT )
                 {
@@ -323,7 +328,7 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_tag_ressource => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_tag_ressource => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -400,8 +405,9 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_4( $data, $options = array( 'cond_mysql' => array() ) ) // $data = array('colonne1' => 'valeur1', ... )
+    public function mf_modifier_4( array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
         $code_erreur = 0;
         $mf_colonnes_a_modifier=[];
         if ( isset($data['tag_ressource_Libelle']) ) { $mf_colonnes_a_modifier[] = 'tag_ressource_Libelle = ' . format_sql('tag_ressource_Libelle', $data['tag_ressource_Libelle']); }
@@ -418,7 +424,14 @@ class tag_ressource_monframework extends entite_monframework
                 unset($condition);
             }
 
-            $requete = 'UPDATE ' . inst('tag_ressource') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1$argument_cond;";
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('tag_ressource') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -435,8 +448,9 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_tag_ressource, $force=false)
+    public function mf_supprimer( int $Code_tag_ressource, ?bool $force=null )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_tag_ressource = round($Code_tag_ressource);
         if (!$force)
@@ -484,8 +498,9 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_tag_ressource, $force=false)
+    public function mf_supprimer_2(array $liste_Code_tag_ressource, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_tag_ressource = $this->mf_lister_2($liste_Code_tag_ressource, array('autocompletion' => false));
         $liste_Code_tag_ressource=array();
@@ -538,7 +553,7 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_tag_ressource)
+    public function mf_supprimer_3(array $liste_Code_tag_ressource)
     {
         $code_erreur=0;
         if ( count($liste_Code_tag_ressource)>0 )
@@ -570,8 +585,10 @@ class tag_ressource_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_tag_ressource']!=0 )
         {
@@ -584,8 +601,9 @@ class tag_ressource_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "tag_ressource__lister";
 
         // cond_mysql
@@ -719,7 +737,8 @@ class tag_ressource_monframework extends entite_monframework
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('tag_ressource')." WHERE 1{$argument_cond}{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_tag_ressource']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_tag_ressource']] = $row_requete;
                     if ( $maj && ! Hook_tag_ressource::est_a_jour( $row_requete ) )
                     {
                         $liste_tag_ressource_pas_a_jour[$row_requete['Code_tag_ressource']] = $row_requete;
@@ -769,8 +788,9 @@ class tag_ressource_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_tag_ressource, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_tag_ressource, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_tag_ressource)>0 )
         {
             $cle = "tag_ressource__mf_lister_2_".Sql_Format_Liste($liste_Code_tag_ressource);
@@ -906,7 +926,8 @@ class tag_ressource_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('tag_ressource')." WHERE 1{$argument_cond} AND Code_tag_ressource IN ".Sql_Format_Liste($liste_Code_tag_ressource)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_tag_ressource']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_tag_ressource']] = $row_requete;
                         if ( $maj && ! Hook_tag_ressource::est_a_jour( $row_requete ) )
                         {
                             $liste_tag_ressource_pas_a_jour[$row_requete['Code_tag_ressource']] = $row_requete;
@@ -961,8 +982,9 @@ class tag_ressource_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_tag_ressource, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_tag_ressource, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_tag_ressource = round($Code_tag_ressource);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_tag_ressource', $Code_tag_ressource) )
@@ -1009,7 +1031,8 @@ class tag_ressource_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('tag_ressource') . ' WHERE Code_tag_ressource = ' . $Code_tag_ressource . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_tag_ressource::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1039,8 +1062,9 @@ class tag_ressource_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "tag_ressource__get_last";
         if ( ! $retour = self::$cache_db->read($cle) )
         {
@@ -1057,8 +1081,9 @@ class tag_ressource_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_tag_ressource, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_tag_ressource, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_tag_ressource = round($Code_tag_ressource);
         $retour = array();
         $cle = 'tag_ressource__get_'.$Code_tag_ressource;
@@ -1099,7 +1124,8 @@ class tag_ressource_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('tag_ressource')." WHERE Code_tag_ressource = $Code_tag_ressource;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1116,15 +1142,17 @@ class tag_ressource_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_tag_ressource, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_tag_ressource, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_tag_ressource = round($Code_tag_ressource);
         $liste = $this->mf_lister($options);
         return prec_suiv($liste, $Code_tag_ressource);
     }
 
-    public function mf_compter($options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'tag_ressource__compter';
 
         // cond_mysql
@@ -1177,22 +1205,24 @@ class tag_ressource_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_tag_ressource) as nb FROM ".inst('tag_ressource')." WHERE 1{$argument_cond};", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_tag_ressource) as nb FROM ' . inst('tag_ressource')." WHERE 1{$argument_cond};", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->mf_compter( $options );
     }
 
-    public function mf_liste_Code_tag_ressource($options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_tag_ressource(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_tag_ressource($options);
     }
 
@@ -1206,12 +1236,12 @@ class tag_ressource_monframework extends entite_monframework
         return array();
     }
 
-    public function mf_search_tag_ressource_Libelle( $tag_ressource_Libelle )
+    public function mf_search_tag_ressource_Libelle( string $tag_ressource_Libelle )
     {
         return $this->rechercher_tag_ressource_Libelle( $tag_ressource_Libelle );
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche )
+    public function mf_search__colonne( string $colonne_db, $recherche )
     {
         switch ($colonne_db) {
             case 'tag_ressource_Libelle': return $this->mf_search_tag_ressource_Libelle( $recherche ); break;
@@ -1226,10 +1256,10 @@ class tag_ressource_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $tag_ressource_Libelle = (isset($ligne['tag_ressource_Libelle'])?$ligne['tag_ressource_Libelle']:$mf_initialisation['tag_ressource_Libelle']);
+        $tag_ressource_Libelle = (string)(isset($ligne['tag_ressource_Libelle'])?$ligne['tag_ressource_Libelle']:$mf_initialisation['tag_ressource_Libelle']);
         Hook_tag_ressource::pre_controller($tag_ressource_Libelle);
         $mf_cle_unique = Hook_tag_ressource::calcul_cle_unique($tag_ressource_Libelle);
         $res_requete = executer_requete_mysql('SELECT Code_tag_ressource FROM ' . inst('tag_ressource') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);

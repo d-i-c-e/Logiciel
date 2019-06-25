@@ -11,6 +11,8 @@
         $trans['{bouton_supprimer_a_ressource_tag_ressource}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_supprimer_a_ressource_tag_ressource', BOUTON_CLASSE_SUPPRIMER) : '';
 
     /* prec_et_suiv */
+    if ( $table_a_ressource_tag_ressource->mf_compter((isset($est_charge['tag_ressource']) ? $mf_contexte['Code_tag_ressource'] : 0), (isset($est_charge['ressource']) ? $mf_contexte['Code_ressource'] : 0))<100 )
+    {
         $liste_a_ressource_tag_ressource = $table_a_ressource_tag_ressource->mf_lister_contexte();
         // prec
         $prec_et_suiv = prec_suiv($liste_a_ressource_tag_ressource, $a_ressource_tag_ressource['Code_tag_ressource'].'-'.$a_ressource_tag_ressource['Code_ressource']);
@@ -28,6 +30,11 @@
             $suiv['title'] = htmlspecialchars(get_titre_ligne_table('a_ressource_tag_ressource', $prec_et_suiv['suiv']));
         }
         $trans['{pager_a_ressource_tag_ressource}'] = get_code_pager($prec, $suiv);
+    }
+    else
+    {
+        $trans['{pager_a_ressource_tag_ressource}'] = '';
+    }
 
     /* Code_tag_ressource */
         $trans['{Code_tag_ressource}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_tag_ressource'=>$a_ressource_tag_ressource['Code_tag_ressource'], 'Code_ressource'=>$a_ressource_tag_ressource['Code_ressource']) , 'DB_name' => 'Code_tag_ressource' , 'valeur_initiale' => $a_ressource_tag_ressource['Code_tag_ressource'] ]);

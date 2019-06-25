@@ -12,6 +12,7 @@
         $tab->ajouter_ref_Colonne_Code("Code_messagerie");
         $tab->set_ligne_selectionnee('Code_messagerie', mf_Code_messagerie());
         $tab->modifier_code_action("apercu_messagerie");
+        $tab->ajouter_colonne('messagerie_Nom', false, '');
         if (!isset($est_charge['joueur']))
         {
             $tab->ajouter_colonne('Code_joueur', true, '');

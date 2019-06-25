@@ -12,12 +12,12 @@ class Hook_objet{
         // ici le code
     }
 
-    static function pre_controller(&$objet_Libelle, &$objet_Image_Fichier, &$Code_type, $Code_objet=0)
+    static function pre_controller(string &$objet_Libelle, string &$objet_Image_Fichier, int &$Code_type, ?int $Code_objet=null)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_type=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_type=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,34 +30,34 @@ class Hook_objet{
         // ici le code
     }
 
-    static function autorisation_ajout($objet_Libelle, $objet_Image_Fichier, $Code_type)
+    static function autorisation_ajout(string $objet_Libelle, string $objet_Image_Fichier, int $Code_type)
     {
         return true;
     }
 
-    static function data_controller(&$objet_Libelle, &$objet_Image_Fichier, &$Code_type, $Code_objet=0)
+    static function data_controller(string &$objet_Libelle, string &$objet_Image_Fichier, int &$Code_type, ?int $Code_objet=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($objet_Libelle, $objet_Image_Fichier, $Code_type)
+    static function calcul_signature(string $objet_Libelle, string $objet_Image_Fichier, int $Code_type)
     {
         return md5($objet_Libelle.'-'.$objet_Image_Fichier.'-'.$Code_type);
     }
 
-    static function calcul_cle_unique($objet_Libelle, $objet_Image_Fichier, $Code_type)
+    static function calcul_cle_unique(string $objet_Libelle, string $objet_Image_Fichier, int $Code_type)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return $Code_type.'.'.sha1($objet_Libelle.'.'.$objet_Image_Fichier);
     }
 
-    static function ajouter($Code_objet)
+    static function ajouter(int $Code_objet)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_objet=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_objet=null)
     {
         global $mf_droits_defaut;
         /*
@@ -74,36 +74,36 @@ class Hook_objet{
         // ici le code
     }
 
-    static function autorisation_modification($Code_objet, $objet_Libelle__new, $objet_Image_Fichier__new, $Code_type__new)
+    static function autorisation_modification(int $Code_objet, string $objet_Libelle__new, string $objet_Image_Fichier__new, int $Code_type__new)
     {
         return true;
     }
 
-    static function data_controller__objet_Libelle($old, &$new, $Code_objet)
+    static function data_controller__objet_Libelle(string $old, string &$new, int $Code_objet)
     {
         // ici le code
     }
 
-    static function data_controller__objet_Image_Fichier($old, &$new, $Code_objet)
+    static function data_controller__objet_Image_Fichier(string $old, string &$new, int $Code_objet)
     {
         // ici le code
     }
 
-    static function data_controller__Code_type($old, &$new, $Code_objet)
+    static function data_controller__Code_type(int $old, int &$new, int $Code_objet)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_objet permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_objet, $bool__objet_Libelle, $bool__objet_Image_Fichier, $bool__Code_type)
+    static function modifier(int $Code_objet, bool $bool__objet_Libelle, bool $bool__objet_Image_Fichier, bool $bool__Code_type)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_objet=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_objet=null)
     {
         global $mf_droits_defaut;
         /*
@@ -119,17 +119,17 @@ class Hook_objet{
         }
     }
 
-    static function autorisation_suppression($Code_objet)
+    static function autorisation_suppression(int $Code_objet)
     {
         return true;
     }
 
-    static function supprimer($copie__objet)
+    static function supprimer(array $copie__objet)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_objet)
+    static function supprimer_2(array $copie__liste_objet)
     {
         foreach ($copie__liste_objet as &$copie__objet)
         {
@@ -138,7 +138,7 @@ class Hook_objet{
         unset($copie__objet);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -150,12 +150,12 @@ class Hook_objet{
         return true;
     }
 
-    static function mettre_a_jour($liste_objet)
+    static function mettre_a_jour(array $liste_objet)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -170,12 +170,12 @@ class Hook_objet{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_objet)
+    static function callback_post(int $Code_objet)
     {
         return null;
     }
 
-    static function callback_put($Code_objet)
+    static function callback_put(int $Code_objet)
     {
         return null;
     }

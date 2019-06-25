@@ -31,6 +31,8 @@
         $trans['{bouton_modifier_a_candidature_joueur_groupe_Date_envoi}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_a_candidature_joueur_groupe_Date_envoi') : '';
 
     /* prec_et_suiv */
+    if ( $table_a_candidature_joueur_groupe->mf_compter((isset($est_charge['joueur']) ? $mf_contexte['Code_joueur'] : 0), (isset($est_charge['groupe']) ? $mf_contexte['Code_groupe'] : 0))<100 )
+    {
         $liste_a_candidature_joueur_groupe = $table_a_candidature_joueur_groupe->mf_lister_contexte();
         // prec
         $prec_et_suiv = prec_suiv($liste_a_candidature_joueur_groupe, $a_candidature_joueur_groupe['Code_joueur'].'-'.$a_candidature_joueur_groupe['Code_groupe']);
@@ -48,6 +50,11 @@
             $suiv['title'] = htmlspecialchars(get_titre_ligne_table('a_candidature_joueur_groupe', $prec_et_suiv['suiv']));
         }
         $trans['{pager_a_candidature_joueur_groupe}'] = get_code_pager($prec, $suiv);
+    }
+    else
+    {
+        $trans['{pager_a_candidature_joueur_groupe}'] = '';
+    }
 
     /* Code_joueur */
         $trans['{Code_joueur}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur'=>$a_candidature_joueur_groupe['Code_joueur'], 'Code_groupe'=>$a_candidature_joueur_groupe['Code_groupe']) , 'DB_name' => 'Code_joueur' , 'valeur_initiale' => $a_candidature_joueur_groupe['Code_joueur'] ]);

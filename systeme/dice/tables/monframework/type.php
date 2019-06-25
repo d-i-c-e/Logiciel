@@ -122,8 +122,9 @@ class type_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($type_Libelle, $Code_ressource, $force=false)
+    public function mf_ajouter(string $type_Libelle, int $Code_ressource, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_type = 0;
         $code_erreur = 0;
         $Code_ressource = round($Code_ressource);
@@ -176,30 +177,32 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_type' => $Code_type, 'callback' => ( $code_erreur==0 ? Hook_type::callback_post($Code_type) : null ));
     }
 
-    public function mf_creer($Code_ressource, $force=false)
+    public function mf_creer(int $Code_ressource, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["type__AJOUTER"] = $mf_droits_defaut["type__CREER"];
         $type_Libelle = $mf_initialisation['type_Libelle'];
         return $this->mf_ajouter($type_Libelle, $Code_ressource, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_ressource = (isset($ligne['Code_ressource'])?round($ligne['Code_ressource']):0);
-        $type_Libelle = (isset($ligne['type_Libelle'])?$ligne['type_Libelle']:$mf_initialisation['type_Libelle']);
+        $Code_ressource = (int)(isset($ligne['Code_ressource'])?round($ligne['Code_ressource']):0);
+        $type_Libelle = (string)(isset($ligne['type_Libelle'])?$ligne['type_Libelle']:$mf_initialisation['type_Libelle']);
         return $this->mf_ajouter($type_Libelle, $Code_ressource, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
         $values = '';
         foreach ($lignes as $ligne)
         {
-            $Code_ressource = (isset($ligne['Code_ressource'])?round($ligne['Code_ressource']):0);
+            $Code_ressource = (int)(isset($ligne['Code_ressource'])?round($ligne['Code_ressource']):0);
             $type_Libelle = text_sql(isset($ligne['type_Libelle'])?$ligne['type_Libelle']:$mf_initialisation['type_Libelle']);
             if ($Code_ressource != 0)
             {
@@ -235,8 +238,9 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_type, $type_Libelle, $Code_ressource=0, $force=false)
+    public function mf_modifier( int $Code_type, string $type_Libelle, ?int $Code_ressource=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_type = round($Code_type);
         $Code_ressource = round($Code_ressource);
@@ -302,14 +306,15 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_type::callback_put($Code_type) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_type => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_type => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_type => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_type = round($Code_type);
+                $Code_type = (int)round($Code_type);
                 $type = $this->mf_get_2($Code_type, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -321,7 +326,7 @@ class type_monframework extends entite_monframework
                     }
                 }
                 $Code_ressource = ( isset($colonnes['Code_ressource']) && ( $force || mf_matrice_droits(['api_modifier_ref__type__Code_ressource', 'type__MODIFIER']) ) ? $colonnes['Code_ressource'] : (isset($type['Code_ressource']) ? $type['Code_ressource'] : 0 ));
-                $type_Libelle = ( isset($colonnes['type_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__type_Libelle', 'type__MODIFIER']) ) ? $colonnes['type_Libelle'] : ( isset($type['type_Libelle']) ? $type['type_Libelle'] : '' ) );
+                $type_Libelle = (string)( isset($colonnes['type_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__type_Libelle', 'type__MODIFIER']) ) ? $colonnes['type_Libelle'] : ( isset($type['type_Libelle']) ? $type['type_Libelle'] : '' ) );
                 $retour = $this->mf_modifier($Code_type, $type_Libelle, $Code_ressource, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_TYPE__MODIFIER__AUCUN_CHANGEMENT )
                 {
@@ -345,7 +350,7 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_type => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_type => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -422,8 +427,9 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_4( $Code_ressource, $data, $options = array( 'cond_mysql' => array() ) ) // $data = array('colonne1' => 'valeur1', ... )
+    public function mf_modifier_4( int $Code_ressource, array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
         $code_erreur = 0;
         $Code_ressource = round($Code_ressource);
         $mf_colonnes_a_modifier=[];
@@ -441,7 +447,14 @@ class type_monframework extends entite_monframework
                 unset($condition);
             }
 
-            $requete = 'UPDATE ' . inst('type') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_ressource!=0 ? " AND Code_ressource=$Code_ressource" : "" )."$argument_cond;";
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('type') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_ressource!=0 ? " AND Code_ressource=$Code_ressource" : "" )."$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -458,8 +471,9 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_type, $force=false)
+    public function mf_supprimer( int $Code_type, ?bool $force=null )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_type = round($Code_type);
         if (!$force)
@@ -507,8 +521,9 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_type, $force=false)
+    public function mf_supprimer_2(array $liste_Code_type, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_type = $this->mf_lister_2($liste_Code_type, array('autocompletion' => false));
         $liste_Code_type=array();
@@ -561,7 +576,7 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_type)
+    public function mf_supprimer_3(array $liste_Code_type)
     {
         $code_erreur=0;
         if ( count($liste_Code_type)>0 )
@@ -593,8 +608,10 @@ class type_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_type']!=0 )
         {
@@ -607,8 +624,9 @@ class type_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($Code_ressource=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_ressource=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "type__lister";
         $Code_ressource = round($Code_ressource);
         $cle.="_{$Code_ressource}";
@@ -744,7 +762,8 @@ class type_monframework extends entite_monframework
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('type')." WHERE 1{$argument_cond}".( $Code_ressource!=0 ? " AND Code_ressource=$Code_ressource" : "" )."{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_type']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_type']] = $row_requete;
                     if ( $maj && ! Hook_type::est_a_jour( $row_requete ) )
                     {
                         $liste_type_pas_a_jour[$row_requete['Code_type']] = $row_requete;
@@ -794,8 +813,9 @@ class type_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_type, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_type, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_type)>0 )
         {
             $cle = "type__mf_lister_2_".Sql_Format_Liste($liste_Code_type);
@@ -931,7 +951,8 @@ class type_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('type')." WHERE 1{$argument_cond} AND Code_type IN ".Sql_Format_Liste($liste_Code_type)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_type']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_type']] = $row_requete;
                         if ( $maj && ! Hook_type::est_a_jour( $row_requete ) )
                         {
                             $liste_type_pas_a_jour[$row_requete['Code_type']] = $row_requete;
@@ -986,8 +1007,9 @@ class type_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_type, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_type, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_type = round($Code_type);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_type', $Code_type) )
@@ -1034,7 +1056,8 @@ class type_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('type') . ' WHERE Code_type = ' . $Code_type . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_type::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1064,8 +1087,9 @@ class type_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($Code_ressource=0, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?int $Code_ressource=null, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "type__get_last";
         $Code_ressource = round($Code_ressource);
         $cle.='_' . $Code_ressource;
@@ -1084,8 +1108,9 @@ class type_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_type, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_type, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_type = round($Code_type);
         $retour = array();
         $cle = 'type__get_'.$Code_type;
@@ -1126,7 +1151,8 @@ class type_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('type')." WHERE Code_type = $Code_type;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1143,15 +1169,17 @@ class type_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_type, $Code_ressource=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_type, ?int $Code_ressource=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_type = round($Code_type);
         $liste = $this->mf_lister($Code_ressource, $options);
         return prec_suiv($liste, $Code_type);
     }
 
-    public function mf_compter($Code_ressource=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_ressource=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'type__compter';
         $Code_ressource = round($Code_ressource);
         $cle.='_{'.$Code_ressource.'}';
@@ -1206,38 +1234,42 @@ class type_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_type) as nb FROM ".inst('type')." WHERE 1{$argument_cond}".( $Code_ressource!=0 ? " AND Code_ressource=$Code_ressource" : "" ).";", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_type) as nb FROM ' . inst('type')." WHERE 1{$argument_cond}".( $Code_ressource!=0 ? " AND Code_ressource=$Code_ressource" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $Code_ressource = isset($interface['Code_ressource']) ? round($interface['Code_ressource']) : 0;
         return $this->mf_compter( $Code_ressource, $options );
     }
 
-    public function mf_liste_Code_type($Code_ressource=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_type(?int $Code_ressource=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_type($Code_ressource, $options);
     }
 
-    public function mf_convertir_Code_type_vers_Code_ressource( $Code_type )
+    public function mf_convertir_Code_type_vers_Code_ressource( int $Code_type )
     {
         return $this->Code_type_vers_Code_ressource( $Code_type );
     }
 
-    public function mf_liste_Code_ressource_vers_liste_Code_type( $liste_Code_ressource, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_ressource_vers_liste_Code_type( array $liste_Code_ressource, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->liste_Code_ressource_vers_liste_Code_type( $liste_Code_ressource, $options );
     }
 
-    public function mf_liste_Code_type_vers_liste_Code_ressource( $liste_Code_type, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_type_vers_liste_Code_ressource( array $liste_Code_type, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->type__liste_Code_type_vers_liste_Code_ressource( $liste_Code_type, $options );
     }
 
@@ -1251,12 +1283,12 @@ class type_monframework extends entite_monframework
         return array('Code_ressource');
     }
 
-    public function mf_search_type_Libelle( $type_Libelle, $Code_ressource=0 )
+    public function mf_search_type_Libelle( string $type_Libelle, ?int $Code_ressource=null )
     {
         return $this->rechercher_type_Libelle( $type_Libelle, $Code_ressource );
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche, $Code_ressource=0 )
+    public function mf_search__colonne( string $colonne_db, $recherche, ?int $Code_ressource=null )
     {
         switch ($colonne_db) {
             case 'type_Libelle': return $this->mf_search_type_Libelle( $recherche, $Code_ressource ); break;
@@ -1271,11 +1303,11 @@ class type_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $Code_ressource = (isset($ligne['Code_ressource'])?round($ligne['Code_ressource']):0);
-        $type_Libelle = (isset($ligne['type_Libelle'])?$ligne['type_Libelle']:$mf_initialisation['type_Libelle']);
+        $Code_ressource = (int)(isset($ligne['Code_ressource'])?round($ligne['Code_ressource']):0);
+        $type_Libelle = (string)(isset($ligne['type_Libelle'])?$ligne['type_Libelle']:$mf_initialisation['type_Libelle']);
         Hook_type::pre_controller($type_Libelle, $Code_ressource);
         $mf_cle_unique = Hook_type::calcul_cle_unique($type_Libelle, $Code_ressource);
         $res_requete = executer_requete_mysql('SELECT Code_type FROM ' . inst('type') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);

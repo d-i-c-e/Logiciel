@@ -16,24 +16,24 @@ class Hook_mf_systeme{
         // script ici
     }
 
-    static function controle_acces_donnees($code, $valeur)
+    static function controle_acces_donnees(string $code, string $valeur)
     {
         // règles à géfinir ...
         return true;
     }
 
-    static function autoriser_connexion($Code_joueur)
+    static function autoriser_connexion(int $Code_joueur)
     {
         // script ici ...
         return true;
     }
 
-    static function script_connexion($Code_joueur)
+    static function script_connexion(int $Code_joueur)
     {
         // script ici ...
     }
 
-    static function script_deconnexion($Code_joueur)
+    static function script_deconnexion(int $Code_joueur)
     {
         // script ici ...
     }
@@ -41,19 +41,19 @@ class Hook_mf_systeme{
     /*
      * Règles d'accès aux fichiers
      */
-    static function est_fichier_public($n)
+    static function est_fichier_public(string $n)
     {
         // Si vrai, tout le monde a accès au fichier, connecté ou non. $n est le nom du fichier
         return false;
     }
 
-    static function controle_acces_fichier($n)
+    static function controle_acces_fichier(string $n)
     {
         // Dans le cas ou le fichier n'est pas public, $n est le nom du fichier et permet de gérer des accès plus précis
         return true;
     }
 
-    static function controle_parametres_session($name_session, &$value)
+    static function controle_parametres_session(string $name_session, &$value)
     {
         switch ($name_session)
         {

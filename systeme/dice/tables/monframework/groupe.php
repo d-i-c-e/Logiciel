@@ -220,8 +220,9 @@ class groupe_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne, $force=false)
+    public function mf_ajouter(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_groupe = 0;
         $code_erreur = 0;
         $Code_campagne = round($Code_campagne);
@@ -284,8 +285,9 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_groupe' => $Code_groupe, 'callback' => ( $code_erreur==0 ? Hook_groupe::callback_post($Code_groupe) : null ));
     }
 
-    public function mf_creer($Code_campagne, $force=false)
+    public function mf_creer(int $Code_campagne, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["groupe__AJOUTER"] = $mf_droits_defaut["groupe__CREER"];
         $groupe_Nom = $mf_initialisation['groupe_Nom'];
@@ -299,29 +301,30 @@ class groupe_monframework extends entite_monframework
         return $this->mf_ajouter($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_campagne = (isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
-        $groupe_Nom = (isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
-        $groupe_Description = (isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
-        $groupe_Logo_Fichier = (isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
-        $groupe_Effectif = (isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
-        $groupe_Actif = (isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
-        $groupe_Date_creation = (isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
-        $groupe_Delai_suppression_jour = (isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
-        $groupe_Suppression_active = (isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']);
+        $Code_campagne = (int)(isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
+        $groupe_Nom = (string)(isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
+        $groupe_Description = (string)(isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
+        $groupe_Logo_Fichier = (string)(isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
+        $groupe_Effectif = (bool)(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
+        $groupe_Actif = (int)(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
+        $groupe_Date_creation = (string)(isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
+        $groupe_Delai_suppression_jour = (int)(isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
+        $groupe_Suppression_active = (bool)(isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']);
         return $this->mf_ajouter($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
         $values = '';
         foreach ($lignes as $ligne)
         {
-            $Code_campagne = (isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
+            $Code_campagne = (int)(isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
             $groupe_Nom = text_sql(isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
             $groupe_Description = text_sql(isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
             $groupe_Logo_Fichier = text_sql(isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
@@ -364,8 +367,9 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_groupe, $groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne=0, $force=false)
+    public function mf_modifier( int $Code_groupe, string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, ?int $Code_campagne=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_groupe = round($Code_groupe);
         $Code_campagne = round($Code_campagne);
@@ -441,14 +445,15 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_groupe::callback_put($Code_groupe) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_groupe => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_groupe => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_groupe => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_groupe = round($Code_groupe);
+                $Code_groupe = (int)round($Code_groupe);
                 $groupe = $this->mf_get_2($Code_groupe, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -460,14 +465,14 @@ class groupe_monframework extends entite_monframework
                     }
                 }
                 $Code_campagne = ( isset($colonnes['Code_campagne']) && ( $force || mf_matrice_droits(['api_modifier_ref__groupe__Code_campagne', 'groupe__MODIFIER']) ) ? $colonnes['Code_campagne'] : (isset($groupe['Code_campagne']) ? $groupe['Code_campagne'] : 0 ));
-                $groupe_Nom = ( isset($colonnes['groupe_Nom']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Nom', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Nom'] : ( isset($groupe['groupe_Nom']) ? $groupe['groupe_Nom'] : '' ) );
-                $groupe_Description = ( isset($colonnes['groupe_Description']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Description', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Description'] : ( isset($groupe['groupe_Description']) ? $groupe['groupe_Description'] : '' ) );
-                $groupe_Logo_Fichier = ( isset($colonnes['groupe_Logo_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Logo_Fichier', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Logo_Fichier'] : ( isset($groupe['groupe_Logo_Fichier']) ? $groupe['groupe_Logo_Fichier'] : '' ) );
-                $groupe_Effectif = ( isset($colonnes['groupe_Effectif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Effectif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Effectif'] : ( isset($groupe['groupe_Effectif']) ? $groupe['groupe_Effectif'] : '' ) );
-                $groupe_Actif = ( isset($colonnes['groupe_Actif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Actif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Actif'] : ( isset($groupe['groupe_Actif']) ? $groupe['groupe_Actif'] : '' ) );
-                $groupe_Date_creation = ( isset($colonnes['groupe_Date_creation']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Date_creation', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Date_creation'] : ( isset($groupe['groupe_Date_creation']) ? $groupe['groupe_Date_creation'] : '' ) );
-                $groupe_Delai_suppression_jour = ( isset($colonnes['groupe_Delai_suppression_jour']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Delai_suppression_jour', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Delai_suppression_jour'] : ( isset($groupe['groupe_Delai_suppression_jour']) ? $groupe['groupe_Delai_suppression_jour'] : '' ) );
-                $groupe_Suppression_active = ( isset($colonnes['groupe_Suppression_active']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Suppression_active', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Suppression_active'] : ( isset($groupe['groupe_Suppression_active']) ? $groupe['groupe_Suppression_active'] : '' ) );
+                $groupe_Nom = (string)( isset($colonnes['groupe_Nom']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Nom', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Nom'] : ( isset($groupe['groupe_Nom']) ? $groupe['groupe_Nom'] : '' ) );
+                $groupe_Description = (string)( isset($colonnes['groupe_Description']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Description', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Description'] : ( isset($groupe['groupe_Description']) ? $groupe['groupe_Description'] : '' ) );
+                $groupe_Logo_Fichier = (string)( isset($colonnes['groupe_Logo_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Logo_Fichier', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Logo_Fichier'] : ( isset($groupe['groupe_Logo_Fichier']) ? $groupe['groupe_Logo_Fichier'] : '' ) );
+                $groupe_Effectif = (bool)( isset($colonnes['groupe_Effectif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Effectif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Effectif'] : ( isset($groupe['groupe_Effectif']) ? $groupe['groupe_Effectif'] : '' ) );
+                $groupe_Actif = (int)( isset($colonnes['groupe_Actif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Actif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Actif'] : ( isset($groupe['groupe_Actif']) ? $groupe['groupe_Actif'] : '' ) );
+                $groupe_Date_creation = (string)( isset($colonnes['groupe_Date_creation']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Date_creation', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Date_creation'] : ( isset($groupe['groupe_Date_creation']) ? $groupe['groupe_Date_creation'] : '' ) );
+                $groupe_Delai_suppression_jour = (int)( isset($colonnes['groupe_Delai_suppression_jour']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Delai_suppression_jour', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Delai_suppression_jour'] : ( isset($groupe['groupe_Delai_suppression_jour']) ? $groupe['groupe_Delai_suppression_jour'] : '' ) );
+                $groupe_Suppression_active = (bool)( isset($colonnes['groupe_Suppression_active']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Suppression_active', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Suppression_active'] : ( isset($groupe['groupe_Suppression_active']) ? $groupe['groupe_Suppression_active'] : '' ) );
                 $retour = $this->mf_modifier($Code_groupe, $groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_GROUPE__MODIFIER__AUCUN_CHANGEMENT )
                 {
@@ -491,7 +496,7 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_groupe => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_groupe => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -568,8 +573,9 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_4( $Code_campagne, $data, $options = array( 'cond_mysql' => array() ) ) // $data = array('colonne1' => 'valeur1', ... )
+    public function mf_modifier_4( int $Code_campagne, array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
         $code_erreur = 0;
         $Code_campagne = round($Code_campagne);
         $mf_colonnes_a_modifier=[];
@@ -594,7 +600,14 @@ class groupe_monframework extends entite_monframework
                 unset($condition);
             }
 
-            $requete = 'UPDATE ' . inst('groupe') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" )."$argument_cond;";
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('groupe') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" )."$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -611,8 +624,9 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_groupe, $force=false)
+    public function mf_supprimer( int $Code_groupe, ?bool $force=null )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_groupe = round($Code_groupe);
         if (!$force)
@@ -660,8 +674,9 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_groupe, $force=false)
+    public function mf_supprimer_2(array $liste_Code_groupe, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_groupe = $this->mf_lister_2($liste_Code_groupe, array('autocompletion' => false));
         $liste_Code_groupe=array();
@@ -714,7 +729,7 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_groupe)
+    public function mf_supprimer_3(array $liste_Code_groupe)
     {
         $code_erreur=0;
         if ( count($liste_Code_groupe)>0 )
@@ -746,8 +761,10 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_groupe']!=0 )
         {
@@ -760,8 +777,9 @@ class groupe_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($Code_campagne=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "groupe__lister";
         $Code_campagne = round($Code_campagne);
         $cle.="_{$Code_campagne}";
@@ -912,7 +930,8 @@ class groupe_monframework extends entite_monframework
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('groupe')." WHERE 1{$argument_cond}".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" )."{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_groupe']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_groupe']] = $row_requete;
                     if ( $maj && ! Hook_groupe::est_a_jour( $row_requete ) )
                     {
                         $liste_groupe_pas_a_jour[$row_requete['Code_groupe']] = $row_requete;
@@ -962,8 +981,9 @@ class groupe_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_groupe, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_groupe)>0 )
         {
             $cle = "groupe__mf_lister_2_".Sql_Format_Liste($liste_Code_groupe);
@@ -1114,7 +1134,8 @@ class groupe_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('groupe')." WHERE 1{$argument_cond} AND Code_groupe IN ".Sql_Format_Liste($liste_Code_groupe)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_groupe']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_groupe']] = $row_requete;
                         if ( $maj && ! Hook_groupe::est_a_jour( $row_requete ) )
                         {
                             $liste_groupe_pas_a_jour[$row_requete['Code_groupe']] = $row_requete;
@@ -1169,8 +1190,9 @@ class groupe_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_groupe, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_groupe, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_groupe = round($Code_groupe);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_groupe', $Code_groupe) )
@@ -1217,7 +1239,8 @@ class groupe_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('groupe') . ' WHERE Code_groupe = ' . $Code_groupe . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_groupe::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1247,8 +1270,9 @@ class groupe_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($Code_campagne=0, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?int $Code_campagne=null, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "groupe__get_last";
         $Code_campagne = round($Code_campagne);
         $cle.='_' . $Code_campagne;
@@ -1267,8 +1291,9 @@ class groupe_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_groupe, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_groupe, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_groupe = round($Code_groupe);
         $retour = array();
         $cle = 'groupe__get_'.$Code_groupe;
@@ -1309,7 +1334,8 @@ class groupe_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('groupe')." WHERE Code_groupe = $Code_groupe;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1326,15 +1352,17 @@ class groupe_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_groupe, $Code_campagne=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_groupe, ?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_groupe = round($Code_groupe);
         $liste = $this->mf_lister($Code_campagne, $options);
         return prec_suiv($liste, $Code_groupe);
     }
 
-    public function mf_compter($Code_campagne=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'groupe__compter';
         $Code_campagne = round($Code_campagne);
         $cle.='_{'.$Code_campagne.'}';
@@ -1395,38 +1423,42 @@ class groupe_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_groupe) as nb FROM ".inst('groupe')." WHERE 1{$argument_cond}".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" ).";", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_groupe) as nb FROM ' . inst('groupe')." WHERE 1{$argument_cond}".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $Code_campagne = isset($interface['Code_campagne']) ? round($interface['Code_campagne']) : 0;
         return $this->mf_compter( $Code_campagne, $options );
     }
 
-    public function mf_liste_Code_groupe($Code_campagne=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_groupe(?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_groupe($Code_campagne, $options);
     }
 
-    public function mf_convertir_Code_groupe_vers_Code_campagne( $Code_groupe )
+    public function mf_convertir_Code_groupe_vers_Code_campagne( int $Code_groupe )
     {
         return $this->Code_groupe_vers_Code_campagne( $Code_groupe );
     }
 
-    public function mf_liste_Code_campagne_vers_liste_Code_groupe( $liste_Code_campagne, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_campagne_vers_liste_Code_groupe( array $liste_Code_campagne, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->liste_Code_campagne_vers_liste_Code_groupe( $liste_Code_campagne, $options );
     }
 
-    public function mf_liste_Code_groupe_vers_liste_Code_campagne( $liste_Code_groupe, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_groupe_vers_liste_Code_campagne( array $liste_Code_groupe, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->groupe__liste_Code_groupe_vers_liste_Code_campagne( $liste_Code_groupe, $options );
     }
 
@@ -1440,42 +1472,42 @@ class groupe_monframework extends entite_monframework
         return array('Code_campagne');
     }
 
-    public function mf_search_groupe_Nom( $groupe_Nom, $Code_campagne=0 )
+    public function mf_search_groupe_Nom( string $groupe_Nom, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Nom( $groupe_Nom, $Code_campagne );
     }
 
-    public function mf_search_groupe_Logo_Fichier( $groupe_Logo_Fichier, $Code_campagne=0 )
+    public function mf_search_groupe_Logo_Fichier( string $groupe_Logo_Fichier, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Logo_Fichier( $groupe_Logo_Fichier, $Code_campagne );
     }
 
-    public function mf_search_groupe_Effectif( $groupe_Effectif, $Code_campagne=0 )
+    public function mf_search_groupe_Effectif( bool $groupe_Effectif, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Effectif( $groupe_Effectif, $Code_campagne );
     }
 
-    public function mf_search_groupe_Actif( $groupe_Actif, $Code_campagne=0 )
+    public function mf_search_groupe_Actif( int $groupe_Actif, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Actif( $groupe_Actif, $Code_campagne );
     }
 
-    public function mf_search_groupe_Date_creation( $groupe_Date_creation, $Code_campagne=0 )
+    public function mf_search_groupe_Date_creation( string $groupe_Date_creation, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Date_creation( $groupe_Date_creation, $Code_campagne );
     }
 
-    public function mf_search_groupe_Delai_suppression_jour( $groupe_Delai_suppression_jour, $Code_campagne=0 )
+    public function mf_search_groupe_Delai_suppression_jour( int $groupe_Delai_suppression_jour, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Delai_suppression_jour( $groupe_Delai_suppression_jour, $Code_campagne );
     }
 
-    public function mf_search_groupe_Suppression_active( $groupe_Suppression_active, $Code_campagne=0 )
+    public function mf_search_groupe_Suppression_active( bool $groupe_Suppression_active, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Suppression_active( $groupe_Suppression_active, $Code_campagne );
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche, $Code_campagne=0 )
+    public function mf_search__colonne( string $colonne_db, $recherche, ?int $Code_campagne=null )
     {
         switch ($colonne_db) {
             case 'groupe_Nom': return $this->mf_search_groupe_Nom( $recherche, $Code_campagne ); break;
@@ -1496,18 +1528,18 @@ class groupe_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $Code_campagne = (isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
-        $groupe_Nom = (isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
-        $groupe_Description = (isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
-        $groupe_Logo_Fichier = (isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
-        $groupe_Effectif = (isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
-        $groupe_Actif = (isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
-        $groupe_Date_creation = (isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
-        $groupe_Delai_suppression_jour = (isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
-        $groupe_Suppression_active = (isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']);
+        $Code_campagne = (int)(isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
+        $groupe_Nom = (string)(isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
+        $groupe_Description = (string)(isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
+        $groupe_Logo_Fichier = (string)(isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
+        $groupe_Effectif = (bool)(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
+        $groupe_Actif = (int)(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
+        $groupe_Date_creation = (string)(isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
+        $groupe_Delai_suppression_jour = (int)(isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
+        $groupe_Suppression_active = (bool)(isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']);
         $groupe_Actif = round($groupe_Actif);
         $groupe_Date_creation = format_datetime($groupe_Date_creation);
         $groupe_Delai_suppression_jour = round($groupe_Delai_suppression_jour);

@@ -64,8 +64,11 @@ if ( $ext=='png' || $ext=='jpg' || $ext=='jpeg' || $f = $fichier->get($nom_fichi
             $zoom = ( isset($_GET['zoom']) ? round($_GET['zoom']) : 100 );
             $xpos = ( isset($_GET['xpos']) ? round($_GET['xpos']) : 50 );
             $ypos = ( isset($_GET['ypos']) ? round($_GET['ypos']) : 50 );
+            $quality = 75;
+            $erase_image = false;
+            $pourcentage_color = ( isset($_GET['pourcentage_color']) ? round($_GET['pourcentage_color']) : 100 );
 
-            transformer_image($nom_fichier, $format_png, $width, $height, $troncage, $rotate, $zoom, $xpos, $ypos);
+            transformer_image($nom_fichier, $format_png, $width, $height, $troncage, $rotate, $zoom, $xpos, $ypos, $quality, $erase_image, $pourcentage_color);
 
             $cache->end();
         }

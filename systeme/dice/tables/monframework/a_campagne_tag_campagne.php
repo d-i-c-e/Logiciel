@@ -58,7 +58,7 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
 
     }
 
-    public function mfi_ajouter_auto($interface)
+    public function mfi_ajouter_auto(array $interface)
     {
         if (isset($interface['Code_tag_campagne'])) { $liste_Code_tag_campagne = array($interface['Code_tag_campagne']); }
         elseif (isset($interface['liste_Code_tag_campagne'])) { $liste_Code_tag_campagne = $interface['liste_Code_tag_campagne']; }
@@ -77,7 +77,7 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return $this->mf_ajouter_3($liste_a_campagne_tag_campagne);
     }
 
-    public function mfi_supprimer_auto($interface)
+    public function mfi_supprimer_auto(array $interface)
     {
         if (isset($interface['Code_tag_campagne'])) { $liste_Code_tag_campagne = array($interface['Code_tag_campagne']); }
         elseif (isset($interface['liste_Code_tag_campagne'])) { $liste_Code_tag_campagne = $interface['liste_Code_tag_campagne']; }
@@ -94,8 +94,9 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         }
     }
 
-    public function mf_ajouter($Code_tag_campagne, $Code_campagne, $force=false)
+    public function mf_ajouter(int $Code_tag_campagne, int $Code_campagne, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_tag_campagne = round($Code_tag_campagne);
         $Code_campagne = round($Code_campagne);
@@ -148,15 +149,16 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur==0 ? Hook_a_campagne_tag_campagne::callback_post($Code_tag_campagne, $Code_campagne) : null ));
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, ?bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_tag_campagne = (isset($ligne['Code_tag_campagne'])?round($ligne['Code_tag_campagne']):0);
-        $Code_campagne = (isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
+        $Code_tag_campagne = (int)(isset($ligne['Code_tag_campagne'])?round($ligne['Code_tag_campagne']):0);
+        $Code_campagne = (int)(isset($ligne['Code_campagne'])?round($ligne['Code_campagne']):0);
         return $this->mf_ajouter($Code_tag_campagne, $Code_campagne, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
@@ -202,8 +204,9 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_tag_campagne=0, $Code_campagne=0, $force=false)
+    public function mf_supprimer(?int $Code_tag_campagne=null, ?int $Code_campagne=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_tag_campagne = round($Code_tag_campagne);
         $Code_campagne = round($Code_campagne);
@@ -260,7 +263,7 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($Code_tag_campagne=0, $Code_campagne=0)
+    public function mf_supprimer_2(?int $Code_tag_campagne=null, ?int $Code_campagne=null)
     {
         $code_erreur = 0;
         $Code_tag_campagne = round($Code_tag_campagne);
@@ -293,14 +296,16 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         return $this->mf_lister(isset($est_charge['tag_campagne']) ? $mf_contexte['Code_tag_campagne'] : 0, isset($est_charge['campagne']) ? $mf_contexte['Code_campagne'] : 0, $options);
     }
 
-    public function mf_lister($Code_tag_campagne=0, $Code_campagne=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_tag_campagne=null, ?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $liste = $this->mf_lister_2($Code_tag_campagne, $Code_campagne, $options);
 
         // controle_acces_donnees
@@ -321,8 +326,9 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($Code_tag_campagne=0, $Code_campagne=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(?int $Code_tag_campagne=null, ?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "a_campagne_tag_campagne__lister";
         $Code_tag_campagne = round($Code_tag_campagne);
         $cle.="_{$Code_tag_campagne}";
@@ -453,7 +459,8 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM '.inst('a_campagne_tag_campagne')." WHERE 1{$argument_cond}".( $Code_tag_campagne!=0 ? " AND Code_tag_campagne=$Code_tag_campagne" : "" )."".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" )."{$argument_tris}{$argument_limit};", false);
             while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $liste[$row_requete['Code_tag_campagne'].'-'.$row_requete['Code_campagne']]=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $liste[$row_requete['Code_tag_campagne'].'-'.$row_requete['Code_campagne']] = $row_requete;
             }
             mysqli_free_result($res_requete);
             if (count($options['tris'])==1)
@@ -482,8 +489,9 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_get($Code_tag_campagne, $Code_campagne, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_tag_campagne, int $Code_campagne, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "a_campagne_tag_campagne__get";
         $Code_tag_campagne = round($Code_tag_campagne);
         $cle.="_{$Code_tag_campagne}";
@@ -547,8 +555,9 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_tag_campagne, $Code_campagne, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_tag_campagne, int $Code_campagne, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "a_campagne_tag_campagne__get";
         $Code_tag_campagne = round($Code_tag_campagne);
         $cle.="_{$Code_tag_campagne}";
@@ -609,8 +618,9 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_compter($Code_tag_campagne=0, $Code_campagne=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_tag_campagne=null, ?int $Code_campagne=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'a_campagne_tag_campagne__compter';
         $Code_tag_campagne = round($Code_tag_campagne);
         $cle.='_{'.$Code_tag_campagne.'}';
@@ -669,19 +679,21 @@ class a_campagne_tag_campagne_monframework extends entite_monframework
             $res_requete = executer_requete_mysql("SELECT COUNT(CONCAT(Code_tag_campagne,'|',Code_campagne)) as nb FROM ".inst('a_campagne_tag_campagne')." WHERE 1{$argument_cond}".( $Code_tag_campagne!=0 ? " AND Code_tag_campagne=$Code_tag_campagne" : "" )."".( $Code_campagne!=0 ? " AND Code_campagne=$Code_campagne" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mf_liste_Code_tag_campagne_vers_liste_Code_campagne( $liste_Code_tag_campagne, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_tag_campagne_vers_liste_Code_campagne( array $liste_Code_tag_campagne, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->a_campagne_tag_campagne_liste_Code_tag_campagne_vers_liste_Code_campagne( $liste_Code_tag_campagne , $options );
     }
 
-    public function mf_liste_Code_campagne_vers_liste_Code_tag_campagne( $liste_Code_campagne, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_campagne_vers_liste_Code_tag_campagne( array $liste_Code_campagne, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->a_campagne_tag_campagne_liste_Code_campagne_vers_liste_Code_tag_campagne( $liste_Code_campagne , $options );
     }
 

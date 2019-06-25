@@ -91,7 +91,8 @@ class Api_dice {
     }
 
     public function joueur__get_all() {
-        return $this->get('joueur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+        $requete = '';
+        return $this->get($requete . 'joueur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function joueur__add($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription) {
@@ -160,8 +161,13 @@ class Api_dice {
         return $this->get('message/'.$Code_message.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function message__get_all() {
-        return $this->get('message?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function message__get_all(?int $Code_messagerie=null, ?int $Code_joueur=null) {
+        $requete = '';
+        $Code_messagerie = (int) $Code_messagerie;
+        if ($Code_messagerie != 0) { $requete.= 'messagerie/' . $Code_messagerie . '/'; }
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        return $this->get($requete . 'message?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function message__add($Code_messagerie, $Code_joueur, $message_Texte, $message_Date) {
@@ -217,7 +223,8 @@ class Api_dice {
     }
 
     public function parametre__get_all() {
-        return $this->get('parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+        $requete = '';
+        return $this->get($requete . 'parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function parametre__add($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif) {
@@ -272,8 +279,11 @@ class Api_dice {
         return $this->get('groupe/'.$Code_groupe.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function groupe__get_all() {
-        return $this->get('groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function groupe__get_all(?int $Code_campagne=null) {
+        $requete = '';
+        $Code_campagne = (int) $Code_campagne;
+        if ($Code_campagne != 0) { $requete.= 'campagne/' . $Code_campagne . '/'; }
+        return $this->get($requete . 'groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function groupe__add($Code_campagne, $groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active) {
@@ -363,8 +373,13 @@ class Api_dice {
         return $this->get('personnage/'.$Code_personnage.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function personnage__get_all() {
-        return $this->get('personnage?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function personnage__get_all(?int $Code_joueur=null, ?int $Code_groupe=null) {
+        $requete = '';
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        $Code_groupe = (int) $Code_groupe;
+        if ($Code_groupe != 0) { $requete.= 'groupe/' . $Code_groupe . '/'; }
+        return $this->get($requete . 'personnage?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function personnage__add($Code_joueur, $Code_groupe, $personnage_Fichier_Fichier, $personnage_Conservation) {
@@ -420,7 +435,8 @@ class Api_dice {
     }
 
     public function campagne__get_all() {
-        return $this->get('campagne?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+        $requete = '';
+        return $this->get($requete . 'campagne?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function campagne__add($campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj) {
@@ -483,7 +499,8 @@ class Api_dice {
     }
 
     public function tag_campagne__get_all() {
-        return $this->get('tag_campagne?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+        $requete = '';
+        return $this->get($requete . 'tag_campagne?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function tag_campagne__add($tag_campagne_Libelle) {
@@ -517,8 +534,11 @@ class Api_dice {
         return $this->get('carte/'.$Code_carte.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function carte__get_all() {
-        return $this->get('carte?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function carte__get_all(?int $Code_groupe=null) {
+        $requete = '';
+        $Code_groupe = (int) $Code_groupe;
+        if ($Code_groupe != 0) { $requete.= 'groupe/' . $Code_groupe . '/'; }
+        return $this->get($requete . 'carte?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function carte__add($Code_groupe, $carte_Nom, $carte_Hauteur, $carte_Largeur, $carte_Fichier) {
@@ -580,8 +600,11 @@ class Api_dice {
         return $this->get('objet/'.$Code_objet.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function objet__get_all() {
-        return $this->get('objet?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function objet__get_all(?int $Code_type=null) {
+        $requete = '';
+        $Code_type = (int) $Code_type;
+        if ($Code_type != 0) { $requete.= 'type/' . $Code_type . '/'; }
+        return $this->get($requete . 'objet?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function objet__add($Code_type, $objet_Libelle, $objet_Image_Fichier) {
@@ -629,8 +652,11 @@ class Api_dice {
         return $this->get('type/'.$Code_type.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function type__get_all() {
-        return $this->get('type?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function type__get_all(?int $Code_ressource=null) {
+        $requete = '';
+        $Code_ressource = (int) $Code_ressource;
+        if ($Code_ressource != 0) { $requete.= 'ressource/' . $Code_ressource . '/'; }
+        return $this->get($requete . 'type?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function type__add($Code_ressource, $type_Libelle) {
@@ -672,7 +698,8 @@ class Api_dice {
     }
 
     public function ressource__get_all() {
-        return $this->get('ressource?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+        $requete = '';
+        return $this->get($requete . 'ressource?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function ressource__add($ressource_Nom) {
@@ -707,7 +734,8 @@ class Api_dice {
     }
 
     public function tag_ressource__get_all() {
-        return $this->get('tag_ressource?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+        $requete = '';
+        return $this->get($requete . 'tag_ressource?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function tag_ressource__add($tag_ressource_Libelle) {
@@ -741,21 +769,31 @@ class Api_dice {
         return $this->get('messagerie/'.$Code_messagerie.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function messagerie__get_all() {
-        return $this->get('messagerie?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function messagerie__get_all(?int $Code_joueur=null) {
+        $requete = '';
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        return $this->get($requete . 'messagerie?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function messagerie__add($Code_joueur) {
+    public function messagerie__add($Code_joueur, $messagerie_Nom) {
         $data = [
+            'messagerie_Nom' => $messagerie_Nom,
             'Code_joueur' => $Code_joueur,
         ];
         return $this->post('messagerie?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
-    public function messagerie__edit($Code_messagerie, $Code_joueur) {
+    public function messagerie__edit($Code_messagerie, $Code_joueur, $messagerie_Nom) {
         $data = [
+            'messagerie_Nom' => $messagerie_Nom,
             'Code_joueur' => $Code_joueur,
         ];
+        return $this->put('messagerie/'.$Code_messagerie.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function messagerie__edit__messagerie_Nom($Code_messagerie, $messagerie_Nom) {
+        $data = ['messagerie_Nom' => $messagerie_Nom ];
         return $this->put('messagerie/'.$Code_messagerie.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
@@ -776,8 +814,11 @@ class Api_dice {
         return $this->get('liste_contacts/'.$Code_liste_contacts.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function liste_contacts__get_all() {
-        return $this->get('liste_contacts?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function liste_contacts__get_all(?int $Code_joueur=null) {
+        $requete = '';
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        return $this->get($requete . 'liste_contacts?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function liste_contacts__add($Code_joueur, $liste_contacts_Nom) {
@@ -818,8 +859,13 @@ class Api_dice {
         return $this->get('a_joueur_parametre/'.$Code_joueur.'-'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_joueur_parametre__get_all() {
-        return $this->get('a_joueur_parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_joueur_parametre__get_all(?int $Code_joueur=null, ?int $Code_parametre=null) {
+        $requete = '';
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        $Code_parametre = (int) $Code_parametre;
+        if ($Code_parametre != 0) { $requete.= 'parametre/' . $Code_parametre . '/'; }
+        return $this->get($requete . 'a_joueur_parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_joueur_parametre__add($Code_joueur, $Code_parametre) {
@@ -848,8 +894,13 @@ class Api_dice {
         return $this->get('a_candidature_joueur_groupe/'.$Code_joueur.'-'.$Code_groupe.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_candidature_joueur_groupe__get_all() {
-        return $this->get('a_candidature_joueur_groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_candidature_joueur_groupe__get_all(?int $Code_joueur=null, ?int $Code_groupe=null) {
+        $requete = '';
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        $Code_groupe = (int) $Code_groupe;
+        if ($Code_groupe != 0) { $requete.= 'groupe/' . $Code_groupe . '/'; }
+        return $this->get($requete . 'a_candidature_joueur_groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_candidature_joueur_groupe__add($Code_joueur, $Code_groupe, $a_candidature_joueur_groupe_Message, $a_candidature_joueur_groupe_Date_envoi) {
@@ -892,8 +943,13 @@ class Api_dice {
         return $this->get('a_membre_joueur_groupe/'.$Code_groupe.'-'.$Code_joueur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_membre_joueur_groupe__get_all() {
-        return $this->get('a_membre_joueur_groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_membre_joueur_groupe__get_all(?int $Code_groupe=null, ?int $Code_joueur=null) {
+        $requete = '';
+        $Code_groupe = (int) $Code_groupe;
+        if ($Code_groupe != 0) { $requete.= 'groupe/' . $Code_groupe . '/'; }
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        return $this->get($requete . 'a_membre_joueur_groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_membre_joueur_groupe__add($Code_groupe, $Code_joueur, $a_membre_joueur_groupe_Surnom, $a_membre_joueur_groupe_Grade, $a_membre_joueur_groupe_Date_adhesion) {
@@ -943,8 +999,13 @@ class Api_dice {
         return $this->get('a_invitation_joueur_groupe/'.$Code_joueur.'-'.$Code_groupe.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_invitation_joueur_groupe__get_all() {
-        return $this->get('a_invitation_joueur_groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_invitation_joueur_groupe__get_all(?int $Code_joueur=null, ?int $Code_groupe=null) {
+        $requete = '';
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        $Code_groupe = (int) $Code_groupe;
+        if ($Code_groupe != 0) { $requete.= 'groupe/' . $Code_groupe . '/'; }
+        return $this->get($requete . 'a_invitation_joueur_groupe?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_invitation_joueur_groupe__add($Code_joueur, $Code_groupe, $a_invitation_joueur_groupe_Message, $a_invitation_joueur_groupe_Date_envoi) {
@@ -987,8 +1048,13 @@ class Api_dice {
         return $this->get('a_carte_objet/'.$Code_carte.'-'.$Code_objet.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_carte_objet__get_all() {
-        return $this->get('a_carte_objet?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_carte_objet__get_all(?int $Code_carte=null, ?int $Code_objet=null) {
+        $requete = '';
+        $Code_carte = (int) $Code_carte;
+        if ($Code_carte != 0) { $requete.= 'carte/' . $Code_carte . '/'; }
+        $Code_objet = (int) $Code_objet;
+        if ($Code_objet != 0) { $requete.= 'objet/' . $Code_objet . '/'; }
+        return $this->get($requete . 'a_carte_objet?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_carte_objet__add($Code_carte, $Code_objet) {
@@ -1017,8 +1083,13 @@ class Api_dice {
         return $this->get('a_campagne_tag_campagne/'.$Code_tag_campagne.'-'.$Code_campagne.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_campagne_tag_campagne__get_all() {
-        return $this->get('a_campagne_tag_campagne?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_campagne_tag_campagne__get_all(?int $Code_tag_campagne=null, ?int $Code_campagne=null) {
+        $requete = '';
+        $Code_tag_campagne = (int) $Code_tag_campagne;
+        if ($Code_tag_campagne != 0) { $requete.= 'tag_campagne/' . $Code_tag_campagne . '/'; }
+        $Code_campagne = (int) $Code_campagne;
+        if ($Code_campagne != 0) { $requete.= 'campagne/' . $Code_campagne . '/'; }
+        return $this->get($requete . 'a_campagne_tag_campagne?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_campagne_tag_campagne__add($Code_tag_campagne, $Code_campagne) {
@@ -1047,8 +1118,13 @@ class Api_dice {
         return $this->get('a_ressource_tag_ressource/'.$Code_tag_ressource.'-'.$Code_ressource.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_ressource_tag_ressource__get_all() {
-        return $this->get('a_ressource_tag_ressource?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_ressource_tag_ressource__get_all(?int $Code_tag_ressource=null, ?int $Code_ressource=null) {
+        $requete = '';
+        $Code_tag_ressource = (int) $Code_tag_ressource;
+        if ($Code_tag_ressource != 0) { $requete.= 'tag_ressource/' . $Code_tag_ressource . '/'; }
+        $Code_ressource = (int) $Code_ressource;
+        if ($Code_ressource != 0) { $requete.= 'ressource/' . $Code_ressource . '/'; }
+        return $this->get($requete . 'a_ressource_tag_ressource?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_ressource_tag_ressource__add($Code_tag_ressource, $Code_ressource) {
@@ -1077,8 +1153,13 @@ class Api_dice {
         return $this->get('a_liste_contact_joueur/'.$Code_liste_contacts.'-'.$Code_joueur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_liste_contact_joueur__get_all() {
-        return $this->get('a_liste_contact_joueur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    public function a_liste_contact_joueur__get_all(?int $Code_liste_contacts=null, ?int $Code_joueur=null) {
+        $requete = '';
+        $Code_liste_contacts = (int) $Code_liste_contacts;
+        if ($Code_liste_contacts != 0) { $requete.= 'liste_contacts/' . $Code_liste_contacts . '/'; }
+        $Code_joueur = (int) $Code_joueur;
+        if ($Code_joueur != 0) { $requete.= 'joueur/' . $Code_joueur . '/'; }
+        return $this->get($requete . 'a_liste_contact_joueur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
     public function a_liste_contact_joueur__add($Code_liste_contacts, $Code_joueur, $a_liste_contact_joueur_Date_creation) {

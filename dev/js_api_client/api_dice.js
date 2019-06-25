@@ -633,6 +633,7 @@ function r__messagerie__get_all(ref) { var ref = (typeof ref !== 'undefined') ? 
 
 /*
   json_data = {
+    messagerie_Nom: …,
     Code_joueur: …,
   }
 */
@@ -643,6 +644,7 @@ function r__messagerie__post(ref) { var ref = (typeof ref !== 'undefined') ? ref
 
 /*
   json_data = {
+    messagerie_Nom: …,
     Code_joueur: …,
   }
 */

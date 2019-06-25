@@ -15,6 +15,7 @@
 */
     $Code_messagerie = lecture_parametre_api("Code_messagerie", 0 );
     $champs = array();
+    if ( isset_parametre_api("messagerie_Nom") ) $champs['messagerie_Nom'] = lecture_parametre_api("messagerie_Nom");
     if ( isset_parametre_api("Code_joueur") ) $champs['Code_joueur'] = lecture_parametre_api("Code_joueur");
     $retour = $table_messagerie->mf_modifier_2( array( $Code_messagerie => $champs ) );
     if ( $retour['code_erreur']==0 )

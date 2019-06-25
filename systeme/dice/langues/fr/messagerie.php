@@ -2,19 +2,26 @@
 
 $lang_standard['Code_messagerie'] = 'messagerie';
 
+$lang_standard['messagerie_Nom'] = 'messagerie_Nom';
+
 $lang_standard['bouton_ajouter_messagerie'] = 'Ajouter';
 $lang_standard['bouton_creer_messagerie'] = 'Creer';
 $lang_standard['bouton_modifier_messagerie'] = 'Modifier';
 $lang_standard['bouton_supprimer_messagerie'] = 'Supprimer';
+$lang_standard['bouton_modifier_messagerie_Nom'] = 'Modifier';
 $lang_standard['bouton_modifier_messagerie__Code_joueur'] = 'Modifier';
 
 $lang_standard['form_add_messagerie'] = 'form_add_messagerie';
 $lang_standard['form_edit_messagerie'] = 'form_edit_messagerie';
 $lang_standard['form_delete_messagerie'] = 'form_delete_messagerie';
 
-$mf_titre_ligne_table['messagerie'] = '';
+$mf_titre_ligne_table['messagerie'] = '{messagerie_Nom}';
+
+$mf_tri_defaut_table['messagerie'] = array( 'messagerie_Nom' => 'ASC' );
 
 $lang_standard['libelle_liste_messagerie'] = 'libelle_liste_messagerie';
+
+$mf_initialisation['messagerie_Nom'] = '';
 
 // code_erreur
 
@@ -29,6 +36,7 @@ $mf_libelle_erreur[ERR_MESSAGERIE__MODIFIER__CODE_JOUEUR_INEXISTANT] = 'ERR_mess
 $mf_libelle_erreur[REFUS_MESSAGERIE__MODIFICATION_BLOQUEE] = 'REFUS_messagerie__MODIFICATION_BLOQUEE';
 $mf_libelle_erreur[ERR_MESSAGERIE__MODIFIER__AUCUN_CHANGEMENT] = 'ERR_messagerie__MODIFIER__AUCUN_CHANGEMENT';
 $mf_libelle_erreur[ERR_MESSAGERIE__MODIFIER_3__AUCUN_CHANGEMENT] = 'ERR_messagerie__MODIFIER_3__AUCUN_CHANGEMENT';
+$mf_libelle_erreur[ERR_MESSAGERIE__MODIFIER_4__AUCUN_CHANGEMENT] = 'ERR_messagerie__MODIFIER_4__AUCUN_CHANGEMENT';
 $mf_libelle_erreur[ERR_MESSAGERIE__SUPPRIMER_2__CODE_MESSAGERIE_INEXISTANT] = 'ERR_messagerie__SUPPRIMER_2__Code_messagerie_INEXISTANT';
 $mf_libelle_erreur[REFUS_MESSAGERIE__SUPPRIMER] = 'REFUS_messagerie__SUPPRIMER';
 $mf_libelle_erreur[REFUS_MESSAGERIE__SUPPRESSION_BLOQUEE] = 'REFUS_messagerie__SUPPRESSION_BLOQUEE';

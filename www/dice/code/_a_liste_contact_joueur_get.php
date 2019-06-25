@@ -24,6 +24,8 @@
         $trans['{bouton_modifier_a_liste_contact_joueur_Date_creation}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_a_liste_contact_joueur_Date_creation') : '';
 
     /* prec_et_suiv */
+    if ( $table_a_liste_contact_joueur->mf_compter((isset($est_charge['liste_contacts']) ? $mf_contexte['Code_liste_contacts'] : 0), (isset($est_charge['joueur']) ? $mf_contexte['Code_joueur'] : 0))<100 )
+    {
         $liste_a_liste_contact_joueur = $table_a_liste_contact_joueur->mf_lister_contexte();
         // prec
         $prec_et_suiv = prec_suiv($liste_a_liste_contact_joueur, $a_liste_contact_joueur['Code_liste_contacts'].'-'.$a_liste_contact_joueur['Code_joueur']);
@@ -41,6 +43,11 @@
             $suiv['title'] = htmlspecialchars(get_titre_ligne_table('a_liste_contact_joueur', $prec_et_suiv['suiv']));
         }
         $trans['{pager_a_liste_contact_joueur}'] = get_code_pager($prec, $suiv);
+    }
+    else
+    {
+        $trans['{pager_a_liste_contact_joueur}'] = '';
+    }
 
     /* Code_liste_contacts */
         $trans['{Code_liste_contacts}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_liste_contacts'=>$a_liste_contact_joueur['Code_liste_contacts'], 'Code_joueur'=>$a_liste_contact_joueur['Code_joueur']) , 'DB_name' => 'Code_liste_contacts' , 'valeur_initiale' => $a_liste_contact_joueur['Code_liste_contacts'] ]);

@@ -1,16 +1,16 @@
 <?php
 
-$lang_standard['Code_joueur'] = 'Joueur';
+$lang_standard['Code_joueur'] = 'joueur';
 
-$lang_standard['joueur_Email'] = 'Email';
-$lang_standard['joueur_Identifiant'] = 'Pseud';
-$lang_standard['joueur_Password'] = 'Mot de passe';
-$lang_standard['joueur_Avatar_Fichier'] = 'Avatar';
-$lang_standard['joueur_Date_naissance'] = 'Date de naissance';
-$lang_standard['joueur_Date_inscription'] = 'Date d\'inscription';
+$lang_standard['joueur_Email'] = 'joueur_Email';
+$lang_standard['joueur_Identifiant'] = 'joueur_Identifiant';
+$lang_standard['joueur_Password'] = 'joueur_Password';
+$lang_standard['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier';
+$lang_standard['joueur_Date_naissance'] = 'joueur_Date_naissance';
+$lang_standard['joueur_Date_inscription'] = 'joueur_Date_inscription';
 
-$lang_standard['bouton_ajouter_joueur'] = 'Joueur';
-$lang_standard['bouton_creer_joueur'] = 'Joueur';
+$lang_standard['bouton_ajouter_joueur'] = 'Ajouter';
+$lang_standard['bouton_creer_joueur'] = 'Creer';
 $lang_standard['bouton_modifier_joueur'] = 'Modifier';
 $lang_standard['bouton_supprimer_joueur'] = 'Supprimer';
 $lang_standard['bouton_modpwd_joueur'] = 'Modifier le mot de passe';

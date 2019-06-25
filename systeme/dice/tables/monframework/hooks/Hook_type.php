@@ -12,12 +12,12 @@ class Hook_type{
         // ici le code
     }
 
-    static function pre_controller(&$type_Libelle, &$Code_ressource, $Code_type=0)
+    static function pre_controller(string &$type_Libelle, int &$Code_ressource, ?int $Code_type=null)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_ressource=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_ressource=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,34 +30,34 @@ class Hook_type{
         // ici le code
     }
 
-    static function autorisation_ajout($type_Libelle, $Code_ressource)
+    static function autorisation_ajout(string $type_Libelle, int $Code_ressource)
     {
         return true;
     }
 
-    static function data_controller(&$type_Libelle, &$Code_ressource, $Code_type=0)
+    static function data_controller(string &$type_Libelle, int &$Code_ressource, ?int $Code_type=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($type_Libelle, $Code_ressource)
+    static function calcul_signature(string $type_Libelle, int $Code_ressource)
     {
         return md5($type_Libelle.'-'.$Code_ressource);
     }
 
-    static function calcul_cle_unique($type_Libelle, $Code_ressource)
+    static function calcul_cle_unique(string $type_Libelle, int $Code_ressource)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return $Code_ressource.'.'.sha1($type_Libelle);
     }
 
-    static function ajouter($Code_type)
+    static function ajouter(int $Code_type)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_type=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_type=null)
     {
         global $mf_droits_defaut;
         /*
@@ -73,31 +73,31 @@ class Hook_type{
         // ici le code
     }
 
-    static function autorisation_modification($Code_type, $type_Libelle__new, $Code_ressource__new)
+    static function autorisation_modification(int $Code_type, string $type_Libelle__new, int $Code_ressource__new)
     {
         return true;
     }
 
-    static function data_controller__type_Libelle($old, &$new, $Code_type)
+    static function data_controller__type_Libelle(string $old, string &$new, int $Code_type)
     {
         // ici le code
     }
 
-    static function data_controller__Code_ressource($old, &$new, $Code_type)
+    static function data_controller__Code_ressource(int $old, int &$new, int $Code_type)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_type permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_type, $bool__type_Libelle, $bool__Code_ressource)
+    static function modifier(int $Code_type, bool $bool__type_Libelle, bool $bool__Code_ressource)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_type=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_type=null)
     {
         global $mf_droits_defaut;
         /*
@@ -114,17 +114,17 @@ class Hook_type{
         }
     }
 
-    static function autorisation_suppression($Code_type)
+    static function autorisation_suppression(int $Code_type)
     {
         return true;
     }
 
-    static function supprimer($copie__type)
+    static function supprimer(array $copie__type)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_type)
+    static function supprimer_2(array $copie__liste_type)
     {
         foreach ($copie__liste_type as &$copie__type)
         {
@@ -133,7 +133,7 @@ class Hook_type{
         unset($copie__type);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -144,12 +144,12 @@ class Hook_type{
         return true;
     }
 
-    static function mettre_a_jour($liste_type)
+    static function mettre_a_jour(array $liste_type)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -163,12 +163,12 @@ class Hook_type{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_type)
+    static function callback_post(int $Code_type)
     {
         return null;
     }
 
-    static function callback_put($Code_type)
+    static function callback_put(int $Code_type)
     {
         return null;
     }

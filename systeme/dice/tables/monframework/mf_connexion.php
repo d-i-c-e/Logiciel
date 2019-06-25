@@ -2,10 +2,10 @@
 
 $joueur_courant = null;
 
-function get_joueur_courant( $colonne='' )
+function get_joueur_courant(?string $colonne=null)
 {
     global $joueur_courant;
-    if ( $colonne=='' )
+    if ( $colonne===null )
     {
         return $joueur_courant;
     }

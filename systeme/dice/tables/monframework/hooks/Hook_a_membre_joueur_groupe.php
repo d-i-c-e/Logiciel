@@ -12,12 +12,12 @@ class Hook_a_membre_joueur_groupe{
         // ici le code
     }
 
-    static function pre_controller(&$a_membre_joueur_groupe_Surnom, &$a_membre_joueur_groupe_Grade, &$a_membre_joueur_groupe_Date_adhesion, $Code_groupe, $Code_joueur)
+    static function pre_controller(string &$a_membre_joueur_groupe_Surnom, int &$a_membre_joueur_groupe_Grade, string &$a_membre_joueur_groupe_Date_adhesion, int $Code_groupe, int $Code_joueur)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_groupe=0, $Code_joueur=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_groupe=null, ?int $Code_joueur=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,22 +30,22 @@ class Hook_a_membre_joueur_groupe{
         // ici le code
     }
 
-    static function autorisation_ajout($a_membre_joueur_groupe_Surnom, $a_membre_joueur_groupe_Grade, $a_membre_joueur_groupe_Date_adhesion, $Code_groupe, $Code_joueur)
+    static function autorisation_ajout(string $a_membre_joueur_groupe_Surnom, int $a_membre_joueur_groupe_Grade, string $a_membre_joueur_groupe_Date_adhesion, int $Code_groupe, int $Code_joueur)
     {
         return true;
     }
 
-    static function data_controller(&$a_membre_joueur_groupe_Surnom, &$a_membre_joueur_groupe_Grade, &$a_membre_joueur_groupe_Date_adhesion, $Code_groupe, $Code_joueur)
+    static function data_controller(string &$a_membre_joueur_groupe_Surnom, int &$a_membre_joueur_groupe_Grade, string &$a_membre_joueur_groupe_Date_adhesion, int $Code_groupe, int $Code_joueur)
     {
         // ici le code
     }
 
-    static function ajouter($Code_groupe, $Code_joueur)
+    static function ajouter(int $Code_groupe, int $Code_joueur)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_groupe=0, $Code_joueur=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_groupe=null, ?int $Code_joueur=null)
     {
         global $mf_droits_defaut;
         /*
@@ -61,22 +61,22 @@ class Hook_a_membre_joueur_groupe{
         // ici le code
     }
 
-    static function autorisation_modification($Code_groupe, $Code_joueur, $a_membre_joueur_groupe_Surnom__new, $a_membre_joueur_groupe_Grade__new, $a_membre_joueur_groupe_Date_adhesion__new)
+    static function autorisation_modification(int $Code_groupe, int $Code_joueur, string $a_membre_joueur_groupe_Surnom__new, int $a_membre_joueur_groupe_Grade__new, string $a_membre_joueur_groupe_Date_adhesion__new)
     {
         return true;
     }
 
-    static function data_controller__a_membre_joueur_groupe_Surnom($old, &$new, $Code_groupe, $Code_joueur)
+    static function data_controller__a_membre_joueur_groupe_Surnom(string $old, string &$new, int $Code_groupe, int $Code_joueur)
     {
         // ici le code
     }
 
-    static function data_controller__a_membre_joueur_groupe_Grade($old, &$new, $Code_groupe, $Code_joueur)
+    static function data_controller__a_membre_joueur_groupe_Grade(int $old, int &$new, int $Code_groupe, int $Code_joueur)
     {
         // ici le code
     }
 
-    static function data_controller__a_membre_joueur_groupe_Date_adhesion($old, &$new, $Code_groupe, $Code_joueur)
+    static function data_controller__a_membre_joueur_groupe_Date_adhesion(string $old, string &$new, int $Code_groupe, int $Code_joueur)
     {
         // ici le code
     }
@@ -85,12 +85,12 @@ class Hook_a_membre_joueur_groupe{
      * modifier : $Code_...,  permettent de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_groupe, $Code_joueur, $bool__a_membre_joueur_groupe_Surnom, $bool__a_membre_joueur_groupe_Grade, $bool__a_membre_joueur_groupe_Date_adhesion)
+    static function modifier(int $Code_groupe, int $Code_joueur, bool $bool__a_membre_joueur_groupe_Surnom, bool $bool__a_membre_joueur_groupe_Grade, bool $bool__a_membre_joueur_groupe_Date_adhesion)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_groupe=0, $Code_joueur=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_groupe=null, ?int $Code_joueur=null)
     {
         global $mf_droits_defaut;
         /*
@@ -106,17 +106,17 @@ class Hook_a_membre_joueur_groupe{
         }
     }
 
-    static function autorisation_suppression($Code_groupe, $Code_joueur)
+    static function autorisation_suppression(int $Code_groupe, int $Code_joueur)
     {
         return true;
     }
 
-    static function supprimer($copie__liste_a_membre_joueur_groupe)
+    static function supprimer(array $copie__liste_a_membre_joueur_groupe)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -132,12 +132,12 @@ class Hook_a_membre_joueur_groupe{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_groupe, $Code_joueur)
+    static function callback_post(int $Code_groupe, int $Code_joueur)
     {
         return null;
     }
 
-    static function callback_put($Code_groupe, $Code_joueur)
+    static function callback_put(int $Code_groupe, int $Code_joueur)
     {
         return null;
     }

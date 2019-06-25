@@ -122,8 +122,9 @@ class liste_contacts_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($liste_contacts_Nom, $Code_joueur, $force=false)
+    public function mf_ajouter(string $liste_contacts_Nom, int $Code_joueur, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_liste_contacts = 0;
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
@@ -176,30 +177,32 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_liste_contacts' => $Code_liste_contacts, 'callback' => ( $code_erreur==0 ? Hook_liste_contacts::callback_post($Code_liste_contacts) : null ));
     }
 
-    public function mf_creer($Code_joueur, $force=false)
+    public function mf_creer(int $Code_joueur, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["liste_contacts__AJOUTER"] = $mf_droits_defaut["liste_contacts__CREER"];
         $liste_contacts_Nom = $mf_initialisation['liste_contacts_Nom'];
         return $this->mf_ajouter($liste_contacts_Nom, $Code_joueur, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_joueur = (isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
-        $liste_contacts_Nom = (isset($ligne['liste_contacts_Nom'])?$ligne['liste_contacts_Nom']:$mf_initialisation['liste_contacts_Nom']);
+        $Code_joueur = (int)(isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
+        $liste_contacts_Nom = (string)(isset($ligne['liste_contacts_Nom'])?$ligne['liste_contacts_Nom']:$mf_initialisation['liste_contacts_Nom']);
         return $this->mf_ajouter($liste_contacts_Nom, $Code_joueur, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
         $values = '';
         foreach ($lignes as $ligne)
         {
-            $Code_joueur = (isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):0);
+            $Code_joueur = (int)(isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):0);
             $liste_contacts_Nom = text_sql(isset($ligne['liste_contacts_Nom'])?$ligne['liste_contacts_Nom']:$mf_initialisation['liste_contacts_Nom']);
             if ($Code_joueur != 0)
             {
@@ -235,8 +238,9 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_liste_contacts, $liste_contacts_Nom, $Code_joueur=0, $force=false)
+    public function mf_modifier( int $Code_liste_contacts, string $liste_contacts_Nom, ?int $Code_joueur=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_liste_contacts = round($Code_liste_contacts);
         $Code_joueur = round($Code_joueur);
@@ -302,14 +306,15 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_liste_contacts::callback_put($Code_liste_contacts) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_liste_contacts => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_liste_contacts => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_liste_contacts => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_liste_contacts = round($Code_liste_contacts);
+                $Code_liste_contacts = (int)round($Code_liste_contacts);
                 $liste_contacts = $this->mf_get_2($Code_liste_contacts, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -321,7 +326,7 @@ class liste_contacts_monframework extends entite_monframework
                     }
                 }
                 $Code_joueur = ( isset($colonnes['Code_joueur']) && ( $force || mf_matrice_droits(['api_modifier_ref__liste_contacts__Code_joueur', 'liste_contacts__MODIFIER']) ) ? $colonnes['Code_joueur'] : (isset($liste_contacts['Code_joueur']) ? $liste_contacts['Code_joueur'] : 0 ));
-                $liste_contacts_Nom = ( isset($colonnes['liste_contacts_Nom']) && ( $force || mf_matrice_droits(['api_modifier__liste_contacts_Nom', 'liste_contacts__MODIFIER']) ) ? $colonnes['liste_contacts_Nom'] : ( isset($liste_contacts['liste_contacts_Nom']) ? $liste_contacts['liste_contacts_Nom'] : '' ) );
+                $liste_contacts_Nom = (string)( isset($colonnes['liste_contacts_Nom']) && ( $force || mf_matrice_droits(['api_modifier__liste_contacts_Nom', 'liste_contacts__MODIFIER']) ) ? $colonnes['liste_contacts_Nom'] : ( isset($liste_contacts['liste_contacts_Nom']) ? $liste_contacts['liste_contacts_Nom'] : '' ) );
                 $retour = $this->mf_modifier($Code_liste_contacts, $liste_contacts_Nom, $Code_joueur, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_LISTE_CONTACTS__MODIFIER__AUCUN_CHANGEMENT )
                 {
@@ -345,7 +350,7 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_liste_contacts => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_liste_contacts => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -422,8 +427,9 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_4( $Code_joueur, $data, $options = array( 'cond_mysql' => array() ) ) // $data = array('colonne1' => 'valeur1', ... )
+    public function mf_modifier_4( int $Code_joueur, array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
         $mf_colonnes_a_modifier=[];
@@ -441,7 +447,14 @@ class liste_contacts_monframework extends entite_monframework
                 unset($condition);
             }
 
-            $requete = 'UPDATE ' . inst('liste_contacts') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."$argument_cond;";
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('liste_contacts') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -458,8 +471,9 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_liste_contacts, $force=false)
+    public function mf_supprimer( int $Code_liste_contacts, ?bool $force=null )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_liste_contacts = round($Code_liste_contacts);
         if (!$force)
@@ -507,8 +521,9 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_liste_contacts, $force=false)
+    public function mf_supprimer_2(array $liste_Code_liste_contacts, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_liste_contacts = $this->mf_lister_2($liste_Code_liste_contacts, array('autocompletion' => false));
         $liste_Code_liste_contacts=array();
@@ -561,7 +576,7 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_liste_contacts)
+    public function mf_supprimer_3(array $liste_Code_liste_contacts)
     {
         $code_erreur=0;
         if ( count($liste_Code_liste_contacts)>0 )
@@ -593,8 +608,10 @@ class liste_contacts_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_liste_contacts']!=0 )
         {
@@ -607,8 +624,9 @@ class liste_contacts_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($Code_joueur=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "liste_contacts__lister";
         $Code_joueur = round($Code_joueur);
         $cle.="_{$Code_joueur}";
@@ -744,7 +762,8 @@ class liste_contacts_monframework extends entite_monframework
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('liste_contacts')." WHERE 1{$argument_cond}".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" )."{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_liste_contacts']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_liste_contacts']] = $row_requete;
                     if ( $maj && ! Hook_liste_contacts::est_a_jour( $row_requete ) )
                     {
                         $liste_liste_contacts_pas_a_jour[$row_requete['Code_liste_contacts']] = $row_requete;
@@ -794,8 +813,9 @@ class liste_contacts_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_liste_contacts, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_liste_contacts, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_liste_contacts)>0 )
         {
             $cle = "liste_contacts__mf_lister_2_".Sql_Format_Liste($liste_Code_liste_contacts);
@@ -931,7 +951,8 @@ class liste_contacts_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('liste_contacts')." WHERE 1{$argument_cond} AND Code_liste_contacts IN ".Sql_Format_Liste($liste_Code_liste_contacts)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_liste_contacts']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_liste_contacts']] = $row_requete;
                         if ( $maj && ! Hook_liste_contacts::est_a_jour( $row_requete ) )
                         {
                             $liste_liste_contacts_pas_a_jour[$row_requete['Code_liste_contacts']] = $row_requete;
@@ -986,8 +1007,9 @@ class liste_contacts_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_liste_contacts, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_liste_contacts, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_liste_contacts = round($Code_liste_contacts);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_liste_contacts', $Code_liste_contacts) )
@@ -1034,7 +1056,8 @@ class liste_contacts_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('liste_contacts') . ' WHERE Code_liste_contacts = ' . $Code_liste_contacts . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_liste_contacts::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1064,8 +1087,9 @@ class liste_contacts_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($Code_joueur=0, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?int $Code_joueur=null, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "liste_contacts__get_last";
         $Code_joueur = round($Code_joueur);
         $cle.='_' . $Code_joueur;
@@ -1084,8 +1108,9 @@ class liste_contacts_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_liste_contacts, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_liste_contacts, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_liste_contacts = round($Code_liste_contacts);
         $retour = array();
         $cle = 'liste_contacts__get_'.$Code_liste_contacts;
@@ -1126,7 +1151,8 @@ class liste_contacts_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('liste_contacts')." WHERE Code_liste_contacts = $Code_liste_contacts;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1143,15 +1169,17 @@ class liste_contacts_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_liste_contacts, $Code_joueur=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_liste_contacts, ?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_liste_contacts = round($Code_liste_contacts);
         $liste = $this->mf_lister($Code_joueur, $options);
         return prec_suiv($liste, $Code_liste_contacts);
     }
 
-    public function mf_compter($Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'liste_contacts__compter';
         $Code_joueur = round($Code_joueur);
         $cle.='_{'.$Code_joueur.'}';
@@ -1206,38 +1234,42 @@ class liste_contacts_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_liste_contacts) as nb FROM ".inst('liste_contacts')." WHERE 1{$argument_cond}".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" ).";", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_liste_contacts) as nb FROM ' . inst('liste_contacts')." WHERE 1{$argument_cond}".( $Code_joueur!=0 ? " AND Code_joueur=$Code_joueur" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $Code_joueur = isset($interface['Code_joueur']) ? round($interface['Code_joueur']) : 0;
         return $this->mf_compter( $Code_joueur, $options );
     }
 
-    public function mf_liste_Code_liste_contacts($Code_joueur=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_liste_contacts(?int $Code_joueur=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_liste_contacts($Code_joueur, $options);
     }
 
-    public function mf_convertir_Code_liste_contacts_vers_Code_joueur( $Code_liste_contacts )
+    public function mf_convertir_Code_liste_contacts_vers_Code_joueur( int $Code_liste_contacts )
     {
         return $this->Code_liste_contacts_vers_Code_joueur( $Code_liste_contacts );
     }
 
-    public function mf_liste_Code_joueur_vers_liste_Code_liste_contacts( $liste_Code_joueur, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_joueur_vers_liste_Code_liste_contacts( array $liste_Code_joueur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->liste_Code_joueur_vers_liste_Code_liste_contacts( $liste_Code_joueur, $options );
     }
 
-    public function mf_liste_Code_liste_contacts_vers_liste_Code_joueur( $liste_Code_liste_contacts, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_liste_contacts_vers_liste_Code_joueur( array $liste_Code_liste_contacts, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->liste_contacts__liste_Code_liste_contacts_vers_liste_Code_joueur( $liste_Code_liste_contacts, $options );
     }
 
@@ -1251,12 +1283,12 @@ class liste_contacts_monframework extends entite_monframework
         return array('Code_joueur');
     }
 
-    public function mf_search_liste_contacts_Nom( $liste_contacts_Nom, $Code_joueur=0 )
+    public function mf_search_liste_contacts_Nom( string $liste_contacts_Nom, ?int $Code_joueur=null )
     {
         return $this->rechercher_liste_contacts_Nom( $liste_contacts_Nom, $Code_joueur );
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche, $Code_joueur=0 )
+    public function mf_search__colonne( string $colonne_db, $recherche, ?int $Code_joueur=null )
     {
         switch ($colonne_db) {
             case 'liste_contacts_Nom': return $this->mf_search_liste_contacts_Nom( $recherche, $Code_joueur ); break;
@@ -1271,11 +1303,11 @@ class liste_contacts_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $Code_joueur = (isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
-        $liste_contacts_Nom = (isset($ligne['liste_contacts_Nom'])?$ligne['liste_contacts_Nom']:$mf_initialisation['liste_contacts_Nom']);
+        $Code_joueur = (int)(isset($ligne['Code_joueur'])?round($ligne['Code_joueur']):get_joueur_courant('Code_joueur'));
+        $liste_contacts_Nom = (string)(isset($ligne['liste_contacts_Nom'])?$ligne['liste_contacts_Nom']:$mf_initialisation['liste_contacts_Nom']);
         Hook_liste_contacts::pre_controller($liste_contacts_Nom, $Code_joueur);
         $mf_cle_unique = Hook_liste_contacts::calcul_cle_unique($liste_contacts_Nom, $Code_joueur);
         $res_requete = executer_requete_mysql('SELECT Code_liste_contacts FROM ' . inst('liste_contacts') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);

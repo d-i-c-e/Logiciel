@@ -13,8 +13,9 @@
     |  Ajouter  |
     +-----------+
 */
+    $messagerie_Nom = lecture_parametre_api("messagerie_Nom", '');
     $Code_joueur = lecture_parametre_api("Code_joueur", $joueur_courant['Code_joueur']);
-    $retour = $table_messagerie->mf_ajouter($Code_joueur);
+    $retour = $table_messagerie->mf_ajouter($messagerie_Nom, $Code_joueur);
     if ( $retour['code_erreur']==0 )
     {
         $cache = new Cachehtml();

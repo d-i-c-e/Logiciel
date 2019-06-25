@@ -751,24 +751,33 @@ End Function
 '   | messagerie |
 '   +------------+
 
-Function messagerie__ajouter(ByVal Code_joueur As String) As Long
+Function messagerie__ajouter(ByVal Code_joueur As String, ByVal messagerie_Nom As String) As Long
+    messagerie_Nom = requete.convert_encode_url(messagerie_Nom)
     Code_joueur = requete.convert_encode_url(Code_joueur)
-    requete.requete_serveur "messagerie/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur
+    requete.requete_serveur "messagerie/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&messagerie_Nom=" & messagerie_Nom
     messagerie__ajouter = requete.retour_ok()
 End Function
 
-Function messagerie__modifier(ByVal Code_messagerie As String, ByVal Code_joueur As String) As Long
+Function messagerie__modifier(ByVal Code_messagerie As String, ByVal Code_joueur As String, ByVal messagerie_Nom As String) As Long
     Code_messagerie = requete.convert_encode_url(Code_messagerie)
+    messagerie_Nom = requete.convert_encode_url(messagerie_Nom)
     Code_joueur = requete.convert_encode_url(Code_joueur)
-    requete.requete_serveur "messagerie/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_messagerie=" & Code_messagerie & "&Code_joueur=" & Code_joueur
+    requete.requete_serveur "messagerie/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_messagerie=" & Code_messagerie & "&Code_joueur=" & Code_joueur & "&messagerie_Nom=" & messagerie_Nom
     messagerie__modifier = requete.retour_ok()
+End Function
+
+Function messagerie__modifier__messagerie_Nom(ByVal Code_messagerie As String, ByVal messagerie_Nom As String) As Long
+    Code_messagerie = requete.convert_encode_url(Code_messagerie)
+    messagerie_Nom = requete.convert_encode_url(messagerie_Nom)
+    requete.requete_serveur "messagerie/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_messagerie=" & Code_messagerie & "&messagerie_Nom=" & messagerie_Nom
+    messagerie__modifier__messagerie_Nom = requete.retour_ok()
 End Function
 
 Function messagerie__modifier__Code_joueur(ByVal Code_messagerie As String, ByVal Code_joueur As String) As Long
     Code_messagerie = requete.convert_encode_url(Code_messagerie)
     Code_joueur = requete.convert_encode_url(Code_joueur)
     requete.requete_serveur "messagerie/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_messagerie=" & Code_messagerie & "&Code_joueur=" & Code_joueur
-    messagerie__modifier__ = requete.retour_ok()
+    messagerie__modifier__messagerie_Nom = requete.retour_ok()
 End Function
 
 Function messagerie__supprimer(ByVal Code_messagerie As String) As Long

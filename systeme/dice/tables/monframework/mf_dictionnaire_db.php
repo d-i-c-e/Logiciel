@@ -50,6 +50,7 @@ $mf_dictionnaire_db['ressource_Nom']=array('type'=>'VARCHAR', 'entite'=>'ressour
 $mf_dictionnaire_db['Code_tag_ressource']=array('type'=>'INT', 'entite'=>'tag_ressource');
 $mf_dictionnaire_db['tag_ressource_Libelle']=array('type'=>'VARCHAR', 'entite'=>'tag_ressource');
 $mf_dictionnaire_db['Code_messagerie']=array('type'=>'INT', 'entite'=>'messagerie');
+$mf_dictionnaire_db['messagerie_Nom']=array('type'=>'VARCHAR', 'entite'=>'messagerie');
 $mf_dictionnaire_db['Code_liste_contacts']=array('type'=>'INT', 'entite'=>'liste_contacts');
 $mf_dictionnaire_db['liste_contacts_Nom']=array('type'=>'VARCHAR', 'entite'=>'liste_contacts');
 $mf_dictionnaire_db['a_candidature_joueur_groupe_Message']=array('type'=>'TEXT', 'entite'=>'a_candidature_joueur_groupe');

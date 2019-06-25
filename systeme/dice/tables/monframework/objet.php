@@ -136,8 +136,9 @@ class objet_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($objet_Libelle, $objet_Image_Fichier, $Code_type, $force=false)
+    public function mf_ajouter(string $objet_Libelle, string $objet_Image_Fichier, int $Code_type, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_objet = 0;
         $code_erreur = 0;
         $Code_type = round($Code_type);
@@ -191,8 +192,9 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_objet' => $Code_objet, 'callback' => ( $code_erreur==0 ? Hook_objet::callback_post($Code_objet) : null ));
     }
 
-    public function mf_creer($Code_type, $force=false)
+    public function mf_creer(int $Code_type, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["objet__AJOUTER"] = $mf_droits_defaut["objet__CREER"];
         $objet_Libelle = $mf_initialisation['objet_Libelle'];
@@ -200,23 +202,24 @@ class objet_monframework extends entite_monframework
         return $this->mf_ajouter($objet_Libelle, $objet_Image_Fichier, $Code_type, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $Code_type = (isset($ligne['Code_type'])?round($ligne['Code_type']):0);
-        $objet_Libelle = (isset($ligne['objet_Libelle'])?$ligne['objet_Libelle']:$mf_initialisation['objet_Libelle']);
-        $objet_Image_Fichier = (isset($ligne['objet_Image_Fichier'])?$ligne['objet_Image_Fichier']:$mf_initialisation['objet_Image_Fichier']);
+        $Code_type = (int)(isset($ligne['Code_type'])?round($ligne['Code_type']):0);
+        $objet_Libelle = (string)(isset($ligne['objet_Libelle'])?$ligne['objet_Libelle']:$mf_initialisation['objet_Libelle']);
+        $objet_Image_Fichier = (string)(isset($ligne['objet_Image_Fichier'])?$ligne['objet_Image_Fichier']:$mf_initialisation['objet_Image_Fichier']);
         return $this->mf_ajouter($objet_Libelle, $objet_Image_Fichier, $Code_type, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
         $values = '';
         foreach ($lignes as $ligne)
         {
-            $Code_type = (isset($ligne['Code_type'])?round($ligne['Code_type']):0);
+            $Code_type = (int)(isset($ligne['Code_type'])?round($ligne['Code_type']):0);
             $objet_Libelle = text_sql(isset($ligne['objet_Libelle'])?$ligne['objet_Libelle']:$mf_initialisation['objet_Libelle']);
             $objet_Image_Fichier = text_sql(isset($ligne['objet_Image_Fichier'])?$ligne['objet_Image_Fichier']:$mf_initialisation['objet_Image_Fichier']);
             if ($Code_type != 0)
@@ -253,8 +256,9 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_objet, $objet_Libelle, $objet_Image_Fichier, $Code_type=0, $force=false)
+    public function mf_modifier( int $Code_objet, string $objet_Libelle, string $objet_Image_Fichier, ?int $Code_type=null, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_objet = round($Code_objet);
         $Code_type = round($Code_type);
@@ -321,14 +325,15 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_objet::callback_put($Code_objet) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_objet => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_objet => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_objet => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_objet = round($Code_objet);
+                $Code_objet = (int)round($Code_objet);
                 $objet = $this->mf_get_2($Code_objet, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -340,8 +345,8 @@ class objet_monframework extends entite_monframework
                     }
                 }
                 $Code_type = ( isset($colonnes['Code_type']) && ( $force || mf_matrice_droits(['api_modifier_ref__objet__Code_type', 'objet__MODIFIER']) ) ? $colonnes['Code_type'] : (isset($objet['Code_type']) ? $objet['Code_type'] : 0 ));
-                $objet_Libelle = ( isset($colonnes['objet_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__objet_Libelle', 'objet__MODIFIER']) ) ? $colonnes['objet_Libelle'] : ( isset($objet['objet_Libelle']) ? $objet['objet_Libelle'] : '' ) );
-                $objet_Image_Fichier = ( isset($colonnes['objet_Image_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__objet_Image_Fichier', 'objet__MODIFIER']) ) ? $colonnes['objet_Image_Fichier'] : ( isset($objet['objet_Image_Fichier']) ? $objet['objet_Image_Fichier'] : '' ) );
+                $objet_Libelle = (string)( isset($colonnes['objet_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__objet_Libelle', 'objet__MODIFIER']) ) ? $colonnes['objet_Libelle'] : ( isset($objet['objet_Libelle']) ? $objet['objet_Libelle'] : '' ) );
+                $objet_Image_Fichier = (string)( isset($colonnes['objet_Image_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__objet_Image_Fichier', 'objet__MODIFIER']) ) ? $colonnes['objet_Image_Fichier'] : ( isset($objet['objet_Image_Fichier']) ? $objet['objet_Image_Fichier'] : '' ) );
                 $retour = $this->mf_modifier($Code_objet, $objet_Libelle, $objet_Image_Fichier, $Code_type, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_OBJET__MODIFIER__AUCUN_CHANGEMENT )
                 {
@@ -365,7 +370,7 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_objet => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_objet => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -442,8 +447,9 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_4( $Code_type, $data, $options = array( 'cond_mysql' => array() ) ) // $data = array('colonne1' => 'valeur1', ... )
+    public function mf_modifier_4( int $Code_type, array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
         $code_erreur = 0;
         $Code_type = round($Code_type);
         $mf_colonnes_a_modifier=[];
@@ -462,7 +468,14 @@ class objet_monframework extends entite_monframework
                 unset($condition);
             }
 
-            $requete = 'UPDATE ' . inst('objet') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_type!=0 ? " AND Code_type=$Code_type" : "" )."$argument_cond;";
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('objet') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1".( $Code_type!=0 ? " AND Code_type=$Code_type" : "" )."$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -479,8 +492,9 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_objet, $force=false)
+    public function mf_supprimer( int $Code_objet, ?bool $force=null )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_objet = round($Code_objet);
         if (!$force)
@@ -528,8 +542,9 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_objet, $force=false)
+    public function mf_supprimer_2(array $liste_Code_objet, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_objet = $this->mf_lister_2($liste_Code_objet, array('autocompletion' => false));
         $liste_Code_objet=array();
@@ -582,7 +597,7 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_objet)
+    public function mf_supprimer_3(array $liste_Code_objet)
     {
         $code_erreur=0;
         if ( count($liste_Code_objet)>0 )
@@ -614,8 +629,10 @@ class objet_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_objet']!=0 )
         {
@@ -628,8 +645,9 @@ class objet_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($Code_type=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?int $Code_type=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "objet__lister";
         $Code_type = round($Code_type);
         $cle.="_{$Code_type}";
@@ -767,7 +785,8 @@ class objet_monframework extends entite_monframework
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('objet')." WHERE 1{$argument_cond}".( $Code_type!=0 ? " AND Code_type=$Code_type" : "" )."{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_objet']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_objet']] = $row_requete;
                     if ( $maj && ! Hook_objet::est_a_jour( $row_requete ) )
                     {
                         $liste_objet_pas_a_jour[$row_requete['Code_objet']] = $row_requete;
@@ -817,8 +836,9 @@ class objet_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_objet, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_objet, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_objet)>0 )
         {
             $cle = "objet__mf_lister_2_".Sql_Format_Liste($liste_Code_objet);
@@ -956,7 +976,8 @@ class objet_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('objet')." WHERE 1{$argument_cond} AND Code_objet IN ".Sql_Format_Liste($liste_Code_objet)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_objet']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_objet']] = $row_requete;
                         if ( $maj && ! Hook_objet::est_a_jour( $row_requete ) )
                         {
                             $liste_objet_pas_a_jour[$row_requete['Code_objet']] = $row_requete;
@@ -1011,8 +1032,9 @@ class objet_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_objet, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_objet, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_objet = round($Code_objet);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_objet', $Code_objet) )
@@ -1059,7 +1081,8 @@ class objet_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('objet') . ' WHERE Code_objet = ' . $Code_objet . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_objet::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1089,8 +1112,9 @@ class objet_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($Code_type=0, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?int $Code_type=null, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "objet__get_last";
         $Code_type = round($Code_type);
         $cle.='_' . $Code_type;
@@ -1109,8 +1133,9 @@ class objet_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_objet, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_objet, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_objet = round($Code_objet);
         $retour = array();
         $cle = 'objet__get_'.$Code_objet;
@@ -1151,7 +1176,8 @@ class objet_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('objet')." WHERE Code_objet = $Code_objet;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1168,15 +1194,17 @@ class objet_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_objet, $Code_type=0, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_objet, ?int $Code_type=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_objet = round($Code_objet);
         $liste = $this->mf_lister($Code_type, $options);
         return prec_suiv($liste, $Code_objet);
     }
 
-    public function mf_compter($Code_type=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?int $Code_type=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'objet__compter';
         $Code_type = round($Code_type);
         $cle.='_{'.$Code_type.'}';
@@ -1232,38 +1260,42 @@ class objet_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_objet) as nb FROM ".inst('objet')." WHERE 1{$argument_cond}".( $Code_type!=0 ? " AND Code_type=$Code_type" : "" ).";", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_objet) as nb FROM ' . inst('objet')." WHERE 1{$argument_cond}".( $Code_type!=0 ? " AND Code_type=$Code_type" : "" ).";", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         $Code_type = isset($interface['Code_type']) ? round($interface['Code_type']) : 0;
         return $this->mf_compter( $Code_type, $options );
     }
 
-    public function mf_liste_Code_objet($Code_type=0, $options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_objet(?int $Code_type=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_objet($Code_type, $options);
     }
 
-    public function mf_convertir_Code_objet_vers_Code_type( $Code_objet )
+    public function mf_convertir_Code_objet_vers_Code_type( int $Code_objet )
     {
         return $this->Code_objet_vers_Code_type( $Code_objet );
     }
 
-    public function mf_liste_Code_type_vers_liste_Code_objet( $liste_Code_type, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_type_vers_liste_Code_objet( array $liste_Code_type, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->liste_Code_type_vers_liste_Code_objet( $liste_Code_type, $options );
     }
 
-    public function mf_liste_Code_objet_vers_liste_Code_type( $liste_Code_objet, $options = array( 'cond_mysql' => array() ) )
+    public function mf_liste_Code_objet_vers_liste_Code_type( array $liste_Code_objet, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->objet__liste_Code_objet_vers_liste_Code_type( $liste_Code_objet, $options );
     }
 
@@ -1277,17 +1309,17 @@ class objet_monframework extends entite_monframework
         return array('Code_type');
     }
 
-    public function mf_search_objet_Libelle( $objet_Libelle, $Code_type=0 )
+    public function mf_search_objet_Libelle( string $objet_Libelle, ?int $Code_type=null )
     {
         return $this->rechercher_objet_Libelle( $objet_Libelle, $Code_type );
     }
 
-    public function mf_search_objet_Image_Fichier( $objet_Image_Fichier, $Code_type=0 )
+    public function mf_search_objet_Image_Fichier( string $objet_Image_Fichier, ?int $Code_type=null )
     {
         return $this->rechercher_objet_Image_Fichier( $objet_Image_Fichier, $Code_type );
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche, $Code_type=0 )
+    public function mf_search__colonne( string $colonne_db, $recherche, ?int $Code_type=null )
     {
         switch ($colonne_db) {
             case 'objet_Libelle': return $this->mf_search_objet_Libelle( $recherche, $Code_type ); break;
@@ -1303,12 +1335,12 @@ class objet_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $Code_type = (isset($ligne['Code_type'])?round($ligne['Code_type']):0);
-        $objet_Libelle = (isset($ligne['objet_Libelle'])?$ligne['objet_Libelle']:$mf_initialisation['objet_Libelle']);
-        $objet_Image_Fichier = (isset($ligne['objet_Image_Fichier'])?$ligne['objet_Image_Fichier']:$mf_initialisation['objet_Image_Fichier']);
+        $Code_type = (int)(isset($ligne['Code_type'])?round($ligne['Code_type']):0);
+        $objet_Libelle = (string)(isset($ligne['objet_Libelle'])?$ligne['objet_Libelle']:$mf_initialisation['objet_Libelle']);
+        $objet_Image_Fichier = (string)(isset($ligne['objet_Image_Fichier'])?$ligne['objet_Image_Fichier']:$mf_initialisation['objet_Image_Fichier']);
         Hook_objet::pre_controller($objet_Libelle, $objet_Image_Fichier, $Code_type);
         $mf_cle_unique = Hook_objet::calcul_cle_unique($objet_Libelle, $objet_Image_Fichier, $Code_type);
         $res_requete = executer_requete_mysql('SELECT Code_objet FROM ' . inst('objet') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);

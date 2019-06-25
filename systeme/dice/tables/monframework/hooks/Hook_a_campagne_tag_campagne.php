@@ -12,12 +12,12 @@ class Hook_a_campagne_tag_campagne{
         // ici le code
     }
 
-    static function pre_controller($Code_tag_campagne, $Code_campagne)
+    static function pre_controller(int $Code_tag_campagne, int $Code_campagne)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_tag_campagne=0, $Code_campagne=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_tag_campagne=null, ?int $Code_campagne=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,22 +30,22 @@ class Hook_a_campagne_tag_campagne{
         // ici le code
     }
 
-    static function autorisation_ajout($Code_tag_campagne, $Code_campagne)
+    static function autorisation_ajout(int $Code_tag_campagne, int $Code_campagne)
     {
         return true;
     }
 
-    static function data_controller($Code_tag_campagne, $Code_campagne)
+    static function data_controller(int $Code_tag_campagne, int $Code_campagne)
     {
         // ici le code
     }
 
-    static function ajouter($Code_tag_campagne, $Code_campagne)
+    static function ajouter(int $Code_tag_campagne, int $Code_campagne)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_tag_campagne=0, $Code_campagne=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_tag_campagne=null, ?int $Code_campagne=null)
     {
         global $mf_droits_defaut;
         /*
@@ -61,17 +61,17 @@ class Hook_a_campagne_tag_campagne{
         }
     }
 
-    static function autorisation_suppression($Code_tag_campagne, $Code_campagne)
+    static function autorisation_suppression(int $Code_tag_campagne, int $Code_campagne)
     {
         return true;
     }
 
-    static function supprimer($copie__liste_a_campagne_tag_campagne)
+    static function supprimer(array $copie__liste_a_campagne_tag_campagne)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -84,12 +84,12 @@ class Hook_a_campagne_tag_campagne{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_tag_campagne, $Code_campagne)
+    static function callback_post(int $Code_tag_campagne, int $Code_campagne)
     {
         return null;
     }
 
-    static function callback_put($Code_tag_campagne, $Code_campagne)
+    static function callback_put(int $Code_tag_campagne, int $Code_campagne)
     {
         return null;
     }

@@ -12,12 +12,12 @@ class Hook_messagerie{
         // ici le code
     }
 
-    static function pre_controller(&$Code_joueur, $Code_messagerie=0)
+    static function pre_controller(string &$messagerie_Nom, int &$Code_joueur, ?int $Code_messagerie=null)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_joueur=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_joueur=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,34 +30,34 @@ class Hook_messagerie{
         // ici le code
     }
 
-    static function autorisation_ajout($Code_joueur)
+    static function autorisation_ajout(string $messagerie_Nom, int $Code_joueur)
     {
         return true;
     }
 
-    static function data_controller(&$Code_joueur, $Code_messagerie=0)
+    static function data_controller(string &$messagerie_Nom, int &$Code_joueur, ?int $Code_messagerie=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($Code_joueur)
+    static function calcul_signature(string $messagerie_Nom, int $Code_joueur)
     {
-        return md5($Code_joueur);
+        return md5($messagerie_Nom.'-'.$Code_joueur);
     }
 
-    static function calcul_cle_unique($Code_joueur)
+    static function calcul_cle_unique(string $messagerie_Nom, int $Code_joueur)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
-        return $Code_joueur;
+        return $Code_joueur.'.'.sha1($messagerie_Nom);
     }
 
-    static function ajouter($Code_messagerie)
+    static function ajouter(int $Code_messagerie)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_messagerie=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_messagerie=null)
     {
         global $mf_droits_defaut;
         /*
@@ -65,32 +65,39 @@ class Hook_messagerie{
          *
          * $mf_droits_defaut['messagerie__MODIFIER']
          *
+         * $mf_droits_defaut['api_modifier__messagerie_Nom']
+         *
          * $mf_droits_defaut['api_modifier_ref__messagerie__Code_joueur']
          *
          */
         // ici le code
     }
 
-    static function autorisation_modification($Code_messagerie, $Code_joueur__new)
+    static function autorisation_modification(int $Code_messagerie, string $messagerie_Nom__new, int $Code_joueur__new)
     {
         return true;
     }
 
-    static function data_controller__Code_joueur($old, &$new, $Code_messagerie)
+    static function data_controller__messagerie_Nom(string $old, string &$new, int $Code_messagerie)
+    {
+        // ici le code
+    }
+
+    static function data_controller__Code_joueur(int $old, int &$new, int $Code_messagerie)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_messagerie permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_messagerie, $bool__Code_joueur)
+    static function modifier(int $Code_messagerie, bool $bool__messagerie_Nom, bool $bool__Code_joueur)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_messagerie=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_messagerie=null)
     {
         global $mf_droits_defaut;
         /*
@@ -107,17 +114,17 @@ class Hook_messagerie{
         }
     }
 
-    static function autorisation_suppression($Code_messagerie)
+    static function autorisation_suppression(int $Code_messagerie)
     {
         return true;
     }
 
-    static function supprimer($copie__messagerie)
+    static function supprimer(array $copie__messagerie)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_messagerie)
+    static function supprimer_2(array $copie__liste_messagerie)
     {
         foreach ($copie__liste_messagerie as &$copie__messagerie)
         {
@@ -126,27 +133,29 @@ class Hook_messagerie{
         unset($copie__messagerie);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
          * $donnees['Code_messagerie']
          * $donnees['Code_joueur']
+         * $donnees['messagerie_Nom']
          */
         return true;
     }
 
-    static function mettre_a_jour($liste_messagerie)
+    static function mettre_a_jour(array $liste_messagerie)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
          * $donnees['Code_messagerie']
          * $donnees['Code_joueur']
+         * $donnees['messagerie_Nom']
          */
         // ici le code
     }
@@ -154,12 +163,12 @@ class Hook_messagerie{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_messagerie)
+    static function callback_post(int $Code_messagerie)
     {
         return null;
     }
 
-    static function callback_put($Code_messagerie)
+    static function callback_put(int $Code_messagerie)
     {
         return null;
     }

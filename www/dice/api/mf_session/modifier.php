@@ -11,11 +11,11 @@
 */
     $name = lecture_parametre_api('name', '');
     $value = lecture_parametre_api($name);
-    if ( $value!='null' )
+    if ( $value!==null )
     {
         Hook_mf_systeme::controle_parametres_session($name, $value);
     }
-    if ( $value!='null' )
+    if ( $value!==null )
     {
         $_SESSION[PREFIXE_SESSION]['parametres'][$name] = $value;
     }

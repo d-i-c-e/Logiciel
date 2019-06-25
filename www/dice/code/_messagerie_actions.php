@@ -21,6 +21,7 @@
     if ( $mf_action=='ajouter_messagerie' && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
     {
         $mf_add = [];
+        if ( isset( $_POST['messagerie_Nom'] ) ) { $mf_add['messagerie_Nom'] = $_POST['messagerie_Nom']; }
         $mf_add['Code_joueur'] = ( isset($_POST['Code_joueur']) ? $_POST['Code_joueur'] : $Code_joueur );
         $retour = $table_messagerie->mf_ajouter_2($mf_add);
         if ( $retour['code_erreur']==0 )
@@ -63,8 +64,24 @@
     if ( $mf_action=="modifier_messagerie" && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
     {
         $mf_update = [];
+        if ( isset( $_POST['messagerie_Nom'] ) ) { $mf_update['messagerie_Nom'] = $_POST['messagerie_Nom']; }
         if ( isset($_POST['Code_joueur']) ) { $mf_update['Code_joueur'] = $_POST['Code_joueur']; }
         $retour = $table_messagerie->mf_modifier_2( [ $Code_messagerie => $mf_update ] );
+        if ( $retour['code_erreur']==0 )
+        {
+            $mf_action = 'apercu_messagerie';
+            $cache->clear();
+        }
+        else
+        {
+            $cache->clear_current_page();
+        }
+    }
+
+    if ( $mf_action=='modifier_messagerie_Nom' && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
+    {
+        $messagerie_Nom = $_POST['messagerie_Nom'];
+        $retour = $table_messagerie->mf_modifier_2( [ $Code_messagerie => [ 'messagerie_Nom' => $messagerie_Nom ] ] );
         if ( $retour['code_erreur']==0 )
         {
             $mf_action = 'apercu_messagerie';

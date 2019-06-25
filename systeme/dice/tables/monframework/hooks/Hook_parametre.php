@@ -12,7 +12,7 @@ class Hook_parametre{
         // ici le code
     }
 
-    static function pre_controller(&$parametre_Libelle, &$parametre_Valeur, &$parametre_Activable, &$parametre_Actif, $Code_parametre=0)
+    static function pre_controller(string &$parametre_Libelle, int &$parametre_Valeur, bool &$parametre_Activable, bool &$parametre_Actif, ?int $Code_parametre=null)
     {
         // ici le code
     }
@@ -30,34 +30,34 @@ class Hook_parametre{
         // ici le code
     }
 
-    static function autorisation_ajout($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif)
+    static function autorisation_ajout(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif)
     {
         return true;
     }
 
-    static function data_controller(&$parametre_Libelle, &$parametre_Valeur, &$parametre_Activable, &$parametre_Actif, $Code_parametre=0)
+    static function data_controller(string &$parametre_Libelle, int &$parametre_Valeur, bool &$parametre_Activable, bool &$parametre_Actif, ?int $Code_parametre=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif)
+    static function calcul_signature(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif)
     {
         return md5($parametre_Libelle.'-'.$parametre_Valeur.'-'.$parametre_Activable.'-'.$parametre_Actif);
     }
 
-    static function calcul_cle_unique($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif)
+    static function calcul_cle_unique(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return sha1($parametre_Libelle.'.'.$parametre_Valeur.'.'.$parametre_Activable.'.'.$parametre_Actif);
     }
 
-    static function ajouter($Code_parametre)
+    static function ajouter(int $Code_parametre)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_parametre=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_parametre=null)
     {
         global $mf_droits_defaut;
         /*
@@ -74,41 +74,41 @@ class Hook_parametre{
         // ici le code
     }
 
-    static function autorisation_modification($Code_parametre, $parametre_Libelle__new, $parametre_Valeur__new, $parametre_Activable__new, $parametre_Actif__new)
+    static function autorisation_modification(int $Code_parametre, string $parametre_Libelle__new, int $parametre_Valeur__new, bool $parametre_Activable__new, bool $parametre_Actif__new)
     {
         return true;
     }
 
-    static function data_controller__parametre_Libelle($old, &$new, $Code_parametre)
+    static function data_controller__parametre_Libelle(string $old, string &$new, int $Code_parametre)
     {
         // ici le code
     }
 
-    static function data_controller__parametre_Valeur($old, &$new, $Code_parametre)
+    static function data_controller__parametre_Valeur(int $old, int &$new, int $Code_parametre)
     {
         // ici le code
     }
 
-    static function data_controller__parametre_Activable($old, &$new, $Code_parametre)
+    static function data_controller__parametre_Activable(bool $old, bool &$new, int $Code_parametre)
     {
         // ici le code
     }
 
-    static function data_controller__parametre_Actif($old, &$new, $Code_parametre)
+    static function data_controller__parametre_Actif(bool $old, bool &$new, int $Code_parametre)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_parametre permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_parametre, $bool__parametre_Libelle, $bool__parametre_Valeur, $bool__parametre_Activable, $bool__parametre_Actif)
+    static function modifier(int $Code_parametre, bool $bool__parametre_Libelle, bool $bool__parametre_Valeur, bool $bool__parametre_Activable, bool $bool__parametre_Actif)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_parametre=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_parametre=null)
     {
         global $mf_droits_defaut;
         /*
@@ -124,17 +124,17 @@ class Hook_parametre{
         }
     }
 
-    static function autorisation_suppression($Code_parametre)
+    static function autorisation_suppression(int $Code_parametre)
     {
         return true;
     }
 
-    static function supprimer($copie__parametre)
+    static function supprimer(array $copie__parametre)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_parametre)
+    static function supprimer_2(array $copie__liste_parametre)
     {
         foreach ($copie__liste_parametre as &$copie__parametre)
         {
@@ -143,7 +143,7 @@ class Hook_parametre{
         unset($copie__parametre);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -156,12 +156,12 @@ class Hook_parametre{
         return true;
     }
 
-    static function mettre_a_jour($liste_parametre)
+    static function mettre_a_jour(array $liste_parametre)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -177,12 +177,12 @@ class Hook_parametre{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_parametre)
+    static function callback_post(int $Code_parametre)
     {
         return null;
     }
 
-    static function callback_put($Code_parametre)
+    static function callback_put(int $Code_parametre)
     {
         return null;
     }

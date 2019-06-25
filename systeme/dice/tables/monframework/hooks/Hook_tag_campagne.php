@@ -12,7 +12,7 @@ class Hook_tag_campagne{
         // ici le code
     }
 
-    static function pre_controller(&$tag_campagne_Libelle, $Code_tag_campagne=0)
+    static function pre_controller(string &$tag_campagne_Libelle, ?int $Code_tag_campagne=null)
     {
         // ici le code
     }
@@ -30,34 +30,34 @@ class Hook_tag_campagne{
         // ici le code
     }
 
-    static function autorisation_ajout($tag_campagne_Libelle)
+    static function autorisation_ajout(string $tag_campagne_Libelle)
     {
         return true;
     }
 
-    static function data_controller(&$tag_campagne_Libelle, $Code_tag_campagne=0)
+    static function data_controller(string &$tag_campagne_Libelle, ?int $Code_tag_campagne=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($tag_campagne_Libelle)
+    static function calcul_signature(string $tag_campagne_Libelle)
     {
         return md5($tag_campagne_Libelle);
     }
 
-    static function calcul_cle_unique($tag_campagne_Libelle)
+    static function calcul_cle_unique(string $tag_campagne_Libelle)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return sha1($tag_campagne_Libelle);
     }
 
-    static function ajouter($Code_tag_campagne)
+    static function ajouter(int $Code_tag_campagne)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_tag_campagne=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_tag_campagne=null)
     {
         global $mf_droits_defaut;
         /*
@@ -71,26 +71,26 @@ class Hook_tag_campagne{
         // ici le code
     }
 
-    static function autorisation_modification($Code_tag_campagne, $tag_campagne_Libelle__new)
+    static function autorisation_modification(int $Code_tag_campagne, string $tag_campagne_Libelle__new)
     {
         return true;
     }
 
-    static function data_controller__tag_campagne_Libelle($old, &$new, $Code_tag_campagne)
+    static function data_controller__tag_campagne_Libelle(string $old, string &$new, int $Code_tag_campagne)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_tag_campagne permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_tag_campagne, $bool__tag_campagne_Libelle)
+    static function modifier(int $Code_tag_campagne, bool $bool__tag_campagne_Libelle)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_tag_campagne=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_tag_campagne=null)
     {
         global $mf_droits_defaut;
         /*
@@ -106,17 +106,17 @@ class Hook_tag_campagne{
         }
     }
 
-    static function autorisation_suppression($Code_tag_campagne)
+    static function autorisation_suppression(int $Code_tag_campagne)
     {
         return true;
     }
 
-    static function supprimer($copie__tag_campagne)
+    static function supprimer(array $copie__tag_campagne)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_tag_campagne)
+    static function supprimer_2(array $copie__liste_tag_campagne)
     {
         foreach ($copie__liste_tag_campagne as &$copie__tag_campagne)
         {
@@ -125,7 +125,7 @@ class Hook_tag_campagne{
         unset($copie__tag_campagne);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -135,12 +135,12 @@ class Hook_tag_campagne{
         return true;
     }
 
-    static function mettre_a_jour($liste_tag_campagne)
+    static function mettre_a_jour(array $liste_tag_campagne)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -153,12 +153,12 @@ class Hook_tag_campagne{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_tag_campagne)
+    static function callback_post(int $Code_tag_campagne)
     {
         return null;
     }
 
-    static function callback_put($Code_tag_campagne)
+    static function callback_put(int $Code_tag_campagne)
     {
         return null;
     }

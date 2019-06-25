@@ -12,12 +12,12 @@ class Hook_a_ressource_tag_ressource{
         // ici le code
     }
 
-    static function pre_controller($Code_tag_ressource, $Code_ressource)
+    static function pre_controller(int $Code_tag_ressource, int $Code_ressource)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_tag_ressource=0, $Code_ressource=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_tag_ressource=null, ?int $Code_ressource=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,22 +30,22 @@ class Hook_a_ressource_tag_ressource{
         // ici le code
     }
 
-    static function autorisation_ajout($Code_tag_ressource, $Code_ressource)
+    static function autorisation_ajout(int $Code_tag_ressource, int $Code_ressource)
     {
         return true;
     }
 
-    static function data_controller($Code_tag_ressource, $Code_ressource)
+    static function data_controller(int $Code_tag_ressource, int $Code_ressource)
     {
         // ici le code
     }
 
-    static function ajouter($Code_tag_ressource, $Code_ressource)
+    static function ajouter(int $Code_tag_ressource, int $Code_ressource)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_tag_ressource=0, $Code_ressource=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_tag_ressource=null, ?int $Code_ressource=null)
     {
         global $mf_droits_defaut;
         /*
@@ -61,17 +61,17 @@ class Hook_a_ressource_tag_ressource{
         }
     }
 
-    static function autorisation_suppression($Code_tag_ressource, $Code_ressource)
+    static function autorisation_suppression(int $Code_tag_ressource, int $Code_ressource)
     {
         return true;
     }
 
-    static function supprimer($copie__liste_a_ressource_tag_ressource)
+    static function supprimer(array $copie__liste_a_ressource_tag_ressource)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -84,12 +84,12 @@ class Hook_a_ressource_tag_ressource{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_tag_ressource, $Code_ressource)
+    static function callback_post(int $Code_tag_ressource, int $Code_ressource)
     {
         return null;
     }
 
-    static function callback_put($Code_tag_ressource, $Code_ressource)
+    static function callback_put(int $Code_tag_ressource, int $Code_ressource)
     {
         return null;
     }

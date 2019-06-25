@@ -35,9 +35,9 @@ $cache = new Cachehtml();
 if ( !$cache->start('new_pwd') )
 {
 
-    ob_start(); include 'scripts/css.php'; $css = ob_get_clean();
-    ob_start(); include 'scripts/js.php'; $js = ob_get_clean();
-    ob_start(); include 'scripts/menu.php'; $menu = ob_get_clean();
+    ob_start(); include __DIR__ . '/scripts/css.php'; $css = ob_get_clean();
+    ob_start(); include __DIR__ . '/scripts/js.php'; $js = ob_get_clean();
+    ob_start(); include __DIR__ . '/scripts/menu.php'; $menu = ob_get_clean();
 
     $mess = ( (isset($retour) && $retour['code_erreur']>0) ? (isset($mf_libelle_erreur[$retour['code_erreur']]) ? $mf_libelle_erreur[$retour['code_erreur']] : 'ERREUR N_'.$retour['code_erreur'] ) : '' );
     if ($mess_2!='')

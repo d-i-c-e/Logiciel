@@ -12,12 +12,12 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function pre_controller(&$groupe_Nom, &$groupe_Description, &$groupe_Logo_Fichier, &$groupe_Effectif, &$groupe_Actif, &$groupe_Date_creation, &$groupe_Delai_suppression_jour, &$groupe_Suppression_active, &$Code_campagne, $Code_groupe=0)
+    static function pre_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, bool &$groupe_Effectif, int &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_ajouter($Code_campagne=0)
+    static function hook_actualiser_les_droits_ajouter(?int $Code_campagne=null)
     {
         global $mf_droits_defaut;
         /*
@@ -30,34 +30,34 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function autorisation_ajout($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne)
+    static function autorisation_ajout(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
     {
         return true;
     }
 
-    static function data_controller(&$groupe_Nom, &$groupe_Description, &$groupe_Logo_Fichier, &$groupe_Effectif, &$groupe_Actif, &$groupe_Date_creation, &$groupe_Delai_suppression_jour, &$groupe_Suppression_active, &$Code_campagne, $Code_groupe=0)
+    static function data_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, bool &$groupe_Effectif, int &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
     {
         // ici le code
     }
 
-    static function calcul_signature($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne)
+    static function calcul_signature(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
     {
         return md5($groupe_Nom.'-'.$groupe_Description.'-'.$groupe_Logo_Fichier.'-'.$groupe_Effectif.'-'.$groupe_Actif.'-'.$groupe_Date_creation.'-'.$groupe_Delai_suppression_jour.'-'.$groupe_Suppression_active.'-'.$Code_campagne);
     }
 
-    static function calcul_cle_unique($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne)
+    static function calcul_cle_unique(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
         return $Code_campagne.'.'.sha1($groupe_Nom.'.'.$groupe_Description.'.'.$groupe_Logo_Fichier.'.'.$groupe_Effectif.'.'.$groupe_Actif.'.'.$groupe_Date_creation.'.'.$groupe_Delai_suppression_jour.'.'.$groupe_Suppression_active);
     }
 
-    static function ajouter($Code_groupe)
+    static function ajouter(int $Code_groupe)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_modifier($Code_groupe=0)
+    static function hook_actualiser_les_droits_modifier(?int $Code_groupe=null)
     {
         global $mf_droits_defaut;
         /*
@@ -80,66 +80,66 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function autorisation_modification($Code_groupe, $groupe_Nom__new, $groupe_Description__new, $groupe_Logo_Fichier__new, $groupe_Effectif__new, $groupe_Actif__new, $groupe_Date_creation__new, $groupe_Delai_suppression_jour__new, $groupe_Suppression_active__new, $Code_campagne__new)
+    static function autorisation_modification(int $Code_groupe, string $groupe_Nom__new, string $groupe_Description__new, string $groupe_Logo_Fichier__new, bool $groupe_Effectif__new, int $groupe_Actif__new, string $groupe_Date_creation__new, int $groupe_Delai_suppression_jour__new, bool $groupe_Suppression_active__new, int $Code_campagne__new)
     {
         return true;
     }
 
-    static function data_controller__groupe_Nom($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Nom(string $old, string &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Description($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Description(string $old, string &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Logo_Fichier($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Logo_Fichier(string $old, string &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Effectif($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Effectif(bool $old, bool &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Actif($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Actif(int $old, int &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Date_creation($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Date_creation(string $old, string &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Delai_suppression_jour($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Delai_suppression_jour(int $old, int &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Suppression_active($old, &$new, $Code_groupe)
+    static function data_controller__groupe_Suppression_active(bool $old, bool &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__Code_campagne($old, &$new, $Code_groupe)
+    static function data_controller__Code_campagne(int $old, int &$new, int $Code_groupe)
     {
         // ici le code
     }
 
     /*
-     * modifier : $Code_match_foot permet de se référer à la données modifiée
+     * modifier : $Code_groupe permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier($Code_groupe, $bool__groupe_Nom, $bool__groupe_Description, $bool__groupe_Logo_Fichier, $bool__groupe_Effectif, $bool__groupe_Actif, $bool__groupe_Date_creation, $bool__groupe_Delai_suppression_jour, $bool__groupe_Suppression_active, $bool__Code_campagne)
+    static function modifier(int $Code_groupe, bool $bool__groupe_Nom, bool $bool__groupe_Description, bool $bool__groupe_Logo_Fichier, bool $bool__groupe_Effectif, bool $bool__groupe_Actif, bool $bool__groupe_Date_creation, bool $bool__groupe_Delai_suppression_jour, bool $bool__groupe_Suppression_active, bool $bool__Code_campagne)
     {
         // ici le code
     }
 
-    static function hook_actualiser_les_droits_supprimer($Code_groupe=0)
+    static function hook_actualiser_les_droits_supprimer(?int $Code_groupe=null)
     {
         global $mf_droits_defaut;
         /*
@@ -157,17 +157,17 @@ class Hook_groupe{
         }
     }
 
-    static function autorisation_suppression($Code_groupe)
+    static function autorisation_suppression(int $Code_groupe)
     {
         return true;
     }
 
-    static function supprimer($copie__groupe)
+    static function supprimer(array $copie__groupe)
     {
         // ici le code
     }
 
-    static function supprimer_2($copie__liste_groupe)
+    static function supprimer_2(array $copie__liste_groupe)
     {
         foreach ($copie__liste_groupe as &$copie__groupe)
         {
@@ -176,7 +176,7 @@ class Hook_groupe{
         unset($copie__groupe);
     }
 
-    static function est_a_jour(&$donnees)
+    static function est_a_jour(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -194,12 +194,12 @@ class Hook_groupe{
         return true;
     }
 
-    static function mettre_a_jour($liste_groupe)
+    static function mettre_a_jour(array $liste_groupe)
     {
         // ici le code
     }
 
-    static function completion(&$donnees)
+    static function completion(array &$donnees)
     {
         /*
          * Balises disponibles :
@@ -220,12 +220,12 @@ class Hook_groupe{
     // API callbacks
     // -------------------
 
-    static function callback_post($Code_groupe)
+    static function callback_post(int $Code_groupe)
     {
         return null;
     }
 
-    static function callback_put($Code_groupe)
+    static function callback_put(int $Code_groupe)
     {
         return null;
     }

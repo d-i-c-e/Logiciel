@@ -169,8 +169,9 @@ class campagne_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter($campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj, $force=false)
+    public function mf_ajouter(string $campagne_Nom, string $campagne_Description, string $campagne_Image_Fichier, int $campagne_Nombre_joueur, int $campagne_Nombre_mj, ?bool $force=false)
     {
+        if ( $force===null ) { $force=false; }
         $Code_campagne = 0;
         $code_erreur = 0;
         $campagne_Nombre_joueur = round($campagne_Nombre_joueur);
@@ -226,8 +227,9 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'Code_campagne' => $Code_campagne, 'callback' => ( $code_erreur==0 ? Hook_campagne::callback_post($Code_campagne) : null ));
     }
 
-    public function mf_creer($force=false)
+    public function mf_creer(?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["campagne__AJOUTER"] = $mf_droits_defaut["campagne__CREER"];
         $campagne_Nom = $mf_initialisation['campagne_Nom'];
@@ -238,18 +240,19 @@ class campagne_monframework extends entite_monframework
         return $this->mf_ajouter($campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj, $force);
     }
 
-    public function mf_ajouter_2($ligne, $force=false) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
     {
+        if ( $force===null ) { $force=false; }
         global $mf_initialisation;
-        $campagne_Nom = (isset($ligne['campagne_Nom'])?$ligne['campagne_Nom']:$mf_initialisation['campagne_Nom']);
-        $campagne_Description = (isset($ligne['campagne_Description'])?$ligne['campagne_Description']:$mf_initialisation['campagne_Description']);
-        $campagne_Image_Fichier = (isset($ligne['campagne_Image_Fichier'])?$ligne['campagne_Image_Fichier']:$mf_initialisation['campagne_Image_Fichier']);
-        $campagne_Nombre_joueur = (isset($ligne['campagne_Nombre_joueur'])?$ligne['campagne_Nombre_joueur']:$mf_initialisation['campagne_Nombre_joueur']);
-        $campagne_Nombre_mj = (isset($ligne['campagne_Nombre_mj'])?$ligne['campagne_Nombre_mj']:$mf_initialisation['campagne_Nombre_mj']);
+        $campagne_Nom = (string)(isset($ligne['campagne_Nom'])?$ligne['campagne_Nom']:$mf_initialisation['campagne_Nom']);
+        $campagne_Description = (string)(isset($ligne['campagne_Description'])?$ligne['campagne_Description']:$mf_initialisation['campagne_Description']);
+        $campagne_Image_Fichier = (string)(isset($ligne['campagne_Image_Fichier'])?$ligne['campagne_Image_Fichier']:$mf_initialisation['campagne_Image_Fichier']);
+        $campagne_Nombre_joueur = (int)(isset($ligne['campagne_Nombre_joueur'])?$ligne['campagne_Nombre_joueur']:$mf_initialisation['campagne_Nombre_joueur']);
+        $campagne_Nombre_mj = (int)(isset($ligne['campagne_Nombre_mj'])?$ligne['campagne_Nombre_mj']:$mf_initialisation['campagne_Nombre_mj']);
         return $this->mf_ajouter($campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj, $force);
     }
 
-    public function mf_ajouter_3($lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
+    public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
     {
         global $mf_initialisation;
         $code_erreur = 0;
@@ -292,8 +295,9 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier($Code_campagne, $campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj, $force=false)
+    public function mf_modifier( int $Code_campagne, string $campagne_Nom, string $campagne_Description, string $campagne_Image_Fichier, int $campagne_Nombre_joueur, int $campagne_Nombre_mj, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_campagne = round($Code_campagne);
         $campagne_Nombre_joueur = round($campagne_Nombre_joueur);
@@ -361,14 +365,15 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur, 'callback' => ( $code_erreur == 0 ? Hook_campagne::callback_put($Code_campagne) : null ));
     }
 
-    public function mf_modifier_2($lignes, $force=false) // array( $Code_campagne => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_2(array $lignes, ?bool $force=null) // array( $Code_campagne => array('colonne1' => 'valeur1',  [...] ) )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         foreach ( $lignes as $Code_campagne => $colonnes )
         {
             if ( $code_erreur==0 )
             {
-                $Code_campagne = round($Code_campagne);
+                $Code_campagne = (int)round($Code_campagne);
                 $campagne = $this->mf_get_2($Code_campagne, array('autocompletion' => false));
                 if (!$force)
                 {
@@ -379,11 +384,11 @@ class campagne_monframework extends entite_monframework
                         self::$maj_droits_modifier_en_cours = false;
                     }
                 }
-                $campagne_Nom = ( isset($colonnes['campagne_Nom']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Nom', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Nom'] : ( isset($campagne['campagne_Nom']) ? $campagne['campagne_Nom'] : '' ) );
-                $campagne_Description = ( isset($colonnes['campagne_Description']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Description', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Description'] : ( isset($campagne['campagne_Description']) ? $campagne['campagne_Description'] : '' ) );
-                $campagne_Image_Fichier = ( isset($colonnes['campagne_Image_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Image_Fichier', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Image_Fichier'] : ( isset($campagne['campagne_Image_Fichier']) ? $campagne['campagne_Image_Fichier'] : '' ) );
-                $campagne_Nombre_joueur = ( isset($colonnes['campagne_Nombre_joueur']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Nombre_joueur', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Nombre_joueur'] : ( isset($campagne['campagne_Nombre_joueur']) ? $campagne['campagne_Nombre_joueur'] : '' ) );
-                $campagne_Nombre_mj = ( isset($colonnes['campagne_Nombre_mj']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Nombre_mj', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Nombre_mj'] : ( isset($campagne['campagne_Nombre_mj']) ? $campagne['campagne_Nombre_mj'] : '' ) );
+                $campagne_Nom = (string)( isset($colonnes['campagne_Nom']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Nom', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Nom'] : ( isset($campagne['campagne_Nom']) ? $campagne['campagne_Nom'] : '' ) );
+                $campagne_Description = (string)( isset($colonnes['campagne_Description']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Description', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Description'] : ( isset($campagne['campagne_Description']) ? $campagne['campagne_Description'] : '' ) );
+                $campagne_Image_Fichier = (string)( isset($colonnes['campagne_Image_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Image_Fichier', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Image_Fichier'] : ( isset($campagne['campagne_Image_Fichier']) ? $campagne['campagne_Image_Fichier'] : '' ) );
+                $campagne_Nombre_joueur = (int)( isset($colonnes['campagne_Nombre_joueur']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Nombre_joueur', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Nombre_joueur'] : ( isset($campagne['campagne_Nombre_joueur']) ? $campagne['campagne_Nombre_joueur'] : '' ) );
+                $campagne_Nombre_mj = (int)( isset($colonnes['campagne_Nombre_mj']) && ( $force || mf_matrice_droits(['api_modifier__campagne_Nombre_mj', 'campagne__MODIFIER']) ) ? $colonnes['campagne_Nombre_mj'] : ( isset($campagne['campagne_Nombre_mj']) ? $campagne['campagne_Nombre_mj'] : '' ) );
                 $retour = $this->mf_modifier($Code_campagne, $campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_CAMPAGNE__MODIFIER__AUCUN_CHANGEMENT )
                 {
@@ -407,7 +412,7 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_3($lignes) // array( $Code_campagne => array('colonne1' => 'valeur1',  [...] ) )
+    public function mf_modifier_3(array $lignes) // array( $Code_campagne => array('colonne1' => 'valeur1',  [...] ) )
     {
         $code_erreur = 0;
         $modifs = false;
@@ -484,8 +489,9 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier_4( $data, $options = array( 'cond_mysql' => array() ) ) // $data = array('colonne1' => 'valeur1', ... )
+    public function mf_modifier_4( array $data, ?array $options = null /* $options = array( 'cond_mysql' => array(), 'limit' => 0 ) */ ) // $data = array('colonne1' => 'valeur1', ... )
     {
+        if ( $options===null ) { $force=[]; }
         $code_erreur = 0;
         $mf_colonnes_a_modifier=[];
         if ( isset($data['campagne_Nom']) ) { $mf_colonnes_a_modifier[] = 'campagne_Nom = ' . format_sql('campagne_Nom', $data['campagne_Nom']); }
@@ -506,7 +512,14 @@ class campagne_monframework extends entite_monframework
                 unset($condition);
             }
 
-            $requete = 'UPDATE ' . inst('campagne') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1$argument_cond;";
+            // limit
+            $limit = 0;
+            if (isset($options['limit']))
+            {
+                $limit = round($options['limit']);
+            }
+
+            $requete = 'UPDATE ' . inst('campagne') . ' SET ' . enumeration($mf_colonnes_a_modifier) . " WHERE 1$argument_cond" . ( $limit>0 ? ' LIMIT ' . $limit : '' ) . ";";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -523,8 +536,9 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer($Code_campagne, $force=false)
+    public function mf_supprimer( int $Code_campagne, ?bool $force=null )
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_campagne = round($Code_campagne);
         if (!$force)
@@ -572,8 +586,9 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_2($liste_Code_campagne, $force=false)
+    public function mf_supprimer_2(array $liste_Code_campagne, ?bool $force=null)
     {
+        if ( $force===null ) { $force=false; }
         $code_erreur=0;
         $copie__liste_campagne = $this->mf_lister_2($liste_Code_campagne, array('autocompletion' => false));
         $liste_Code_campagne=array();
@@ -626,7 +641,7 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_supprimer_3($liste_Code_campagne)
+    public function mf_supprimer_3(array $liste_Code_campagne)
     {
         $code_erreur=0;
         if ( count($liste_Code_campagne)>0 )
@@ -658,8 +673,10 @@ class campagne_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_lister_contexte($contexte_parent=true, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_contexte(?bool $contexte_parent=null, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $contexte_parent===null ) { $contexte_parent=true; }
+        if ( $options===null ) { $options=[]; }
         global $mf_contexte, $est_charge;
         if ( ! $contexte_parent && $mf_contexte['Code_campagne']!=0 )
         {
@@ -672,8 +689,9 @@ class campagne_monframework extends entite_monframework
         }
     }
 
-    public function mf_lister($options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister(?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "campagne__lister";
 
         // cond_mysql
@@ -816,7 +834,8 @@ class campagne_monframework extends entite_monframework
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('campagne')." WHERE 1{$argument_cond}{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                 {
-                    $liste[$row_requete['Code_campagne']]=$row_requete;
+                    mf_formatage_db_type_php($row_requete);
+                    $liste[$row_requete['Code_campagne']] = $row_requete;
                     if ( $maj && ! Hook_campagne::est_a_jour( $row_requete ) )
                     {
                         $liste_campagne_pas_a_jour[$row_requete['Code_campagne']] = $row_requete;
@@ -866,8 +885,9 @@ class campagne_monframework extends entite_monframework
         return $liste;
     }
 
-    public function mf_lister_2($liste_Code_campagne, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_lister_2(array $liste_Code_campagne, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         if ( count($liste_Code_campagne)>0 )
         {
             $cle = "campagne__mf_lister_2_".Sql_Format_Liste($liste_Code_campagne);
@@ -1012,7 +1032,8 @@ class campagne_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('campagne')." WHERE 1{$argument_cond} AND Code_campagne IN ".Sql_Format_Liste($liste_Code_campagne)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $liste[$row_requete['Code_campagne']]=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $liste[$row_requete['Code_campagne']] = $row_requete;
                         if ( $maj && ! Hook_campagne::est_a_jour( $row_requete ) )
                         {
                             $liste_campagne_pas_a_jour[$row_requete['Code_campagne']] = $row_requete;
@@ -1067,8 +1088,9 @@ class campagne_monframework extends entite_monframework
         }
     }
 
-    public function mf_get($Code_campagne, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get(int $Code_campagne, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_campagne = round($Code_campagne);
         $retour = array();
         if ( ! CONTROLE_ACCES_DONNEES_DEFAUT || Hook_mf_systeme::controle_acces_donnees('Code_campagne', $Code_campagne) )
@@ -1115,7 +1137,8 @@ class campagne_monframework extends entite_monframework
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('campagne') . ' WHERE Code_campagne = ' . $Code_campagne . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
                     {
-                        $retour=$row_requete;
+                        mf_formatage_db_type_php($row_requete);
+                        $retour = $row_requete;
                         if ( $maj && ! Hook_campagne::est_a_jour( $row_requete ) )
                         {
                             $nouvelle_lecture = true;
@@ -1145,8 +1168,9 @@ class campagne_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_last($options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_last(?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = "campagne__get_last";
         if ( ! $retour = self::$cache_db->read($cle) )
         {
@@ -1163,8 +1187,9 @@ class campagne_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_get_2($Code_campagne, $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ])
+    public function mf_get_2(int $Code_campagne, ?array $options = null /* $options = [ 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'toutes_colonnes' => true, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_campagne = round($Code_campagne);
         $retour = array();
         $cle = 'campagne__get_'.$Code_campagne;
@@ -1205,7 +1230,8 @@ class campagne_monframework extends entite_monframework
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('campagne')." WHERE Code_campagne = $Code_campagne;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
             {
-                $retour=$row_requete;
+                mf_formatage_db_type_php($row_requete);
+                $retour = $row_requete;
             }
             mysqli_free_result($res_requete);
             self::$cache_db->write($cle, $retour);
@@ -1222,15 +1248,17 @@ class campagne_monframework extends entite_monframework
         return $retour;
     }
 
-    public function mf_prec_et_suiv($Code_campagne, $options = array( 'cond_mysql' => array(), 'tris' => array(), 'limit' => array(), 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ))
+    public function mf_prec_et_suiv( int $Code_campagne, ?array $options = null /* $options = [ 'cond_mysql' => [], 'tris' => [], 'limit' => [], 'toutes_colonnes' => TOUTES_COLONNES_DEFAUT, 'autocompletion' => AUTOCOMPLETION_DEFAUT, 'controle_acces_donnees' => CONTROLE_ACCES_DONNEES_DEFAUT, 'maj' => true ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $Code_campagne = round($Code_campagne);
         $liste = $this->mf_lister($options);
         return prec_suiv($liste, $Code_campagne);
     }
 
-    public function mf_compter($options = array( 'cond_mysql' => array() ))
+    public function mf_compter(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         $cle = 'campagne__compter';
 
         // cond_mysql
@@ -1286,22 +1314,24 @@ class campagne_monframework extends entite_monframework
                 }
             }
 
-            $res_requete = executer_requete_mysql("SELECT count(Code_campagne) as nb FROM ".inst('campagne')." WHERE 1{$argument_cond};", false);
+            $res_requete = executer_requete_mysql('SELECT count(Code_campagne) as nb FROM ' . inst('campagne')." WHERE 1{$argument_cond};", false);
             $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC);
             mysqli_free_result($res_requete);
-            $nb = round($row_requete['nb']);
+            $nb = (int) $row_requete['nb'];
             self::$cache_db->write($cle, $nb);
         }
         return $nb;
     }
 
-    public function mfi_compter( $interface, $options = array( 'cond_mysql' => array() ) )
+    public function mfi_compter( array $interface, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
     {
+        if ( $options===null ) { $options=[]; }
         return $this->mf_compter( $options );
     }
 
-    public function mf_liste_Code_campagne($options = array( 'cond_mysql' => array() ))
+    public function mf_liste_Code_campagne(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
+        if ( $options===null ) { $options=[]; }
         return $this->get_liste_Code_campagne($options);
     }
 
@@ -1315,27 +1345,27 @@ class campagne_monframework extends entite_monframework
         return array();
     }
 
-    public function mf_search_campagne_Nom( $campagne_Nom )
+    public function mf_search_campagne_Nom( string $campagne_Nom )
     {
         return $this->rechercher_campagne_Nom( $campagne_Nom );
     }
 
-    public function mf_search_campagne_Image_Fichier( $campagne_Image_Fichier )
+    public function mf_search_campagne_Image_Fichier( string $campagne_Image_Fichier )
     {
         return $this->rechercher_campagne_Image_Fichier( $campagne_Image_Fichier );
     }
 
-    public function mf_search_campagne_Nombre_joueur( $campagne_Nombre_joueur )
+    public function mf_search_campagne_Nombre_joueur( int $campagne_Nombre_joueur )
     {
         return $this->rechercher_campagne_Nombre_joueur( $campagne_Nombre_joueur );
     }
 
-    public function mf_search_campagne_Nombre_mj( $campagne_Nombre_mj )
+    public function mf_search_campagne_Nombre_mj( int $campagne_Nombre_mj )
     {
         return $this->rechercher_campagne_Nombre_mj( $campagne_Nombre_mj );
     }
 
-    public function mf_search__colonne( $colonne_db, $recherche )
+    public function mf_search__colonne( string $colonne_db, $recherche )
     {
         switch ($colonne_db) {
             case 'campagne_Nom': return $this->mf_search_campagne_Nom( $recherche ); break;
@@ -1353,14 +1383,14 @@ class campagne_monframework extends entite_monframework
         return round($row_requete['next_id']);
     }
 
-    public function mf_search($ligne) // array('colonne1' => 'valeur1',  [...] )
+    public function mf_search(array $ligne) // array('colonne1' => 'valeur1',  [...] )
     {
         global $mf_initialisation;
-        $campagne_Nom = (isset($ligne['campagne_Nom'])?$ligne['campagne_Nom']:$mf_initialisation['campagne_Nom']);
-        $campagne_Description = (isset($ligne['campagne_Description'])?$ligne['campagne_Description']:$mf_initialisation['campagne_Description']);
-        $campagne_Image_Fichier = (isset($ligne['campagne_Image_Fichier'])?$ligne['campagne_Image_Fichier']:$mf_initialisation['campagne_Image_Fichier']);
-        $campagne_Nombre_joueur = (isset($ligne['campagne_Nombre_joueur'])?$ligne['campagne_Nombre_joueur']:$mf_initialisation['campagne_Nombre_joueur']);
-        $campagne_Nombre_mj = (isset($ligne['campagne_Nombre_mj'])?$ligne['campagne_Nombre_mj']:$mf_initialisation['campagne_Nombre_mj']);
+        $campagne_Nom = (string)(isset($ligne['campagne_Nom'])?$ligne['campagne_Nom']:$mf_initialisation['campagne_Nom']);
+        $campagne_Description = (string)(isset($ligne['campagne_Description'])?$ligne['campagne_Description']:$mf_initialisation['campagne_Description']);
+        $campagne_Image_Fichier = (string)(isset($ligne['campagne_Image_Fichier'])?$ligne['campagne_Image_Fichier']:$mf_initialisation['campagne_Image_Fichier']);
+        $campagne_Nombre_joueur = (int)(isset($ligne['campagne_Nombre_joueur'])?$ligne['campagne_Nombre_joueur']:$mf_initialisation['campagne_Nombre_joueur']);
+        $campagne_Nombre_mj = (int)(isset($ligne['campagne_Nombre_mj'])?$ligne['campagne_Nombre_mj']:$mf_initialisation['campagne_Nombre_mj']);
         $campagne_Nombre_joueur = round($campagne_Nombre_joueur);
         $campagne_Nombre_mj = round($campagne_Nombre_mj);
         Hook_campagne::pre_controller($campagne_Nom, $campagne_Description, $campagne_Image_Fichier, $campagne_Nombre_joueur, $campagne_Nombre_mj);

@@ -11,6 +11,8 @@
         $trans['{bouton_supprimer_a_joueur_parametre}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_supprimer_a_joueur_parametre', BOUTON_CLASSE_SUPPRIMER) : '';
 
     /* prec_et_suiv */
+    if ( $table_a_joueur_parametre->mf_compter((isset($est_charge['joueur']) ? $mf_contexte['Code_joueur'] : 0), (isset($est_charge['parametre']) ? $mf_contexte['Code_parametre'] : 0))<100 )
+    {
         $liste_a_joueur_parametre = $table_a_joueur_parametre->mf_lister_contexte();
         // prec
         $prec_et_suiv = prec_suiv($liste_a_joueur_parametre, $a_joueur_parametre['Code_joueur'].'-'.$a_joueur_parametre['Code_parametre']);
@@ -28,6 +30,11 @@
             $suiv['title'] = htmlspecialchars(get_titre_ligne_table('a_joueur_parametre', $prec_et_suiv['suiv']));
         }
         $trans['{pager_a_joueur_parametre}'] = get_code_pager($prec, $suiv);
+    }
+    else
+    {
+        $trans['{pager_a_joueur_parametre}'] = '';
+    }
 
     /* Code_joueur */
         $trans['{Code_joueur}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur'=>$a_joueur_parametre['Code_joueur'], 'Code_parametre'=>$a_joueur_parametre['Code_parametre']) , 'DB_name' => 'Code_joueur' , 'valeur_initiale' => $a_joueur_parametre['Code_joueur'] ]);

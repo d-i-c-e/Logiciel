@@ -56,7 +56,7 @@ class Mf_Cachedb
         $this->dossier_cache = __DIR__ . '/cache/';
         if (!file_exists($this->dossier_cache))
         {
-            mkdir($this->dossier_cache);
+            @mkdir($this->dossier_cache);
         }
         if (TABLE_INSTANCE!='')
         {
@@ -66,14 +66,14 @@ class Mf_Cachedb
                 $this->dossier_cache.= $instance.'/';
                 if (!file_exists($this->dossier_cache))
                 {
-                    mkdir($this->dossier_cache);
+                    @mkdir($this->dossier_cache);
                 }
             }
         }
         $this->dossier_cache.= $name.'/';
         if (!file_exists($this->dossier_cache))
         {
-            mkdir($this->dossier_cache);
+            @mkdir($this->dossier_cache);
         }
         $this->name = $name;
         $this->commande_vider_cache = $this->dossier_cache.'commande_vider_cache';

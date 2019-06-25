@@ -44,6 +44,7 @@
     {
 
         $form = new Formulaire('', $mess);
+        $form->ajouter_input("messagerie_Nom", ( isset($_POST['messagerie_Nom']) ? $_POST['messagerie_Nom'] : $mf_initialisation['messagerie_Nom'] ), true);
         if (!isset($est_charge['joueur']))
         {
             $form->ajouter_select(lister_cles($lang_standard['Code_joueur_']), "Code_joueur", ( isset($_POST['Code_joueur']) ? $_POST['Code_joueur'] : 0 ), true);
@@ -60,12 +61,28 @@
         {
 
             $form = new Formulaire('', $mess);
+            $form->ajouter_input("messagerie_Nom", ( isset($_POST['messagerie_Nom']) ? $_POST['messagerie_Nom'] : $messagerie['messagerie_Nom'] ), true);
             if (!isset($est_charge['joueur']))
             {
                 $form->ajouter_select(lister_cles($lang_standard['Code_joueur_']), "Code_joueur", ( isset($_POST['Code_joueur']) ? $_POST['Code_joueur'] : $messagerie['Code_joueur'] ), true);
             }
 
             $code_html.=recuperer_gabarit('messagerie/form_edit_messagerie.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_messagerie')), false, true);
+
+        }
+
+    }
+    elseif ($mf_action=='modifier_messagerie_Nom')
+    {
+
+        $messagerie = $table_messagerie->mf_get($Code_messagerie, array( 'autocompletion' => true ));
+        if (isset($messagerie['Code_messagerie']))
+        {
+
+            $form = new Formulaire('', $mess);
+            $form->ajouter_input("messagerie_Nom", ( isset($_POST['messagerie_Nom']) ? $_POST['messagerie_Nom'] : $messagerie['messagerie_Nom'] ), true);
+
+            $code_html.=recuperer_gabarit('messagerie/form_edit_messagerie_Nom.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_messagerie_Nom')), false, true);
 
         }
 

@@ -8,6 +8,7 @@ joueur_Password VARCHAR,
 joueur_Avatar_Fichier VARCHAR,
 joueur_Date_naissance DATE,
 joueur_Date_inscription DATETIME,
+joueur_Administrateur BOOL,
 PRIMARY KEY (Code_joueur) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS message ;
@@ -23,9 +24,7 @@ DROP TABLE IF EXISTS parametre ;
 
 CREATE TABLE parametre (Code_parametre int AUTO_INCREMENT NOT NULL,
 parametre_Libelle VARCHAR,
-parametre_Valeur INT,
 parametre_Activable BOOL,
-parametre_Actif BOOL,
 PRIMARY KEY (Code_parametre) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS groupe ;
@@ -118,10 +117,19 @@ liste_contacts_Nom VARCHAR,
 Code_joueur int NOT NULL,
 PRIMARY KEY (Code_liste_contacts) ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS parametre_valeur ;
+
+CREATE TABLE parametre_valeur (Code_parametre_valeur int AUTO_INCREMENT NOT NULL,
+parametre_valeur_Libelle VARCHAR,
+Code_parametre int NOT NULL,
+PRIMARY KEY (Code_parametre_valeur) ) ENGINE=InnoDB;
+
 DROP TABLE IF EXISTS a_joueur_parametre ;
 
 CREATE TABLE a_joueur_parametre (Code_joueur int AUTO_INCREMENT NOT NULL,
 Code_parametre int NOT NULL,
+a_joueur_parametre_Valeur_choisie INT,
+a_joueur_parametre_Actif BOOL,
 PRIMARY KEY (Code_joueur,
  Code_parametre) ) ENGINE=InnoDB;
 
@@ -181,4 +189,3 @@ Code_joueur int NOT NULL,
 a_liste_contact_joueur_Date_creation DATETIME,
 PRIMARY KEY (Code_liste_contacts,
  Code_joueur) ) ENGINE=InnoDB;
-

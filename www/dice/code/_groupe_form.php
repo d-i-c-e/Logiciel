@@ -47,8 +47,8 @@
         $form->ajouter_input("groupe_Nom", ( isset($_POST['groupe_Nom']) ? $_POST['groupe_Nom'] : $mf_initialisation['groupe_Nom'] ), true);
         $form->ajouter_textarea("groupe_Description", ( isset($_POST['groupe_Description']) ? $_POST['groupe_Description'] : $mf_initialisation['groupe_Description'] ), true);
         $form->ajouter_input("groupe_Logo_Fichier", ( isset($_POST['groupe_Logo_Fichier']) ? $_POST['groupe_Logo_Fichier'] : "" ), true, "file");
-        $form->ajouter_select(lister_cles($lang_standard['groupe_Effectif_']), "groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $mf_initialisation['groupe_Effectif'] ), true);
-        $form->ajouter_input("groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $mf_initialisation['groupe_Actif'] ), true);
+        $form->ajouter_input("groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $mf_initialisation['groupe_Effectif'] ), true);
+        $form->ajouter_select(lister_cles($lang_standard['groupe_Actif_']), "groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $mf_initialisation['groupe_Actif'] ), true);
         $form->ajouter_input("groupe_Date_creation", ( isset($_POST['groupe_Date_creation']) ? $_POST['groupe_Date_creation'] : $mf_initialisation['groupe_Date_creation'] ), true);
         $form->ajouter_input("groupe_Delai_suppression_jour", ( isset($_POST['groupe_Delai_suppression_jour']) ? $_POST['groupe_Delai_suppression_jour'] : $mf_initialisation['groupe_Delai_suppression_jour'] ), true);
         $form->ajouter_select(lister_cles($lang_standard['groupe_Suppression_active_']), "groupe_Suppression_active", ( isset($_POST['groupe_Suppression_active']) ? $_POST['groupe_Suppression_active'] : $mf_initialisation['groupe_Suppression_active'] ), true);
@@ -71,8 +71,8 @@
             $form->ajouter_input("groupe_Nom", ( isset($_POST['groupe_Nom']) ? $_POST['groupe_Nom'] : $groupe['groupe_Nom'] ), true);
             $form->ajouter_textarea("groupe_Description", ( isset($_POST['groupe_Description']) ? $_POST['groupe_Description'] : $groupe['groupe_Description'] ), true);
             $form->ajouter_input("groupe_Logo_Fichier", ( isset($_POST['groupe_Logo_Fichier']) ? $_POST['groupe_Logo_Fichier'] : "" ), true, "file");
-            $form->ajouter_select(lister_cles($lang_standard['groupe_Effectif_']), "groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $groupe['groupe_Effectif'] ), true);
-            $form->ajouter_input("groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $groupe['groupe_Actif'] ), true);
+            $form->ajouter_input("groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $groupe['groupe_Effectif'] ), true);
+            $form->ajouter_select(lister_cles($lang_standard['groupe_Actif_']), "groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $groupe['groupe_Actif'] ), true);
             $form->ajouter_input("groupe_Date_creation", ( isset($_POST['groupe_Date_creation']) ? $_POST['groupe_Date_creation'] : $groupe['groupe_Date_creation'] ), true);
             $form->ajouter_input("groupe_Delai_suppression_jour", ( isset($_POST['groupe_Delai_suppression_jour']) ? $_POST['groupe_Delai_suppression_jour'] : $groupe['groupe_Delai_suppression_jour'] ), true);
             $form->ajouter_select(lister_cles($lang_standard['groupe_Suppression_active_']), "groupe_Suppression_active", ( isset($_POST['groupe_Suppression_active']) ? $_POST['groupe_Suppression_active'] : $groupe['groupe_Suppression_active'] ), true);
@@ -139,7 +139,7 @@
         {
 
             $form = new Formulaire('', $mess);
-            $form->ajouter_select(lister_cles($lang_standard['groupe_Effectif_']), "groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $groupe['groupe_Effectif'] ), true);
+            $form->ajouter_input("groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $groupe['groupe_Effectif'] ), true);
 
             $code_html.=recuperer_gabarit('groupe/form_edit_groupe_Effectif.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_groupe_Effectif')), false, true);
 
@@ -154,7 +154,7 @@
         {
 
             $form = new Formulaire('', $mess);
-            $form->ajouter_input("groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $groupe['groupe_Actif'] ), true);
+            $form->ajouter_select(lister_cles($lang_standard['groupe_Actif_']), "groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $groupe['groupe_Actif'] ), true);
 
             $code_html.=recuperer_gabarit('groupe/form_edit_groupe_Actif.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_groupe_Actif')), false, true);
 

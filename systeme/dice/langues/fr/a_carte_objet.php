@@ -3,13 +3,13 @@
 $lang_standard['a_carte_objet'] = 'a_carte_objet';
 
 $lang_standard['bouton_ajouter_a_carte_objet'] = 'Ajouter';
-$lang_standard['bouton_creer_a_carte_objet'] = 'Creer';
+$lang_standard['bouton_creer_a_carte_objet'] = 'Créer';
 $lang_standard['bouton_modifier_a_carte_objet'] = 'Modifier';
 $lang_standard['bouton_supprimer_a_carte_objet'] = 'Supprimer';
 
-$lang_standard['form_add_a_carte_objet'] = 'form_add_a_carte_objet';
+$lang_standard['form_add_a_carte_objet'] = 'Ajouter un objet';
 $lang_standard['form_edit_a_carte_objet'] = 'form_edit_a_carte_objet';
-$lang_standard['form_delete_a_carte_objet'] = 'form_delete_a_carte_objet';
+$lang_standard['form_delete_a_carte_objet'] = 'Retirer un objet';
 
 $mf_titre_ligne_table['a_carte_objet'] = '{Code_carte} - {Code_objet}';
 

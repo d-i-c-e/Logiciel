@@ -6,6 +6,7 @@
     +------------------------------+
 */
 
+if ($Code_parametre==0 && $Code_parametre_valeur!=0 && isset($table_parametre_valeur)) $Code_parametre = $table_parametre_valeur->mf_convertir_Code_parametre_valeur_vers_Code_parametre($Code_parametre_valeur);
 if ($Code_joueur==0 && $Code_liste_contacts!=0 && isset($table_liste_contacts)) $Code_joueur = $table_liste_contacts->mf_convertir_Code_liste_contacts_vers_Code_joueur($Code_liste_contacts);
 if ($Code_messagerie==0 && $Code_message!=0 && isset($table_message)) $Code_messagerie = $table_message->mf_convertir_Code_message_vers_Code_messagerie($Code_message);
 if ($Code_joueur==0 && $Code_messagerie!=0 && isset($table_messagerie)) $Code_joueur = $table_messagerie->mf_convertir_Code_messagerie_vers_Code_joueur($Code_messagerie);
@@ -32,3 +33,4 @@ $mf_contexte['Code_ressource'] = $Code_ressource;
 $mf_contexte['Code_tag_ressource'] = $Code_tag_ressource;
 $mf_contexte['Code_messagerie'] = $Code_messagerie;
 $mf_contexte['Code_liste_contacts'] = $Code_liste_contacts;
+$mf_contexte['Code_parametre_valeur'] = $Code_parametre_valeur;

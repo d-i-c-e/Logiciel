@@ -1,16 +1,18 @@
 <?php
 
-$lang_standard['Code_joueur'] = 'joueur';
+$lang_standard['Code_joueur'] = 'Joueur';
 
-$lang_standard['joueur_Email'] = 'joueur_Email';
-$lang_standard['joueur_Identifiant'] = 'joueur_Identifiant';
-$lang_standard['joueur_Password'] = 'joueur_Password';
-$lang_standard['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier';
-$lang_standard['joueur_Date_naissance'] = 'joueur_Date_naissance';
-$lang_standard['joueur_Date_inscription'] = 'joueur_Date_inscription';
+$lang_standard['joueur_Email'] = 'Email';
+$lang_standard['joueur_Identifiant'] = 'Pseudo';
+$lang_standard['joueur_Password'] = 'Mot de passe';
+$lang_standard['joueur_Avatar_Fichier'] = 'Avatar';
+$lang_standard['joueur_Date_naissance'] = 'Date de naissance';
+$lang_standard['joueur_Date_inscription'] = 'Date d\'inscription';
+$lang_standard['joueur_Administrateur'] = 'joueur_Administrateur';
+$lang_standard['joueur_Administrateur_'] = array( 1 => 'Oui', 0 => 'Non' );
 
 $lang_standard['bouton_ajouter_joueur'] = 'Ajouter';
-$lang_standard['bouton_creer_joueur'] = 'Creer';
+$lang_standard['bouton_creer_joueur'] = 'Créer';
 $lang_standard['bouton_modifier_joueur'] = 'Modifier';
 $lang_standard['bouton_supprimer_joueur'] = 'Supprimer';
 $lang_standard['bouton_modpwd_joueur'] = 'Modifier le mot de passe';
@@ -20,17 +22,18 @@ $lang_standard['bouton_modifier_joueur_Password'] = 'Modifier';
 $lang_standard['bouton_modifier_joueur_Avatar_Fichier'] = 'Modifier';
 $lang_standard['bouton_modifier_joueur_Date_naissance'] = 'Modifier';
 $lang_standard['bouton_modifier_joueur_Date_inscription'] = 'Modifier';
+$lang_standard['bouton_modifier_joueur_Administrateur'] = 'Modifier';
 
-$lang_standard['form_add_joueur'] = 'form_add_joueur';
-$lang_standard['form_edit_joueur'] = 'form_edit_joueur';
-$lang_standard['form_delete_joueur'] = 'form_delete_joueur';
+$lang_standard['form_add_joueur'] = 'Ajouter un joueur';
+$lang_standard['form_edit_joueur'] = 'Modifier un joueur';
+$lang_standard['form_delete_joueur'] = 'Supprimer un joueur';
 $lang_standard['formulaire_modpwd_joueur'] = 'Modifier le mot de passe';
 
 $mf_titre_ligne_table['joueur'] = '{joueur_Email}';
 
 $mf_tri_defaut_table['joueur'] = array( 'joueur_Email' => 'ASC' );
 
-$lang_standard['libelle_liste_joueur'] = 'libelle_liste_joueur';
+$lang_standard['libelle_liste_joueur'] = 'Liste des joueurs';
 
 $mf_initialisation['joueur_Email'] = '';
 $mf_initialisation['joueur_Identifiant'] = '';
@@ -38,6 +41,7 @@ $mf_initialisation['joueur_Password'] = '';
 $mf_initialisation['joueur_Avatar_Fichier'] = '';
 $mf_initialisation['joueur_Date_naissance'] = '';
 $mf_initialisation['joueur_Date_inscription'] = '';
+$mf_initialisation['joueur_Administrateur'] = 0;
 
 // code_erreur
 

@@ -11,9 +11,7 @@
     {
         $mf_add = [];
         if ( isset( $_POST['parametre_Libelle'] ) ) { $mf_add['parametre_Libelle'] = $_POST['parametre_Libelle']; }
-        if ( isset( $_POST['parametre_Valeur'] ) ) { $mf_add['parametre_Valeur'] = $_POST['parametre_Valeur']; }
         if ( isset( $_POST['parametre_Activable'] ) ) { $mf_add['parametre_Activable'] = $_POST['parametre_Activable']; }
-        if ( isset( $_POST['parametre_Actif'] ) ) { $mf_add['parametre_Actif'] = $_POST['parametre_Actif']; }
         $retour = $table_parametre->mf_ajouter_2($mf_add);
         if ( $retour['code_erreur']==0 )
         {
@@ -56,9 +54,7 @@
     {
         $mf_update = [];
         if ( isset( $_POST['parametre_Libelle'] ) ) { $mf_update['parametre_Libelle'] = $_POST['parametre_Libelle']; }
-        if ( isset( $_POST['parametre_Valeur'] ) ) { $mf_update['parametre_Valeur'] = $_POST['parametre_Valeur']; }
         if ( isset( $_POST['parametre_Activable'] ) ) { $mf_update['parametre_Activable'] = $_POST['parametre_Activable']; }
-        if ( isset( $_POST['parametre_Actif'] ) ) { $mf_update['parametre_Actif'] = $_POST['parametre_Actif']; }
         $retour = $table_parametre->mf_modifier_2( [ $Code_parametre => $mf_update ] );
         if ( $retour['code_erreur']==0 )
         {
@@ -86,40 +82,10 @@
         }
     }
 
-    if ( $mf_action=='modifier_parametre_Valeur' && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
-    {
-        $parametre_Valeur = $_POST['parametre_Valeur'];
-        $retour = $table_parametre->mf_modifier_2( [ $Code_parametre => [ 'parametre_Valeur' => $parametre_Valeur ] ] );
-        if ( $retour['code_erreur']==0 )
-        {
-            $mf_action = 'apercu_parametre';
-            $cache->clear();
-        }
-        else
-        {
-            $cache->clear_current_page();
-        }
-    }
-
     if ( $mf_action=='modifier_parametre_Activable' && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
     {
         $parametre_Activable = $_POST['parametre_Activable'];
         $retour = $table_parametre->mf_modifier_2( [ $Code_parametre => [ 'parametre_Activable' => $parametre_Activable ] ] );
-        if ( $retour['code_erreur']==0 )
-        {
-            $mf_action = 'apercu_parametre';
-            $cache->clear();
-        }
-        else
-        {
-            $cache->clear_current_page();
-        }
-    }
-
-    if ( $mf_action=='modifier_parametre_Actif' && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
-    {
-        $parametre_Actif = $_POST['parametre_Actif'];
-        $retour = $table_parametre->mf_modifier_2( [ $Code_parametre => [ 'parametre_Actif' => $parametre_Actif ] ] );
         if ( $retour['code_erreur']==0 )
         {
             $mf_action = 'apercu_parametre';

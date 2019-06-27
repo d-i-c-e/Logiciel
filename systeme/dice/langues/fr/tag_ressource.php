@@ -1,24 +1,24 @@
 <?php
 
-$lang_standard['Code_tag_ressource'] = 'tag_ressource';
+$lang_standard['Code_tag_ressource'] = 'Tag de ressource';
 
-$lang_standard['tag_ressource_Libelle'] = 'tag_ressource_Libelle';
+$lang_standard['tag_ressource_Libelle'] = 'Libelle';
 
 $lang_standard['bouton_ajouter_tag_ressource'] = 'Ajouter';
-$lang_standard['bouton_creer_tag_ressource'] = 'Creer';
+$lang_standard['bouton_creer_tag_ressource'] = 'Créer';
 $lang_standard['bouton_modifier_tag_ressource'] = 'Modifier';
 $lang_standard['bouton_supprimer_tag_ressource'] = 'Supprimer';
 $lang_standard['bouton_modifier_tag_ressource_Libelle'] = 'Modifier';
 
-$lang_standard['form_add_tag_ressource'] = 'form_add_tag_ressource';
+$lang_standard['form_add_tag_ressource'] = 'Ajouter un tag de ressource';
 $lang_standard['form_edit_tag_ressource'] = 'form_edit_tag_ressource';
-$lang_standard['form_delete_tag_ressource'] = 'form_delete_tag_ressource';
+$lang_standard['form_delete_tag_ressource'] = 'Supprimer un tag de ressource';
 
 $mf_titre_ligne_table['tag_ressource'] = '{tag_ressource_Libelle}';
 
 $mf_tri_defaut_table['tag_ressource'] = array( 'tag_ressource_Libelle' => 'ASC' );
 
-$lang_standard['libelle_liste_tag_ressource'] = 'libelle_liste_tag_ressource';
+$lang_standard['libelle_liste_tag_ressource'] = 'Liste des tag de ressource';
 
 $mf_initialisation['tag_ressource_Libelle'] = '';
 

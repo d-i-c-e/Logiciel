@@ -20,6 +20,7 @@ $Code_ressource = ( isset($_GET['Code_ressource']) ? round($_GET['Code_ressource
 $Code_tag_ressource = ( isset($_GET['Code_tag_ressource']) ? round($_GET['Code_tag_ressource']) : 0 );
 $Code_messagerie = ( isset($_GET['Code_messagerie']) ? round($_GET['Code_messagerie']) : 0 );
 $Code_liste_contacts = ( isset($_GET['Code_liste_contacts']) ? round($_GET['Code_liste_contacts']) : 0 );
+$Code_parametre_valeur = ( isset($_GET['Code_parametre_valeur']) ? round($_GET['Code_parametre_valeur']) : 0 );
 
 require __DIR__ . '/genealogie.php';
 
@@ -37,3 +38,4 @@ function mf_Code_ressource() { global $mf_contexte; return $mf_contexte['Code_re
 function mf_Code_tag_ressource() { global $mf_contexte; return $mf_contexte['Code_tag_ressource']; }
 function mf_Code_messagerie() { global $mf_contexte; return $mf_contexte['Code_messagerie']; }
 function mf_Code_liste_contacts() { global $mf_contexte; return $mf_contexte['Code_liste_contacts']; }
+function mf_Code_parametre_valeur() { global $mf_contexte; return $mf_contexte['Code_parametre_valeur']; }

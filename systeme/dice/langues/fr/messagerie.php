@@ -1,11 +1,11 @@
 <?php
 
-$lang_standard['Code_messagerie'] = 'messagerie';
+$lang_standard['Code_messagerie'] = 'Messagerie';
 
-$lang_standard['messagerie_Nom'] = 'messagerie_Nom';
+$lang_standard['messagerie_Nom'] = 'Libelle';
 
 $lang_standard['bouton_ajouter_messagerie'] = 'Ajouter';
-$lang_standard['bouton_creer_messagerie'] = 'Creer';
+$lang_standard['bouton_creer_messagerie'] = 'Créer';
 $lang_standard['bouton_modifier_messagerie'] = 'Modifier';
 $lang_standard['bouton_supprimer_messagerie'] = 'Supprimer';
 $lang_standard['bouton_modifier_messagerie_Nom'] = 'Modifier';
@@ -19,7 +19,7 @@ $mf_titre_ligne_table['messagerie'] = '{messagerie_Nom}';
 
 $mf_tri_defaut_table['messagerie'] = array( 'messagerie_Nom' => 'ASC' );
 
-$lang_standard['libelle_liste_messagerie'] = 'libelle_liste_messagerie';
+$lang_standard['libelle_liste_messagerie'] = 'Liste des messageries';
 
 $mf_initialisation['messagerie_Nom'] = '';
 

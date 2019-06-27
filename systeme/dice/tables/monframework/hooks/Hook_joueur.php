@@ -12,7 +12,7 @@ class Hook_joueur{
         // ici le code
     }
 
-    static function pre_controller(string &$joueur_Email, string &$joueur_Identifiant, string &$joueur_Password, string &$joueur_Avatar_Fichier, string &$joueur_Date_naissance, string &$joueur_Date_inscription, ?int $Code_joueur=null)
+    static function pre_controller(string &$joueur_Email, string &$joueur_Identifiant, string &$joueur_Password, string &$joueur_Avatar_Fichier, string &$joueur_Date_naissance, string &$joueur_Date_inscription, bool &$joueur_Administrateur, ?int $Code_joueur=null)
     {
         // ici le code
     }
@@ -30,26 +30,26 @@ class Hook_joueur{
         // ici le code
     }
 
-    static function autorisation_ajout(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription)
+    static function autorisation_ajout(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, bool $joueur_Administrateur)
     {
         return true;
     }
 
-    static function data_controller(string &$joueur_Email, string &$joueur_Identifiant, string &$joueur_Password, string &$joueur_Avatar_Fichier, string &$joueur_Date_naissance, string &$joueur_Date_inscription, ?int $Code_joueur=null)
+    static function data_controller(string &$joueur_Email, string &$joueur_Identifiant, string &$joueur_Password, string &$joueur_Avatar_Fichier, string &$joueur_Date_naissance, string &$joueur_Date_inscription, bool &$joueur_Administrateur, ?int $Code_joueur=null)
     {
         // ici le code
     }
 
-    static function calcul_signature(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription)
+    static function calcul_signature(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, bool $joueur_Administrateur)
     {
-        return md5($joueur_Email.'-'.$joueur_Identifiant.'-'.$joueur_Password.'-'.$joueur_Avatar_Fichier.'-'.$joueur_Date_naissance.'-'.$joueur_Date_inscription);
+        return md5($joueur_Email.'-'.$joueur_Identifiant.'-'.$joueur_Password.'-'.$joueur_Avatar_Fichier.'-'.$joueur_Date_naissance.'-'.$joueur_Date_inscription.'-'.$joueur_Administrateur);
     }
 
-    static function calcul_cle_unique(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription)
+    static function calcul_cle_unique(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, bool $joueur_Administrateur)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
-        return sha1($joueur_Email.'.'.$joueur_Identifiant.'.'.$joueur_Password.'.'.$joueur_Avatar_Fichier.'.'.$joueur_Date_naissance.'.'.$joueur_Date_inscription);
+        return sha1($joueur_Email.'.'.$joueur_Identifiant.'.'.$joueur_Password.'.'.$joueur_Avatar_Fichier.'.'.$joueur_Date_naissance.'.'.$joueur_Date_inscription.'.'.$joueur_Administrateur);
     }
 
     static function ajouter(int $Code_joueur)
@@ -72,12 +72,13 @@ class Hook_joueur{
          * $mf_droits_defaut['api_modifier__joueur_Avatar_Fichier']
          * $mf_droits_defaut['api_modifier__joueur_Date_naissance']
          * $mf_droits_defaut['api_modifier__joueur_Date_inscription']
+         * $mf_droits_defaut['api_modifier__joueur_Administrateur']
          *
          */
         // ici le code
     }
 
-    static function autorisation_modification(int $Code_joueur, string $joueur_Email__new, string $joueur_Identifiant__new, string $joueur_Password__new, string $joueur_Avatar_Fichier__new, string $joueur_Date_naissance__new, string $joueur_Date_inscription__new)
+    static function autorisation_modification(int $Code_joueur, string $joueur_Email__new, string $joueur_Identifiant__new, string $joueur_Password__new, string $joueur_Avatar_Fichier__new, string $joueur_Date_naissance__new, string $joueur_Date_inscription__new, bool $joueur_Administrateur__new)
     {
         return true;
     }
@@ -107,11 +108,16 @@ class Hook_joueur{
         // ici le code
     }
 
+    static function data_controller__joueur_Administrateur(bool $old, bool &$new, int $Code_joueur)
+    {
+        // ici le code
+    }
+
     /*
      * modifier : $Code_joueur permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier(int $Code_joueur, bool $bool__joueur_Email, bool $bool__joueur_Identifiant, bool $bool__joueur_Password, bool $bool__joueur_Avatar_Fichier, bool $bool__joueur_Date_naissance, bool $bool__joueur_Date_inscription)
+    static function modifier(int $Code_joueur, bool $bool__joueur_Email, bool $bool__joueur_Identifiant, bool $bool__joueur_Password, bool $bool__joueur_Avatar_Fichier, bool $bool__joueur_Date_naissance, bool $bool__joueur_Date_inscription, bool $bool__joueur_Administrateur)
     {
         // ici le code
     }
@@ -166,6 +172,7 @@ class Hook_joueur{
          * $donnees['joueur_Avatar_Fichier']
          * $donnees['joueur_Date_naissance']
          * $donnees['joueur_Date_inscription']
+         * $donnees['joueur_Administrateur']
          */
         return true;
     }
@@ -186,6 +193,7 @@ class Hook_joueur{
          * $donnees['joueur_Avatar_Fichier']
          * $donnees['joueur_Date_naissance']
          * $donnees['joueur_Date_inscription']
+         * $donnees['joueur_Administrateur']
          */
         // ici le code
     }

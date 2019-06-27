@@ -16,6 +16,7 @@
         if ( isset( $_FILES['joueur_Avatar_Fichier'] ) ) { $fichier = new Fichier(); $mf_add['joueur_Avatar_Fichier'] = $fichier->importer($_FILES['joueur_Avatar_Fichier']); }
         if ( isset( $_POST['joueur_Date_naissance'] ) ) { $mf_add['joueur_Date_naissance'] = $_POST['joueur_Date_naissance']; }
         if ( isset( $_POST['joueur_Date_inscription'] ) ) { $mf_add['joueur_Date_inscription'] = $_POST['joueur_Date_inscription']; }
+        if ( isset( $_POST['joueur_Administrateur'] ) ) { $mf_add['joueur_Administrateur'] = $_POST['joueur_Administrateur']; }
         $retour = $table_joueur->mf_ajouter_2($mf_add);
         if ( $retour['code_erreur']==0 )
         {
@@ -43,6 +44,7 @@
         if ( isset( $_FILES['joueur_Avatar_Fichier'] ) ) { $fichier = new Fichier(); $mf_update['joueur_Avatar_Fichier'] = $fichier->importer($_FILES['joueur_Avatar_Fichier']); }
         if ( isset( $_POST['joueur_Date_naissance'] ) ) { $mf_update['joueur_Date_naissance'] = $_POST['joueur_Date_naissance']; }
         if ( isset( $_POST['joueur_Date_inscription'] ) ) { $mf_update['joueur_Date_inscription'] = $_POST['joueur_Date_inscription']; }
+        if ( isset( $_POST['joueur_Administrateur'] ) ) { $mf_update['joueur_Administrateur'] = $_POST['joueur_Administrateur']; }
         $retour = $table_joueur->mf_modifier_2( [ $Code_joueur => $mf_update ] );
         if ( $retour['code_erreur']==0 )
         {
@@ -121,6 +123,21 @@
     {
         $joueur_Date_inscription = $_POST['joueur_Date_inscription'];
         $retour = $table_joueur->mf_modifier_2( [ $Code_joueur => [ 'joueur_Date_inscription' => $joueur_Date_inscription ] ] );
+        if ( $retour['code_erreur']==0 )
+        {
+            $mf_action = 'apercu_joueur';
+            $cache->clear();
+        }
+        else
+        {
+            $cache->clear_current_page();
+        }
+    }
+
+    if ( $mf_action=='modifier_joueur_Administrateur' && isset($_POST['validation_formulaire']) && formulaire_valide($_POST['validation_formulaire']) )
+    {
+        $joueur_Administrateur = $_POST['joueur_Administrateur'];
+        $retour = $table_joueur->mf_modifier_2( [ $Code_joueur => [ 'joueur_Administrateur' => $joueur_Administrateur ] ] );
         if ( $retour['code_erreur']==0 )
         {
             $mf_action = 'apercu_joueur';

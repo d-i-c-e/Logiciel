@@ -63,6 +63,13 @@
         }
         $trans['{bouton_modifier_joueur_Date_inscription}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_joueur_Date_inscription') : '';
 
+        // joueur_Administrateur
+        if ( $mf_droits_defaut['api_modifier__joueur_Administrateur'] )
+        {
+            $menu_a_droite->ajouter_bouton( BOUTON_LIBELLE_MODIFIER_PREC . get_nom_colonne('bouton_modifier_joueur_Administrateur') . BOUTON_LIBELLE_MODIFIER_SUIV, get_nom_page_courante().'?act=modifier_joueur_Administrateur&Code_joueur='.$Code_joueur, 'lien', 'bouton_modifier_joueur_Administrateur');
+        }
+        $trans['{bouton_modifier_joueur_Administrateur}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_joueur_Administrateur') : '';
+
     /* prec_et_suiv */
     if ( $table_joueur->mf_compter()<100 )
     {
@@ -121,4 +128,10 @@
             $trans['{joueur_Date_inscription}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Date_inscription' , 'valeur_initiale' => $joueur['joueur_Date_inscription'] ]);
         else
             $trans['{joueur_Date_inscription}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Date_inscription' , 'valeur_initiale' => $joueur['joueur_Date_inscription'] ]);
+
+    /* joueur_Administrateur */
+        if ( $mf_droits_defaut['api_modifier__joueur_Administrateur'] )
+            $trans['{joueur_Administrateur}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Administrateur' , 'valeur_initiale' => $joueur['joueur_Administrateur'], 'class' => 'button' ]);
+        else
+            $trans['{joueur_Administrateur}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Administrateur' , 'valeur_initiale' => $joueur['joueur_Administrateur'] ]);
 

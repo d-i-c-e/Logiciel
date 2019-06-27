@@ -262,7 +262,11 @@ function put($id, $data, $options)
 
     session_write_close();
 
-    return array('code_erreur'=>0);
+    $table_a_joueur_parametre = new a_joueur_parametre();
+    $codes = explode('-', $id);
+    $data['Code_joueur']=$codes[0];
+    $data['Code_parametre']=$codes[1];
+    return $table_a_joueur_parametre->mf_modifier_2([$data]);
 }
 
 function delete($id, $options)
@@ -427,6 +431,8 @@ function options($id, $options)
     global $mf_droits_defaut;
     $authorization['POST'] = $mf_droits_defaut['a_joueur_parametre__AJOUTER'];
     $authorization['PUT'] = $mf_droits_defaut['a_joueur_parametre__MODIFIER'];
+    $authorization['PUT:a_joueur_parametre_Valeur_choisie'] = $mf_droits_defaut['api_modifier__a_joueur_parametre_Valeur_choisie'];
+    $authorization['PUT:a_joueur_parametre_Actif'] = $mf_droits_defaut['api_modifier__a_joueur_parametre_Actif'];
     $authorization['DELETE'] = $mf_droits_defaut['a_joueur_parametre__SUPPRIMER'];
     return array('code_erreur' => 0, 'authorization' => $authorization);
 }

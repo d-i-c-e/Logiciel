@@ -14,10 +14,8 @@
     +-----------+
 */
     $parametre_Libelle = lecture_parametre_api("parametre_Libelle", '');
-    $parametre_Valeur = lecture_parametre_api("parametre_Valeur", '');
     $parametre_Activable = lecture_parametre_api("parametre_Activable", '');
-    $parametre_Actif = lecture_parametre_api("parametre_Actif", '');
-    $retour = $table_parametre->mf_ajouter($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif);
+    $retour = $table_parametre->mf_ajouter($parametre_Libelle, $parametre_Activable);
     if ( $retour['code_erreur']==0 )
     {
         $cache = new Cachehtml();

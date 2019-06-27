@@ -105,6 +105,7 @@ function r__joueur__get_all(ref) { var ref = (typeof ref !== 'undefined') ? ref 
     joueur_Avatar_Fichier: …,
     joueur_Date_naissance: …,
     joueur_Date_inscription: …,
+    joueur_Administrateur: …,
   }
 */
 var id_promesse__joueur__post = 0;
@@ -120,6 +121,7 @@ function r__joueur__post(ref) { var ref = (typeof ref !== 'undefined') ? ref : '
     joueur_Avatar_Fichier: …,
     joueur_Date_naissance: …,
     joueur_Date_inscription: …,
+    joueur_Administrateur: …,
   }
 */
 var id_promesse__joueur__put = 0;
@@ -194,9 +196,7 @@ function r__parametre__get_all(ref) { var ref = (typeof ref !== 'undefined') ? r
 /*
   json_data = {
     parametre_Libelle: …,
-    parametre_Valeur: …,
     parametre_Activable: …,
-    parametre_Actif: …,
   }
 */
 var id_promesse__parametre__post = 0;
@@ -207,9 +207,7 @@ function r__parametre__post(ref) { var ref = (typeof ref !== 'undefined') ? ref 
 /*
   json_data = {
     parametre_Libelle: …,
-    parametre_Valeur: …,
     parametre_Activable: …,
-    parametre_Actif: …,
   }
 */
 var id_promesse__parametre__put = 0;
@@ -699,6 +697,47 @@ var ref_promesse__liste_contacts__delete = '';
 function liste_contacts__delete(Code_liste_contacts, ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; ref_promesse__liste_contacts__delete = ref; id_promesse__liste_contacts__delete = ajouter_action( "DELETE", "liste_contacts/" + Code_liste_contacts + "?mf_instance=" + mf_instance + "&mf_token=" + mf_token + "&auth=" + auth ); }
 function r__liste_contacts__delete(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; if ( ref_promesse__liste_contacts__delete == ref ) { return promesse(id_promesse__liste_contacts__delete); } else { return false; } }
 
+// +------------------+
+// | parametre_valeur |
+// +------------------+
+
+var id_promesse__parametre_valeur__get = 0;
+var ref_promesse__parametre_valeur__get = '';
+function parametre_valeur__get(Code_parametre_valeur, ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; ref_promesse__parametre_valeur__get = ref; id_promesse__parametre_valeur__get = ajouter_action( "GET", "parametre_valeur/" + Code_parametre_valeur + "?mf_instance=" + mf_instance + "&mf_token=" + mf_token + "&auth=" + auth, "" ); }
+function r__parametre_valeur__get(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; if ( ref_promesse__parametre_valeur__get == ref ) { return promesse(id_promesse__parametre_valeur__get); } else { return false; } }
+
+var id_promesse__parametre_valeur__get_all = 0;
+var ref_promesse__parametre_valeur__get_all = '';
+function parametre_valeur__get_all(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; ref_promesse__parametre_valeur__get_all = ref; id_promesse__parametre_valeur__get_all = ajouter_action( "GET", "parametre_valeur?mf_instance=" + mf_instance + "&mf_token=" + mf_token + "&auth=" + auth, "" ); }
+function r__parametre_valeur__get_all(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; if ( ref_promesse__parametre_valeur__get_all == ref ) { return promesse(id_promesse__parametre_valeur__get_all); } else { return false; } }
+
+/*
+  json_data = {
+    parametre_valeur_Libelle: …,
+    Code_parametre: …,
+  }
+*/
+var id_promesse__parametre_valeur__post = 0;
+var ref_promesse__parametre_valeur__post = '';
+function parametre_valeur__post(json_data, ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; ref_promesse__parametre_valeur__post = ref; id_promesse__parametre_valeur__post = ajouter_action( "POST", "parametre_valeur?mf_instance=" + mf_instance + "&mf_token=" + mf_token + "&auth=" + auth, JSON.stringify(json_data) ); }
+function r__parametre_valeur__post(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; if ( ref_promesse__parametre_valeur__post == ref ) { return promesse(id_promesse__parametre_valeur__post); } else { return false; } }
+
+/*
+  json_data = {
+    parametre_valeur_Libelle: …,
+    Code_parametre: …,
+  }
+*/
+var id_promesse__parametre_valeur__put = 0;
+var ref_promesse__parametre_valeur__put = '';
+function parametre_valeur__put(Code_parametre_valeur, json_data, ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; ref_promesse__parametre_valeur__put = ref; id_promesse__parametre_valeur__put = ajouter_action( "PUT", "parametre_valeur/" + Code_parametre_valeur + "?mf_instance=" + mf_instance + "&mf_token=" + mf_token + "&auth=" + auth, JSON.stringify(json_data) ); }
+function r__parametre_valeur__put(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; if ( ref_promesse__parametre_valeur__put == ref ) { return promesse(id_promesse__parametre_valeur__put); } else { return false; } }
+
+var id_promesse__parametre_valeur__delete = 0;
+var ref_promesse__parametre_valeur__delete = '';
+function parametre_valeur__delete(Code_parametre_valeur, ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; ref_promesse__parametre_valeur__delete = ref; id_promesse__parametre_valeur__delete = ajouter_action( "DELETE", "parametre_valeur/" + Code_parametre_valeur + "?mf_instance=" + mf_instance + "&mf_token=" + mf_token + "&auth=" + auth ); }
+function r__parametre_valeur__delete(ref) { var ref = (typeof ref !== 'undefined') ? ref : ''; if ( ref_promesse__parametre_valeur__delete == ref ) { return promesse(id_promesse__parametre_valeur__delete); } else { return false; } }
+
 // +--------------------+
 // | a_joueur_parametre |
 // +--------------------+
@@ -715,6 +754,8 @@ function r__a_joueur_parametre__get_all(ref) { var ref = (typeof ref !== 'undefi
 
 /*
   json_data = {
+    a_joueur_parametre_Valeur_choisie: …,
+    a_joueur_parametre_Actif: …,
     Code_joueur: …,
     Code_parametre: …,
   }
@@ -726,6 +767,8 @@ function r__a_joueur_parametre__post(ref) { var ref = (typeof ref !== 'undefined
 
 /*
   json_data = {
+    a_joueur_parametre_Valeur_choisie: …,
+    a_joueur_parametre_Actif: …,
   }
 */
 var id_promesse__a_joueur_parametre__put = 0;

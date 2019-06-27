@@ -1,24 +1,24 @@
 <?php
 
-$lang_standard['Code_ressource'] = 'ressource';
+$lang_standard['Code_ressource'] = 'Ressource du type d\'objet';
 
-$lang_standard['ressource_Nom'] = 'ressource_Nom';
+$lang_standard['ressource_Nom'] = 'Libelle';
 
 $lang_standard['bouton_ajouter_ressource'] = 'Ajouter';
-$lang_standard['bouton_creer_ressource'] = 'Creer';
+$lang_standard['bouton_creer_ressource'] = 'Créer';
 $lang_standard['bouton_modifier_ressource'] = 'Modifier';
 $lang_standard['bouton_supprimer_ressource'] = 'Supprimer';
 $lang_standard['bouton_modifier_ressource_Nom'] = 'Modifier';
 
-$lang_standard['form_add_ressource'] = 'form_add_ressource';
-$lang_standard['form_edit_ressource'] = 'form_edit_ressource';
-$lang_standard['form_delete_ressource'] = 'form_delete_ressource';
+$lang_standard['form_add_ressource'] = 'Ajouter une ressource';
+$lang_standard['form_edit_ressource'] = 'Modifier une ressource';
+$lang_standard['form_delete_ressource'] = 'Supprimer une ressource';
 
 $mf_titre_ligne_table['ressource'] = '{ressource_Nom}';
 
 $mf_tri_defaut_table['ressource'] = array( 'ressource_Nom' => 'ASC' );
 
-$lang_standard['libelle_liste_ressource'] = 'libelle_liste_ressource';
+$lang_standard['libelle_liste_ressource'] = 'Liste des ressources';
 
 $mf_initialisation['ressource_Nom'] = '';
 

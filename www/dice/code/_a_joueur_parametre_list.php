@@ -2,6 +2,7 @@
 
     /* Actualisation des droits */
     Hook_a_joueur_parametre::hook_actualiser_les_droits_ajouter(mf_Code_joueur(), mf_Code_parametre());
+    Hook_a_joueur_parametre::hook_actualiser_les_droits_modifier(mf_Code_joueur(), mf_Code_parametre());
     Hook_a_joueur_parametre::hook_actualiser_les_droits_supprimer(mf_Code_joueur(), mf_Code_parametre());
 
     $table_a_joueur_parametre = new a_joueur_parametre();
@@ -20,7 +21,9 @@
             $tab->ajouter_colonne('Code_parametre', true, '');
         }
         $tab->ajouter_ref_Colonne_Code('Code_parametre');
-        // $tab->modifier_code_action('apercu_a_joueur_parametre');
+        $tab->modifier_code_action('apercu_a_joueur_parametre');
+        $tab->ajouter_colonne('a_joueur_parametre_Valeur_choisie', false, '');
+        $tab->ajouter_colonne('a_joueur_parametre_Actif', true, '');
         if ($mf_droits_defaut['a_joueur_parametre__SUPPRIMER'])
         {
             $tab->ajouter_colonne_bouton('supprimer_a_joueur_parametre', BOUTON_LIBELLE_SUPPRIMER_PREC . get_nom_colonne('bouton_supprimer_a_joueur_parametre') . BOUTON_LIBELLE_SUPPRIMER_SUIV );

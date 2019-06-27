@@ -143,6 +143,25 @@ class entite_monframework extends entite
         return $Code_joueur;
     }
 
+    protected function rechercher_joueur_Administrateur( bool $joueur_Administrateur )
+    {
+        $Code_joueur = 0;
+        $joueur_Administrateur = format_sql('joueur_Administrateur', $joueur_Administrateur);
+        $requete_sql = 'SELECT Code_joueur FROM '.inst('joueur')." WHERE joueur_Administrateur = $joueur_Administrateur LIMIT 0, 1;";
+        $cache_db = new Mf_Cachedb('joueur');
+        if ( ! $Code_joueur = $cache_db->read($requete_sql) )
+        {
+            $res_requete = executer_requete_mysql($requete_sql, false);
+            if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                $Code_joueur = (int) $row_requete['Code_joueur'];
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($requete_sql, $Code_joueur);
+        }
+        return $Code_joueur;
+    }
+
     protected function get_liste_Code_joueur(?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
     {
         if ( $options===null ) { $options=[]; }
@@ -174,6 +193,7 @@ class entite_monframework extends entite
                 if ( strpos($argument_cond, 'joueur_Avatar_Fichier')!==false ) { $liste_colonnes_a_indexer['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier'; }
                 if ( strpos($argument_cond, 'joueur_Date_naissance')!==false ) { $liste_colonnes_a_indexer['joueur_Date_naissance'] = 'joueur_Date_naissance'; }
                 if ( strpos($argument_cond, 'joueur_Date_inscription')!==false ) { $liste_colonnes_a_indexer['joueur_Date_inscription'] = 'joueur_Date_inscription'; }
+                if ( strpos($argument_cond, 'joueur_Administrateur')!==false ) { $liste_colonnes_a_indexer['joueur_Administrateur'] = 'joueur_Administrateur'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -231,6 +251,7 @@ class entite_monframework extends entite
             $joueur_Avatar_Fichier = $donnees_a_copier['joueur_Avatar_Fichier'];
             $joueur_Date_naissance = $donnees_a_copier['joueur_Date_naissance'];
             $joueur_Date_inscription = $donnees_a_copier['joueur_Date_inscription'];
+            $joueur_Administrateur = $donnees_a_copier['joueur_Administrateur'];
             $joueur_Email = text_sql($joueur_Email);
             $joueur_Identifiant = text_sql($joueur_Identifiant);
             $salt = salt(100);
@@ -238,7 +259,8 @@ class entite_monframework extends entite
             $joueur_Avatar_Fichier = text_sql($joueur_Avatar_Fichier);
             $joueur_Date_naissance = format_date($joueur_Date_naissance);
             $joueur_Date_inscription = format_datetime($joueur_Date_inscription);
-            executer_requete_mysql("INSERT INTO joueur ( joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription ) VALUES ( '$joueur_Email', '$joueur_Identifiant', '$joueur_Password', '$joueur_Avatar_Fichier', ".( $joueur_Date_naissance!='' ? "'$joueur_Date_naissance'" : 'NULL' ).", ".( $joueur_Date_inscription!='' ? "'$joueur_Date_inscription'" : 'NULL' )." );", true);
+            $joueur_Administrateur = ($joueur_Administrateur==1 ? 1 : 0);
+            executer_requete_mysql("INSERT INTO joueur ( joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur ) VALUES ( '$joueur_Email', '$joueur_Identifiant', '$joueur_Password', '$joueur_Avatar_Fichier', ".( $joueur_Date_naissance!='' ? "'$joueur_Date_naissance'" : 'NULL' ).", ".( $joueur_Date_inscription!='' ? "'$joueur_Date_inscription'" : 'NULL' ).", $joueur_Administrateur );", true);
             $Code_new_joueur = requete_mysql_insert_id();
             if ($Code_new_joueur==0)
             {
@@ -791,49 +813,11 @@ class entite_monframework extends entite
         return $Code_parametre;
     }
 
-    protected function rechercher_parametre_Valeur( int $parametre_Valeur )
-    {
-        $Code_parametre = 0;
-        $parametre_Valeur = format_sql('parametre_Valeur', $parametre_Valeur);
-        $requete_sql = 'SELECT Code_parametre FROM '.inst('parametre')." WHERE parametre_Valeur = $parametre_Valeur LIMIT 0, 1;";
-        $cache_db = new Mf_Cachedb('parametre');
-        if ( ! $Code_parametre = $cache_db->read($requete_sql) )
-        {
-            $res_requete = executer_requete_mysql($requete_sql, false);
-            if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
-            {
-                $Code_parametre = (int) $row_requete['Code_parametre'];
-            }
-            mysqli_free_result($res_requete);
-            $cache_db->write($requete_sql, $Code_parametre);
-        }
-        return $Code_parametre;
-    }
-
     protected function rechercher_parametre_Activable( bool $parametre_Activable )
     {
         $Code_parametre = 0;
         $parametre_Activable = format_sql('parametre_Activable', $parametre_Activable);
         $requete_sql = 'SELECT Code_parametre FROM '.inst('parametre')." WHERE parametre_Activable = $parametre_Activable LIMIT 0, 1;";
-        $cache_db = new Mf_Cachedb('parametre');
-        if ( ! $Code_parametre = $cache_db->read($requete_sql) )
-        {
-            $res_requete = executer_requete_mysql($requete_sql, false);
-            if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
-            {
-                $Code_parametre = (int) $row_requete['Code_parametre'];
-            }
-            mysqli_free_result($res_requete);
-            $cache_db->write($requete_sql, $Code_parametre);
-        }
-        return $Code_parametre;
-    }
-
-    protected function rechercher_parametre_Actif( bool $parametre_Actif )
-    {
-        $Code_parametre = 0;
-        $parametre_Actif = format_sql('parametre_Actif', $parametre_Actif);
-        $requete_sql = 'SELECT Code_parametre FROM '.inst('parametre')." WHERE parametre_Actif = $parametre_Actif LIMIT 0, 1;";
         $cache_db = new Mf_Cachedb('parametre');
         if ( ! $Code_parametre = $cache_db->read($requete_sql) )
         {
@@ -874,9 +858,7 @@ class entite_monframework extends entite
             if ( $argument_cond!='' )
             {
                 if ( strpos($argument_cond, 'parametre_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_Libelle'] = 'parametre_Libelle'; }
-                if ( strpos($argument_cond, 'parametre_Valeur')!==false ) { $liste_colonnes_a_indexer['parametre_Valeur'] = 'parametre_Valeur'; }
                 if ( strpos($argument_cond, 'parametre_Activable')!==false ) { $liste_colonnes_a_indexer['parametre_Activable'] = 'parametre_Activable'; }
-                if ( strpos($argument_cond, 'parametre_Actif')!==false ) { $liste_colonnes_a_indexer['parametre_Actif'] = 'parametre_Actif'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -929,14 +911,10 @@ class entite_monframework extends entite
         {
             $donnees_a_copier = $this->mf_get($Code_parametre, array('autocompletion' => false));
             $parametre_Libelle = $donnees_a_copier['parametre_Libelle'];
-            $parametre_Valeur = $donnees_a_copier['parametre_Valeur'];
             $parametre_Activable = $donnees_a_copier['parametre_Activable'];
-            $parametre_Actif = $donnees_a_copier['parametre_Actif'];
             $parametre_Libelle = text_sql($parametre_Libelle);
-            $parametre_Valeur = round($parametre_Valeur);
             $parametre_Activable = ($parametre_Activable==1 ? 1 : 0);
-            $parametre_Actif = ($parametre_Actif==1 ? 1 : 0);
-            executer_requete_mysql("INSERT INTO parametre ( parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif ) VALUES ( '$parametre_Libelle', $parametre_Valeur, $parametre_Activable, $parametre_Actif );", true);
+            executer_requete_mysql("INSERT INTO parametre ( parametre_Libelle, parametre_Activable ) VALUES ( '$parametre_Libelle', $parametre_Activable );", true);
             $Code_new_parametre = requete_mysql_insert_id();
             if ($Code_new_parametre==0)
             {
@@ -946,6 +924,11 @@ class entite_monframework extends entite
             {
                 $cache_db = new Mf_Cachedb("parametre");
                 $cache_db->clear();
+                $liste_Code_parametre_valeur = $this->liste_Code_parametre_vers_liste_Code_parametre_valeur( array($Code_parametre) );
+                foreach ($liste_Code_parametre_valeur as $Code_parametre_valeur)
+                {
+                    $this->mf_dupliquer_tables_a_dupliquer["parametre_valeur_$Code_parametre_valeur"]=array('parametre_valeur', $Code_parametre_valeur);
+                }
                 $this->mf_dupliquer_table_de_conversion['Code_parametre'][$Code_parametre] = $Code_new_parametre;
             }
         }
@@ -1013,7 +996,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Effectif( bool $groupe_Effectif, ?int $Code_campagne=null )
+    protected function rechercher_groupe_Effectif( int $groupe_Effectif, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Effectif = format_sql('groupe_Effectif', $groupe_Effectif);
@@ -1033,7 +1016,7 @@ class entite_monframework extends entite
         return $Code_groupe;
     }
 
-    protected function rechercher_groupe_Actif( int $groupe_Actif, ?int $Code_campagne=null )
+    protected function rechercher_groupe_Actif( bool $groupe_Actif, ?int $Code_campagne=null )
     {
         $Code_groupe = 0;
         $groupe_Actif = format_sql('groupe_Actif', $groupe_Actif);
@@ -1385,8 +1368,8 @@ class entite_monframework extends entite
             $groupe_Nom = text_sql($groupe_Nom);
             $groupe_Description = text_sql($groupe_Description);
             $groupe_Logo_Fichier = text_sql($groupe_Logo_Fichier);
-            $groupe_Effectif = ($groupe_Effectif==1 ? 1 : 0);
-            $groupe_Actif = round($groupe_Actif);
+            $groupe_Effectif = round($groupe_Effectif);
+            $groupe_Actif = ($groupe_Actif==1 ? 1 : 0);
             $groupe_Date_creation = format_datetime($groupe_Date_creation);
             $groupe_Delai_suppression_jour = round($groupe_Delai_suppression_jour);
             $groupe_Suppression_active = ($groupe_Suppression_active==1 ? 1 : 0);
@@ -4176,6 +4159,311 @@ class entite_monframework extends entite
     }
 
 /*
+    +--------------------+
+    |  parametre_valeur  |
+    +--------------------+
+*/
+
+    protected function mf_tester_existance_Code_parametre_valeur( int $Code_parametre_valeur )
+    {
+        $Code_parametre_valeur = round($Code_parametre_valeur);
+        $requete_sql = "SELECT Code_parametre_valeur FROM ".inst('parametre_valeur')." WHERE Code_parametre_valeur = $Code_parametre_valeur;";
+        $cache_db = new Mf_Cachedb('parametre_valeur');
+        if ( ! $r = $cache_db->read($requete_sql) )
+        {
+            $res_requete = executer_requete_mysql($requete_sql, false);
+            if ($row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC)) $r = 'o'; else $r = 'n';
+            mysqli_free_result($res_requete);
+            $cache_db->write($requete_sql, $r);
+        }
+        return $r=='o';
+    }
+
+    protected function rechercher_parametre_valeur_Libelle( string $parametre_valeur_Libelle, ?int $Code_parametre=null )
+    {
+        $Code_parametre_valeur = 0;
+        $parametre_valeur_Libelle = format_sql('parametre_valeur_Libelle', $parametre_valeur_Libelle);
+        $Code_parametre = round($Code_parametre);
+        $requete_sql = 'SELECT Code_parametre_valeur FROM '.inst('parametre_valeur')." WHERE parametre_valeur_Libelle = $parametre_valeur_Libelle".( $Code_parametre!=0 ? " AND Code_parametre=$Code_parametre" : "" )." LIMIT 0, 1;";
+        $cache_db = new Mf_Cachedb('parametre_valeur');
+        if ( ! $Code_parametre_valeur = $cache_db->read($requete_sql) )
+        {
+            $res_requete = executer_requete_mysql($requete_sql, false);
+            if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                $Code_parametre_valeur = (int) $row_requete['Code_parametre_valeur'];
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($requete_sql, $Code_parametre_valeur);
+        }
+        return $Code_parametre_valeur;
+    }
+
+    protected function get_liste_Code_parametre_valeur(?int $Code_parametre=null, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */)
+    {
+        if ( $options===null ) { $options=[]; }
+        $cache_db = new Mf_Cachedb("parametre_valeur");
+        $cle = "parametre_valeur__lister_cles";
+        $Code_parametre = round($Code_parametre);
+        $cle.="_{$Code_parametre}";
+
+        // cond_mysql
+        $argument_cond = '';
+        if (isset($options['cond_mysql']))
+        {
+            foreach ($options['cond_mysql'] as &$condition)
+            {
+                $argument_cond.= ' AND ('.$condition.')';
+            }
+            unset($condition);
+        }
+        $cle.='_'.$argument_cond;
+
+        if ( ! $liste = $cache_db->read($cle) )
+        {
+
+            // Indexes
+            $liste_colonnes_a_indexer = [];
+            if ( $argument_cond!='' )
+            {
+                if ( strpos($argument_cond, 'parametre_valeur_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_valeur_Libelle'] = 'parametre_valeur_Libelle'; }
+            }
+            if ( count($liste_colonnes_a_indexer)>0 )
+            {
+                if ( ! $mf_liste_requete_index = $cache_db->read('parametre_valeur__index') )
+                {
+                    $res_requete_index = executer_requete_mysql('SHOW INDEX FROM `'.inst('parametre_valeur').'`;', false);
+                    $mf_liste_requete_index = array();
+                    while ( $row_requete_index = mysqli_fetch_array($res_requete_index, MYSQLI_ASSOC) )
+                    {
+                        $mf_liste_requete_index[$row_requete_index['Column_name']] = $row_requete_index['Column_name'];
+                    }
+                    mysqli_free_result($res_requete_index);
+                    $cache_db->write('parametre_valeur__index', $mf_liste_requete_index);
+                }
+                foreach( $mf_liste_requete_index as $mf_colonne_indexee )
+                {
+                    if ( isset($liste_colonnes_a_indexer[$mf_colonne_indexee]) ) unset($liste_colonnes_a_indexer[$mf_colonne_indexee]);
+                }
+                if ( count($liste_colonnes_a_indexer) > 0 )
+                {
+                    $cache_db->pause('parametre_valeur__index');
+                    foreach( $liste_colonnes_a_indexer as $colonnes_a_indexer )
+                    {
+                        executer_requete_mysql('ALTER TABLE `'.inst('parametre_valeur').'` ADD INDEX(`' . $colonnes_a_indexer . '`);');
+                    }
+                    $cache_db->clear();
+                    $cache_db->reprendre('parametre_valeur__index');
+                }
+            }
+
+            $liste = array();
+            $res_requete = executer_requete_mysql("SELECT Code_parametre_valeur FROM ".inst('parametre_valeur')." WHERE 1".( $Code_parametre!=0 ? " AND Code_parametre=$Code_parametre" : "" )."".$argument_cond.";", false);
+            while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                $liste[] = (int) $row_requete['Code_parametre_valeur'];
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($cle, $liste);
+        }
+        return $liste;
+    }
+
+    protected function Code_parametre_valeur_vers_Code_parametre( int $Code_parametre_valeur )
+    {
+        $Code_parametre_valeur = round($Code_parametre_valeur);
+        if ($Code_parametre_valeur<0) $Code_parametre_valeur = 0;
+        $p = floor($Code_parametre_valeur/100);
+        $start = $p*100;
+        $end = ($p+1)*100;
+        $cache_db = new Mf_Cachedb('parametre_valeur');
+        $cle = 'Code_parametre_valeur_vers_Code_parametre__'.$start.'__'.$end;
+        if ( ! $conversion = $cache_db->read($cle) )
+        {
+            $res_requete = executer_requete_mysql('SELECT Code_parametre_valeur, Code_parametre FROM '.inst('parametre_valeur').' WHERE '.$start.' <= Code_parametre_valeur AND Code_parametre_valeur < '.$end.';', false);
+            $conversion = array();
+            while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                $conversion[(int) $row_requete['Code_parametre_valeur']] = (int) $row_requete['Code_parametre'];
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($cle, $conversion);
+        }
+        return ( isset($conversion[$Code_parametre_valeur]) ? $conversion[$Code_parametre_valeur] : 0 );
+    }
+
+    protected function liste_Code_parametre_vers_liste_Code_parametre_valeur( array $liste_Code_parametre, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
+    {
+        if ( $options===null ) { $options=[]; }
+        $cache_db = new Mf_Cachedb("parametre_valeur");
+        $cle = "liste_Code_parametre_vers_liste_Code_parametre_valeur__".Sql_Format_Liste($liste_Code_parametre);
+
+        // cond_mysql
+        $argument_cond = '';
+        if (isset($options['cond_mysql']))
+        {
+            foreach ($options['cond_mysql'] as &$condition)
+            {
+                $argument_cond.= ' AND ('.$condition.')';
+            }
+            unset($condition);
+        }
+        $cle.='_'.$argument_cond;
+
+        if ( ! $liste_Code_parametre_valeur = $cache_db->read($cle) )
+        {
+
+            // Indexes
+            $liste_colonnes_a_indexer = [];
+            if ( $argument_cond!='' )
+            {
+                if ( strpos($argument_cond, 'parametre_valeur_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_valeur_Libelle'] = 'parametre_valeur_Libelle'; }
+            }
+            if ( count($liste_colonnes_a_indexer)>0 )
+            {
+                if ( ! $mf_liste_requete_index = $cache_db->read('parametre_valeur__index') )
+                {
+                    $res_requete_index = executer_requete_mysql('SHOW INDEX FROM `'.inst('parametre_valeur').'`;', false);
+                    $mf_liste_requete_index = array();
+                    while ( $row_requete_index = mysqli_fetch_array($res_requete_index, MYSQLI_ASSOC) )
+                    {
+                        $mf_liste_requete_index[$row_requete_index['Column_name']] = $row_requete_index['Column_name'];
+                    }
+                    mysqli_free_result($res_requete_index);
+                    $cache_db->write('parametre_valeur__index', $mf_liste_requete_index);
+                }
+                foreach( $mf_liste_requete_index as $mf_colonne_indexee )
+                {
+                    if ( isset($liste_colonnes_a_indexer[$mf_colonne_indexee]) ) unset($liste_colonnes_a_indexer[$mf_colonne_indexee]);
+                }
+                if ( count($liste_colonnes_a_indexer) > 0 )
+                {
+                    $cache_db->pause('parametre_valeur__index');
+                    foreach( $liste_colonnes_a_indexer as $colonnes_a_indexer )
+                    {
+                        executer_requete_mysql('ALTER TABLE `'.inst('parametre_valeur').'` ADD INDEX(`' . $colonnes_a_indexer . '`);');
+                    }
+                    $cache_db->clear();
+                    $cache_db->reprendre('parametre_valeur__index');
+                }
+            }
+
+            $liste_Code_parametre_valeur = array();
+            $res_requete = executer_requete_mysql('SELECT Code_parametre_valeur FROM '.inst('parametre_valeur')." WHERE Code_parametre IN ".Sql_Format_Liste($liste_Code_parametre).$argument_cond.";", false);
+            while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                $liste_Code_parametre_valeur[] = (int) $row_requete['Code_parametre_valeur'];
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($cle, $liste_Code_parametre_valeur);
+        }
+        return $liste_Code_parametre_valeur;
+    }
+
+    protected function parametre_valeur__liste_Code_parametre_valeur_vers_liste_Code_parametre( array $liste_Code_parametre_valeur, ?array $options = null /* $options = [ 'cond_mysql' => array() ] */ )
+    {
+        if ( $options===null ) { $options=[]; }
+        $cache_db = new Mf_Cachedb("parametre_valeur");
+        $cle = "liste_Code_parametre_valeur_vers_liste_Code_parametre__".Sql_Format_Liste($liste_Code_parametre_valeur);
+
+        // cond_mysql
+        $argument_cond = '';
+        if (isset($options['cond_mysql']))
+        {
+            foreach ($options['cond_mysql'] as &$condition)
+            {
+                $argument_cond.= ' AND ('.$condition.')';
+            }
+            unset($condition);
+        }
+        $cle.='_'.$argument_cond;
+
+        if ( ! $liste_Code_parametre = $cache_db->read($cle) )
+        {
+
+            // Indexes
+            $liste_colonnes_a_indexer = [];
+            if ( $argument_cond!='' )
+            {
+                if ( strpos($argument_cond, 'parametre_valeur_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_valeur_Libelle'] = 'parametre_valeur_Libelle'; }
+            }
+            if ( count($liste_colonnes_a_indexer)>0 )
+            {
+                if ( ! $mf_liste_requete_index = $cache_db->read('parametre_valeur__index') )
+                {
+                    $res_requete_index = executer_requete_mysql('SHOW INDEX FROM `'.inst('parametre_valeur').'`;', false);
+                    $mf_liste_requete_index = array();
+                    while ( $row_requete_index = mysqli_fetch_array($res_requete_index, MYSQLI_ASSOC) )
+                    {
+                        $mf_liste_requete_index[$row_requete_index['Column_name']] = $row_requete_index['Column_name'];
+                    }
+                    mysqli_free_result($res_requete_index);
+                    $cache_db->write('parametre_valeur__index', $mf_liste_requete_index);
+                }
+                foreach( $mf_liste_requete_index as $mf_colonne_indexee )
+                {
+                    if ( isset($liste_colonnes_a_indexer[$mf_colonne_indexee]) ) unset($liste_colonnes_a_indexer[$mf_colonne_indexee]);
+                }
+                if ( count($liste_colonnes_a_indexer) > 0 )
+                {
+                    $cache_db->pause('parametre_valeur__index');
+                    foreach( $liste_colonnes_a_indexer as $colonnes_a_indexer )
+                    {
+                        executer_requete_mysql('ALTER TABLE `'.inst('parametre_valeur').'` ADD INDEX(`' . $colonnes_a_indexer . '`);');
+                    }
+                    $cache_db->clear();
+                    $cache_db->reprendre('parametre_valeur__index');
+                }
+            }
+
+            $controle_doublons = array();
+            $liste_Code_parametre = array();
+            $res_requete = executer_requete_mysql("SELECT Code_parametre FROM ".inst('parametre_valeur')." WHERE Code_parametre_valeur IN ".Sql_Format_Liste($liste_Code_parametre_valeur).$argument_cond.";", false);
+            while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
+            {
+                if ( ! isset($controle_doublons[(int) $row_requete['Code_parametre']]) )
+                {
+                    $controle_doublons[(int) $row_requete['Code_parametre']] = 1;
+                    $liste_Code_parametre[] = (int) $row_requete['Code_parametre'];
+                }
+            }
+            mysqli_free_result($res_requete);
+            $cache_db->write($cle, $liste_Code_parametre);
+        }
+        return $liste_Code_parametre;
+    }
+
+    private function mf_dupliquer_parametre_valeur( int $Code_parametre_valeur )
+    {
+        $code_erreur = 0;
+        $Code_new_parametre_valeur = 0;
+        $Code_parametre_valeur = round($Code_parametre_valeur);
+        if ( !$this->mf_tester_existance_Code_parametre_valeur($Code_parametre_valeur) ) $code_erreur = 1;
+        else
+        {
+            $donnees_a_copier = $this->mf_get($Code_parametre_valeur, array('autocompletion' => false));
+            $parametre_valeur_Libelle = $donnees_a_copier['parametre_valeur_Libelle'];
+            $parametre_valeur_Libelle = text_sql($parametre_valeur_Libelle);
+            $Code_parametre = round($donnees_a_copier['Code_parametre']);
+            if ( isset($this->mf_dupliquer_table_de_conversion['Code_parametre'][$Code_parametre]) ) $Code_parametre = $this->mf_dupliquer_table_de_conversion['Code_parametre'][$Code_parametre];
+            elseif ( isset($this->mf_dupliquer_table_de_conversion['Code_parametre'][0]) ) $Code_parametre = $this->mf_dupliquer_table_de_conversion['Code_parametre'][0];
+            executer_requete_mysql("INSERT INTO parametre_valeur ( parametre_valeur_Libelle, Code_parametre ) VALUES ( '$parametre_valeur_Libelle', $Code_parametre );", true);
+            $Code_new_parametre_valeur = requete_mysql_insert_id();
+            if ($Code_new_parametre_valeur==0)
+            {
+                $code_erreur = 999999;
+            }
+            else
+            {
+                $cache_db = new Mf_Cachedb("parametre_valeur");
+                $cache_db->clear();
+                $this->mf_dupliquer_table_de_conversion['Code_parametre_valeur'][$Code_parametre_valeur] = $Code_new_parametre_valeur;
+            }
+        }
+        return array('code_erreur' => $code_erreur, "Code_parametre_valeur" => $Code_new_parametre_valeur);
+    }
+
+/*
     +----------------------+
     |  a_joueur_parametre  |
     +----------------------+
@@ -4205,11 +4493,16 @@ class entite_monframework extends entite
         if ( !$this->mf_tester_existance_a_joueur_parametre( $Code_joueur, $Code_parametre ) ) $code_erreur = 999999;
         else
         {
+            $donnees_a_copier = $this->mf_get($Code_joueur, $Code_parametre, array('autocompletion' => false));
+            $a_joueur_parametre_Valeur_choisie = $donnees_a_copier['a_joueur_parametre_Valeur_choisie'];
+            $a_joueur_parametre_Actif = $donnees_a_copier['a_joueur_parametre_Actif'];
+            $a_joueur_parametre_Valeur_choisie = round($a_joueur_parametre_Valeur_choisie);
+            $a_joueur_parametre_Actif = ($a_joueur_parametre_Actif==1 ? 1 : 0);
             if ( isset($this->mf_dupliquer_table_de_conversion['Code_joueur'][$Code_joueur]) ) $Code_joueur = $this->mf_dupliquer_table_de_conversion['Code_joueur'][$Code_joueur];
             elseif ( isset($this->mf_dupliquer_table_de_conversion['Code_joueur'][0]) ) $Code_joueur = $this->mf_dupliquer_table_de_conversion['Code_joueur'][0];
             if ( isset($this->mf_dupliquer_table_de_conversion['Code_parametre'][$Code_parametre]) ) $Code_parametre = $this->mf_dupliquer_table_de_conversion['Code_parametre'][$Code_parametre];
             elseif ( isset($this->mf_dupliquer_table_de_conversion['Code_parametre'][0]) ) $Code_parametre = $this->mf_dupliquer_table_de_conversion['Code_parametre'][0];
-            executer_requete_mysql('INSERT INTO '.inst('a_joueur_parametre')." ( Code_joueur, Code_parametre ) VALUES ( $Code_joueur, $Code_parametre );", true);
+            executer_requete_mysql('INSERT INTO '.inst('a_joueur_parametre')." ( a_joueur_parametre_Valeur_choisie, a_joueur_parametre_Actif, Code_joueur, Code_parametre ) VALUES ( $a_joueur_parametre_Valeur_choisie, $a_joueur_parametre_Actif, $Code_joueur, $Code_parametre );", true);
             if ( requete_mysqli_affected_rows()==0 )
             {
                 $code_erreur = 999999;
@@ -4248,6 +4541,8 @@ class entite_monframework extends entite
             $liste_colonnes_a_indexer = [];
             if ( $argument_cond!='' )
             {
+                if ( strpos($argument_cond, 'a_joueur_parametre_Valeur_choisie')!==false ) { $liste_colonnes_a_indexer['a_joueur_parametre_Valeur_choisie'] = 'a_joueur_parametre_Valeur_choisie'; }
+                if ( strpos($argument_cond, 'a_joueur_parametre_Actif')!==false ) { $liste_colonnes_a_indexer['a_joueur_parametre_Actif'] = 'a_joueur_parametre_Actif'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -4315,6 +4610,8 @@ class entite_monframework extends entite
             $liste_colonnes_a_indexer = [];
             if ( $argument_cond!='' )
             {
+                if ( strpos($argument_cond, 'a_joueur_parametre_Valeur_choisie')!==false ) { $liste_colonnes_a_indexer['a_joueur_parametre_Valeur_choisie'] = 'a_joueur_parametre_Valeur_choisie'; }
+                if ( strpos($argument_cond, 'a_joueur_parametre_Actif')!==false ) { $liste_colonnes_a_indexer['a_joueur_parametre_Actif'] = 'a_joueur_parametre_Actif'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -5669,7 +5966,7 @@ class entite_monframework extends entite
     +-------+
 */
 
-    private $gestion_cache=['joueur'=>true,'message'=>true,'parametre'=>true,'groupe'=>true,'personnage'=>true,'campagne'=>true,'tag_campagne'=>true,'carte'=>true,'objet'=>true,'type'=>true,'ressource'=>true,'tag_ressource'=>true,'messagerie'=>true,'liste_contacts'=>true,'a_joueur_parametre'=>true,'a_candidature_joueur_groupe'=>true,'a_membre_joueur_groupe'=>true,'a_invitation_joueur_groupe'=>true,'a_carte_objet'=>true,'a_campagne_tag_campagne'=>true,'a_ressource_tag_ressource'=>true,'a_liste_contact_joueur'=>true,];
+    private $gestion_cache=['joueur'=>true,'message'=>true,'parametre'=>true,'groupe'=>true,'personnage'=>true,'campagne'=>true,'tag_campagne'=>true,'carte'=>true,'objet'=>true,'type'=>true,'ressource'=>true,'tag_ressource'=>true,'messagerie'=>true,'liste_contacts'=>true,'a_joueur_parametre'=>true,'a_candidature_joueur_groupe'=>true,'a_membre_joueur_groupe'=>true,'a_invitation_joueur_groupe'=>true,'a_carte_objet'=>true,'a_campagne_tag_campagne'=>true,'a_ressource_tag_ressource'=>true,'a_liste_contact_joueur'=>true,'parametre_valeur'=>true,];
 
 /*
     +-------+
@@ -5693,6 +5990,7 @@ class entite_monframework extends entite
         $this->mf_dependances['ressource'][]='type';
         $this->mf_dependances['joueur'][]='messagerie';
         $this->mf_dependances['joueur'][]='liste_contacts';
+        $this->mf_dependances['parametre'][]='parametre_valeur';
         $this->mf_dependances['joueur'][]='a_joueur_parametre';
         $this->mf_dependances['parametre'][]='a_joueur_parametre';
         $this->mf_dependances['joueur'][]='a_candidature_joueur_groupe';
@@ -5719,6 +6017,7 @@ class entite_monframework extends entite
         $this->mf_type_table_enfant['type']='entite';
         $this->mf_type_table_enfant['messagerie']='entite';
         $this->mf_type_table_enfant['liste_contacts']='entite';
+        $this->mf_type_table_enfant['parametre_valeur']='entite';
         $this->mf_type_table_enfant['a_joueur_parametre']='association';
         $this->mf_type_table_enfant['a_candidature_joueur_groupe']='association';
         $this->mf_type_table_enfant['a_membre_joueur_groupe']='association';
@@ -5945,6 +6244,7 @@ class entite_monframework extends entite
             case "tag_ressource": $this->mf_dupliquer_tag_ressource($code_table); break;
             case "messagerie": $this->mf_dupliquer_messagerie($code_table); break;
             case "liste_contacts": $this->mf_dupliquer_liste_contacts($code_table); break;
+            case "parametre_valeur": $this->mf_dupliquer_parametre_valeur($code_table); break;
         }
     }
 }

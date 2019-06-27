@@ -1,37 +1,30 @@
 <?php
 
-$lang_standard['Code_parametre'] = 'parametre';
+$lang_standard['Code_parametre'] = 'Paramètre';
 
-$lang_standard['parametre_Libelle'] = 'parametre_Libelle';
-$lang_standard['parametre_Valeur'] = 'parametre_Valeur';
-$lang_standard['parametre_Activable'] = 'parametre_Activable';
+$lang_standard['parametre_Libelle'] = 'Libelle';
+$lang_standard['parametre_Activable'] = 'Activable';
 $lang_standard['parametre_Activable_'] = array( 1 => 'Oui', 0 => 'Non' );
-$lang_standard['parametre_Actif'] = 'parametre_Actif';
-$lang_standard['parametre_Actif_'] = array( 1 => 'Oui', 0 => 'Non' );
 
 $lang_standard['bouton_ajouter_parametre'] = 'Ajouter';
-$lang_standard['bouton_creer_parametre'] = 'Creer';
+$lang_standard['bouton_creer_parametre'] = 'Créer';
 $lang_standard['bouton_modifier_parametre'] = 'Modifier';
 $lang_standard['bouton_supprimer_parametre'] = 'Supprimer';
 $lang_standard['bouton_modifier_parametre_Libelle'] = 'Modifier';
-$lang_standard['bouton_modifier_parametre_Valeur'] = 'Modifier';
 $lang_standard['bouton_modifier_parametre_Activable'] = 'Modifier';
-$lang_standard['bouton_modifier_parametre_Actif'] = 'Modifier';
 
-$lang_standard['form_add_parametre'] = 'form_add_parametre';
-$lang_standard['form_edit_parametre'] = 'form_edit_parametre';
-$lang_standard['form_delete_parametre'] = 'form_delete_parametre';
+$lang_standard['form_add_parametre'] = 'Ajouter un paramètre';
+$lang_standard['form_edit_parametre'] = 'Modifier un paramètre';
+$lang_standard['form_delete_parametre'] = 'Supprimer un paramètre';
 
 $mf_titre_ligne_table['parametre'] = '{parametre_Libelle}';
 
 $mf_tri_defaut_table['parametre'] = array( 'parametre_Libelle' => 'ASC' );
 
-$lang_standard['libelle_liste_parametre'] = 'libelle_liste_parametre';
+$lang_standard['libelle_liste_parametre'] = 'Liste des paramètres';
 
 $mf_initialisation['parametre_Libelle'] = '';
-$mf_initialisation['parametre_Valeur'] = 0;
 $mf_initialisation['parametre_Activable'] = 0;
-$mf_initialisation['parametre_Actif'] = 0;
 
 // code_erreur
 

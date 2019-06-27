@@ -398,9 +398,7 @@ function options($id, $options)
     $authorization['POST'] = $mf_droits_defaut['parametre__AJOUTER'];
     $authorization['PUT'] = $mf_droits_defaut['parametre__MODIFIER'];
     $authorization['PUT:parametre_Libelle'] = $mf_droits_defaut['api_modifier__parametre_Libelle'];
-    $authorization['PUT:parametre_Valeur'] = $mf_droits_defaut['api_modifier__parametre_Valeur'];
     $authorization['PUT:parametre_Activable'] = $mf_droits_defaut['api_modifier__parametre_Activable'];
-    $authorization['PUT:parametre_Actif'] = $mf_droits_defaut['api_modifier__parametre_Actif'];
     $authorization['DELETE'] = $mf_droits_defaut['parametre__SUPPRIMER'];
     return array('code_erreur' => 0, 'authorization' => $authorization);
 }

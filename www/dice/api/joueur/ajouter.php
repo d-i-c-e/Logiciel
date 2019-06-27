@@ -19,7 +19,8 @@
     $joueur_Avatar_Fichier = lecture_parametre_api("joueur_Avatar_Fichier", '');
     $joueur_Date_naissance = lecture_parametre_api("joueur_Date_naissance", '');
     $joueur_Date_inscription = lecture_parametre_api("joueur_Date_inscription", '');
-    $retour = $table_joueur->mf_ajouter($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription);
+    $joueur_Administrateur = lecture_parametre_api("joueur_Administrateur", '');
+    $retour = $table_joueur->mf_ajouter($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur);
     if ( $retour['code_erreur']==0 )
     {
         $cache = new Cachehtml();

@@ -95,7 +95,7 @@ class Api_dice {
         return $this->get($requete . 'joueur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function joueur__add($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription) {
+    public function joueur__add($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur) {
         $data = [
             'joueur_Email' => $joueur_Email,
             'joueur_Identifiant' => $joueur_Identifiant,
@@ -103,11 +103,12 @@ class Api_dice {
             'joueur_Avatar_Fichier' => $joueur_Avatar_Fichier,
             'joueur_Date_naissance' => $joueur_Date_naissance,
             'joueur_Date_inscription' => $joueur_Date_inscription,
+            'joueur_Administrateur' => $joueur_Administrateur,
         ];
         return $this->post('joueur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
-    public function joueur__edit($Code_joueur, $joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription) {
+    public function joueur__edit($Code_joueur, $joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur) {
         $data = [
             'joueur_Email' => $joueur_Email,
             'joueur_Identifiant' => $joueur_Identifiant,
@@ -115,6 +116,7 @@ class Api_dice {
             'joueur_Avatar_Fichier' => $joueur_Avatar_Fichier,
             'joueur_Date_naissance' => $joueur_Date_naissance,
             'joueur_Date_inscription' => $joueur_Date_inscription,
+            'joueur_Administrateur' => $joueur_Administrateur,
         ];
         return $this->put('joueur/'.$Code_joueur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
@@ -146,6 +148,11 @@ class Api_dice {
 
     public function joueur__edit__joueur_Date_inscription($Code_joueur, $joueur_Date_inscription) {
         $data = ['joueur_Date_inscription' => $joueur_Date_inscription ];
+        return $this->put('joueur/'.$Code_joueur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function joueur__edit__joueur_Administrateur($Code_joueur, $joueur_Administrateur) {
+        $data = ['joueur_Administrateur' => $joueur_Administrateur ];
         return $this->put('joueur/'.$Code_joueur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
@@ -227,22 +234,18 @@ class Api_dice {
         return $this->get($requete . 'parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function parametre__add($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif) {
+    public function parametre__add($parametre_Libelle, $parametre_Activable) {
         $data = [
             'parametre_Libelle' => $parametre_Libelle,
-            'parametre_Valeur' => $parametre_Valeur,
             'parametre_Activable' => $parametre_Activable,
-            'parametre_Actif' => $parametre_Actif,
         ];
         return $this->post('parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
-    public function parametre__edit($Code_parametre, $parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif) {
+    public function parametre__edit($Code_parametre, $parametre_Libelle, $parametre_Activable) {
         $data = [
             'parametre_Libelle' => $parametre_Libelle,
-            'parametre_Valeur' => $parametre_Valeur,
             'parametre_Activable' => $parametre_Activable,
-            'parametre_Actif' => $parametre_Actif,
         ];
         return $this->put('parametre/'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
@@ -252,18 +255,8 @@ class Api_dice {
         return $this->put('parametre/'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
-    public function parametre__edit__parametre_Valeur($Code_parametre, $parametre_Valeur) {
-        $data = ['parametre_Valeur' => $parametre_Valeur ];
-        return $this->put('parametre/'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
-    }
-
     public function parametre__edit__parametre_Activable($Code_parametre, $parametre_Activable) {
         $data = ['parametre_Activable' => $parametre_Activable ];
-        return $this->put('parametre/'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
-    }
-
-    public function parametre__edit__parametre_Actif($Code_parametre, $parametre_Actif) {
-        $data = ['parametre_Actif' => $parametre_Actif ];
         return $this->put('parametre/'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
@@ -851,6 +844,51 @@ class Api_dice {
         return $this->delete('liste_contacts/'.$Code_liste_contacts.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
+    // +------------------+
+    // | parametre_valeur |
+    // +------------------+
+
+    public function parametre_valeur__get($Code_parametre_valeur) {
+        return $this->get('parametre_valeur/'.$Code_parametre_valeur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    }
+
+    public function parametre_valeur__get_all(?int $Code_parametre=null) {
+        $requete = '';
+        $Code_parametre = (int) $Code_parametre;
+        if ($Code_parametre != 0) { $requete.= 'parametre/' . $Code_parametre . '/'; }
+        return $this->get($requete . 'parametre_valeur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    }
+
+    public function parametre_valeur__add($Code_parametre, $parametre_valeur_Libelle) {
+        $data = [
+            'parametre_valeur_Libelle' => $parametre_valeur_Libelle,
+            'Code_parametre' => $Code_parametre,
+        ];
+        return $this->post('parametre_valeur?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function parametre_valeur__edit($Code_parametre_valeur, $Code_parametre, $parametre_valeur_Libelle) {
+        $data = [
+            'parametre_valeur_Libelle' => $parametre_valeur_Libelle,
+            'Code_parametre' => $Code_parametre,
+        ];
+        return $this->put('parametre_valeur/'.$Code_parametre_valeur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function parametre_valeur__edit__parametre_valeur_Libelle($Code_parametre_valeur, $parametre_valeur_Libelle) {
+        $data = ['parametre_valeur_Libelle' => $parametre_valeur_Libelle ];
+        return $this->put('parametre_valeur/'.$Code_parametre_valeur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function parametre_valeur__edit__parametre($Code_parametre_valeur, $parametre) {
+        $data = ['parametre' => $parametre ];
+        return $this->put('parametre_valeur/'.$Code_parametre_valeur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function parametre_valeur__delete($Code_parametre_valeur) {
+        return $this->delete('parametre_valeur/'.$Code_parametre_valeur.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
+    }
+
     // +--------------------+
     // | a_joueur_parametre |
     // +--------------------+
@@ -868,17 +906,31 @@ class Api_dice {
         return $this->get($requete . 'a_joueur_parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance);
     }
 
-    public function a_joueur_parametre__add($Code_joueur, $Code_parametre) {
+    public function a_joueur_parametre__add($Code_joueur, $Code_parametre, $a_joueur_parametre_Valeur_choisie, $a_joueur_parametre_Actif) {
         $data = [
+            'a_joueur_parametre_Valeur_choisie' => $a_joueur_parametre_Valeur_choisie,
+            'a_joueur_parametre_Actif' => $a_joueur_parametre_Actif,
             'Code_joueur' => $Code_joueur,
             'Code_parametre' => $Code_parametre,
         ];
         return $this->post('a_joueur_parametre?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 
-    public function a_joueur_parametre__edit($Code_joueur, $Code_parametre) {
+    public function a_joueur_parametre__edit($Code_joueur, $Code_parametre, $a_joueur_parametre_Valeur_choisie, $a_joueur_parametre_Actif) {
         $data = [
+            'a_joueur_parametre_Valeur_choisie' => $a_joueur_parametre_Valeur_choisie,
+            'a_joueur_parametre_Actif' => $a_joueur_parametre_Actif,
         ];
+        return $this->put('a_joueur_parametre/'.$Code_joueur.'-'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function a_joueur_parametre__edit__a_joueur_parametre_Valeur_choisie($Code_joueur, $Code_parametre, $a_joueur_parametre_Valeur_choisie) {
+        $data = ['a_joueur_parametre_Valeur_choisie' => $a_joueur_parametre_Valeur_choisie ];
+        return $this->put('a_joueur_parametre/'.$Code_joueur.'-'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
+    }
+
+    public function a_joueur_parametre__edit__a_joueur_parametre_Actif($Code_joueur, $Code_parametre, $a_joueur_parametre_Actif) {
+        $data = ['a_joueur_parametre_Actif' => $a_joueur_parametre_Actif ];
         return $this->put('a_joueur_parametre/'.$Code_joueur.'-'.$Code_parametre.'?mf_token='.$this->mf_token.'&mf_connector_token='.$this->mf_connector_token.'&mf_instance='.$this->mf_instance, $data);
     }
 

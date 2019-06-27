@@ -64,20 +64,6 @@ class parametre_monframework extends entite_monframework
             executer_requete_mysql('UPDATE '.inst('parametre').' SET parametre_Libelle=' . format_sql('parametre_Libelle', $mf_initialisation['parametre_Libelle']) . ';', true);
         }
 
-        if ( isset($liste_colonnes['parametre_Valeur']) )
-        {
-            if ( typeMyql2Sql($liste_colonnes['parametre_Valeur']['Type'])!='INT' )
-            {
-                executer_requete_mysql('ALTER TABLE '.inst('parametre').' CHANGE parametre_Valeur parametre_Valeur INT;', true);
-            }
-            unset($liste_colonnes['parametre_Valeur']);
-        }
-        else
-        {
-            executer_requete_mysql('ALTER TABLE '.inst('parametre').' ADD parametre_Valeur INT;', true);
-            executer_requete_mysql('UPDATE '.inst('parametre').' SET parametre_Valeur=' . format_sql('parametre_Valeur', $mf_initialisation['parametre_Valeur']) . ';', true);
-        }
-
         if ( isset($liste_colonnes['parametre_Activable']) )
         {
             if ( typeMyql2Sql($liste_colonnes['parametre_Activable']['Type'])!='BOOL' )
@@ -90,20 +76,6 @@ class parametre_monframework extends entite_monframework
         {
             executer_requete_mysql('ALTER TABLE '.inst('parametre').' ADD parametre_Activable BOOL;', true);
             executer_requete_mysql('UPDATE '.inst('parametre').' SET parametre_Activable=' . format_sql('parametre_Activable', $mf_initialisation['parametre_Activable']) . ';', true);
-        }
-
-        if ( isset($liste_colonnes['parametre_Actif']) )
-        {
-            if ( typeMyql2Sql($liste_colonnes['parametre_Actif']['Type'])!='BOOL' )
-            {
-                executer_requete_mysql('ALTER TABLE '.inst('parametre').' CHANGE parametre_Actif parametre_Actif BOOL;', true);
-            }
-            unset($liste_colonnes['parametre_Actif']);
-        }
-        else
-        {
-            executer_requete_mysql('ALTER TABLE '.inst('parametre').' ADD parametre_Actif BOOL;', true);
-            executer_requete_mysql('UPDATE '.inst('parametre').' SET parametre_Actif=' . format_sql('parametre_Actif', $mf_initialisation['parametre_Actif']) . ';', true);
         }
 
         if ( isset($liste_colonnes['mf_signature']) )
@@ -155,13 +127,12 @@ class parametre_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif, ?bool $force=false)
+    public function mf_ajouter(string $parametre_Libelle, bool $parametre_Activable, ?bool $force=false)
     {
         if ( $force===null ) { $force=false; }
         $Code_parametre = 0;
         $code_erreur = 0;
-        $parametre_Valeur = round($parametre_Valeur);
-        Hook_parametre::pre_controller($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif);
+        Hook_parametre::pre_controller($parametre_Libelle, $parametre_Activable);
         if (!$force)
         {
             if (!self::$maj_droits_ajouter_en_cours)
@@ -172,17 +143,15 @@ class parametre_monframework extends entite_monframework
             }
         }
         if ( !$force && !mf_matrice_droits(['parametre__AJOUTER']) ) $code_erreur = REFUS_PARAMETRE__AJOUTER;
-        elseif ( !Hook_parametre::autorisation_ajout($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif) ) $code_erreur = REFUS_PARAMETRE__AJOUT_BLOQUEE;
+        elseif ( !Hook_parametre::autorisation_ajout($parametre_Libelle, $parametre_Activable) ) $code_erreur = REFUS_PARAMETRE__AJOUT_BLOQUEE;
         else
         {
-            Hook_parametre::data_controller($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif);
-            $mf_signature = text_sql(Hook_parametre::calcul_signature($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif));
-            $mf_cle_unique = text_sql(Hook_parametre::calcul_cle_unique($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif));
+            Hook_parametre::data_controller($parametre_Libelle, $parametre_Activable);
+            $mf_signature = text_sql(Hook_parametre::calcul_signature($parametre_Libelle, $parametre_Activable));
+            $mf_cle_unique = text_sql(Hook_parametre::calcul_cle_unique($parametre_Libelle, $parametre_Activable));
             $parametre_Libelle = text_sql($parametre_Libelle);
-            $parametre_Valeur = round($parametre_Valeur);
             $parametre_Activable = ($parametre_Activable==1 ? 1 : 0);
-            $parametre_Actif = ($parametre_Actif==1 ? 1 : 0);
-            $requete = "INSERT INTO ".inst('parametre')." ( mf_signature, mf_cle_unique, mf_date_creation, mf_date_modification, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif ) VALUES ( '$mf_signature', '$mf_cle_unique', '".get_now()."', '".get_now()."', '$parametre_Libelle', $parametre_Valeur, $parametre_Activable, $parametre_Actif );";
+            $requete = "INSERT INTO ".inst('parametre')." ( mf_signature, mf_cle_unique, mf_date_creation, mf_date_modification, parametre_Libelle, parametre_Activable ) VALUES ( '$mf_signature', '$mf_cle_unique', '".get_now()."', '".get_now()."', '$parametre_Libelle', $parametre_Activable );";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql($requete, true);
@@ -217,10 +186,8 @@ class parametre_monframework extends entite_monframework
         global $mf_initialisation, $mf_droits_defaut;
         $mf_droits_defaut["parametre__AJOUTER"] = $mf_droits_defaut["parametre__CREER"];
         $parametre_Libelle = $mf_initialisation['parametre_Libelle'];
-        $parametre_Valeur = $mf_initialisation['parametre_Valeur'];
         $parametre_Activable = $mf_initialisation['parametre_Activable'];
-        $parametre_Actif = $mf_initialisation['parametre_Actif'];
-        return $this->mf_ajouter($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif, $force);
+        return $this->mf_ajouter($parametre_Libelle, $parametre_Activable, $force);
     }
 
     public function mf_ajouter_2(array $ligne, bool $force=null) // array('colonne1' => 'valeur1',  [...] )
@@ -228,10 +195,8 @@ class parametre_monframework extends entite_monframework
         if ( $force===null ) { $force=false; }
         global $mf_initialisation;
         $parametre_Libelle = (string)(isset($ligne['parametre_Libelle'])?$ligne['parametre_Libelle']:$mf_initialisation['parametre_Libelle']);
-        $parametre_Valeur = (int)(isset($ligne['parametre_Valeur'])?$ligne['parametre_Valeur']:$mf_initialisation['parametre_Valeur']);
         $parametre_Activable = (bool)(isset($ligne['parametre_Activable'])?$ligne['parametre_Activable']:$mf_initialisation['parametre_Activable']);
-        $parametre_Actif = (bool)(isset($ligne['parametre_Actif'])?$ligne['parametre_Actif']:$mf_initialisation['parametre_Actif']);
-        return $this->mf_ajouter($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif, $force);
+        return $this->mf_ajouter($parametre_Libelle, $parametre_Activable, $force);
     }
 
     public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
@@ -242,14 +207,12 @@ class parametre_monframework extends entite_monframework
         foreach ($lignes as $ligne)
         {
             $parametre_Libelle = text_sql(isset($ligne['parametre_Libelle'])?$ligne['parametre_Libelle']:$mf_initialisation['parametre_Libelle']);
-            $parametre_Valeur = round(isset($ligne['parametre_Valeur'])?$ligne['parametre_Valeur']:$mf_initialisation['parametre_Valeur']);
             $parametre_Activable = (isset($ligne['parametre_Activable'])?$ligne['parametre_Activable']:$mf_initialisation['parametre_Activable']==1 ? 1 : 0);
-            $parametre_Actif = (isset($ligne['parametre_Actif'])?$ligne['parametre_Actif']:$mf_initialisation['parametre_Actif']==1 ? 1 : 0);
-            $values.=($values!="" ? "," : "")."('$parametre_Libelle', $parametre_Valeur, $parametre_Activable, $parametre_Actif)";
+            $values.=($values!="" ? "," : "")."('$parametre_Libelle', $parametre_Activable)";
         }
         if ($values!='')
         {
-            $requete = "INSERT INTO ".inst('parametre')." ( parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif ) VALUES $values;";
+            $requete = "INSERT INTO ".inst('parametre')." ( parametre_Libelle, parametre_Activable ) VALUES $values;";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -276,13 +239,12 @@ class parametre_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier( int $Code_parametre, string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif, ?bool $force=null)
+    public function mf_modifier( int $Code_parametre, string $parametre_Libelle, bool $parametre_Activable, ?bool $force=null)
     {
         if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_parametre = round($Code_parametre);
-        $parametre_Valeur = round($parametre_Valeur);
-        Hook_parametre::pre_controller($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif, $Code_parametre);
+        Hook_parametre::pre_controller($parametre_Libelle, $parametre_Activable, $Code_parametre);
         if (!$force)
         {
             if (!self::$maj_droits_modifier_en_cours)
@@ -295,19 +257,17 @@ class parametre_monframework extends entite_monframework
         if ( !$force && !mf_matrice_droits(['parametre__MODIFIER']) ) $code_erreur = REFUS_PARAMETRE__MODIFIER;
         elseif ( !$this->mf_tester_existance_Code_parametre($Code_parametre) ) $code_erreur = ERR_PARAMETRE__MODIFIER__CODE_PARAMETRE_INEXISTANT;
         elseif ( CONTROLE_ACCES_DONNEES_DEFAUT && !Hook_mf_systeme::controle_acces_donnees('Code_parametre', $Code_parametre) ) $code_erreur = ACCES_CODE_PARAMETRE_REFUSE;
-        elseif ( !Hook_parametre::autorisation_modification($Code_parametre, $parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif) ) $code_erreur = REFUS_PARAMETRE__MODIFICATION_BLOQUEE;
+        elseif ( !Hook_parametre::autorisation_modification($Code_parametre, $parametre_Libelle, $parametre_Activable) ) $code_erreur = REFUS_PARAMETRE__MODIFICATION_BLOQUEE;
         else
         {
-            Hook_parametre::data_controller($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif, $Code_parametre);
+            Hook_parametre::data_controller($parametre_Libelle, $parametre_Activable, $Code_parametre);
             $parametre = $this->mf_get_2( $Code_parametre, array('autocompletion' => false, 'masquer_mdp' => false) );
             $mf_colonnes_a_modifier=[];
             $bool__parametre_Libelle = false; if ( $parametre_Libelle!=$parametre['parametre_Libelle'] ) { Hook_parametre::data_controller__parametre_Libelle($parametre['parametre_Libelle'], $parametre_Libelle, $Code_parametre); if ( $parametre_Libelle!=$parametre['parametre_Libelle'] ) { $mf_colonnes_a_modifier[] = 'parametre_Libelle=' . format_sql('parametre_Libelle', $parametre_Libelle); $bool__parametre_Libelle = true; } }
-            $bool__parametre_Valeur = false; if ( $parametre_Valeur!=$parametre['parametre_Valeur'] ) { Hook_parametre::data_controller__parametre_Valeur($parametre['parametre_Valeur'], $parametre_Valeur, $Code_parametre); if ( $parametre_Valeur!=$parametre['parametre_Valeur'] ) { $mf_colonnes_a_modifier[] = 'parametre_Valeur=' . format_sql('parametre_Valeur', $parametre_Valeur); $bool__parametre_Valeur = true; } }
             $bool__parametre_Activable = false; if ( $parametre_Activable!=$parametre['parametre_Activable'] ) { Hook_parametre::data_controller__parametre_Activable($parametre['parametre_Activable'], $parametre_Activable, $Code_parametre); if ( $parametre_Activable!=$parametre['parametre_Activable'] ) { $mf_colonnes_a_modifier[] = 'parametre_Activable=' . format_sql('parametre_Activable', $parametre_Activable); $bool__parametre_Activable = true; } }
-            $bool__parametre_Actif = false; if ( $parametre_Actif!=$parametre['parametre_Actif'] ) { Hook_parametre::data_controller__parametre_Actif($parametre['parametre_Actif'], $parametre_Actif, $Code_parametre); if ( $parametre_Actif!=$parametre['parametre_Actif'] ) { $mf_colonnes_a_modifier[] = 'parametre_Actif=' . format_sql('parametre_Actif', $parametre_Actif); $bool__parametre_Actif = true; } }
             if (count($mf_colonnes_a_modifier)>0) {
-                $mf_signature = text_sql(Hook_parametre::calcul_signature($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif));
-                $mf_cle_unique = text_sql(Hook_parametre::calcul_cle_unique($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif));
+                $mf_signature = text_sql(Hook_parametre::calcul_signature($parametre_Libelle, $parametre_Activable));
+                $mf_cle_unique = text_sql(Hook_parametre::calcul_cle_unique($parametre_Libelle, $parametre_Activable));
                 $mf_colonnes_a_modifier[] = 'mf_signature=\'' . $mf_signature . '\'';
                 $mf_colonnes_a_modifier[] = 'mf_cle_unique=\'' . $mf_cle_unique . '\'';
                 $mf_colonnes_a_modifier[] = 'mf_date_modification=\'' . get_now() . '\'';
@@ -324,7 +284,7 @@ class parametre_monframework extends entite_monframework
                 {
                     self::$cache_db->clear();
                     self::$cache_db->reprendre($cle);
-                    Hook_parametre::modifier($Code_parametre, $bool__parametre_Libelle, $bool__parametre_Valeur, $bool__parametre_Activable, $bool__parametre_Actif);
+                    Hook_parametre::modifier($Code_parametre, $bool__parametre_Libelle, $bool__parametre_Activable);
                 }
             }
             else
@@ -364,10 +324,8 @@ class parametre_monframework extends entite_monframework
                     }
                 }
                 $parametre_Libelle = (string)( isset($colonnes['parametre_Libelle']) && ( $force || mf_matrice_droits(['api_modifier__parametre_Libelle', 'parametre__MODIFIER']) ) ? $colonnes['parametre_Libelle'] : ( isset($parametre['parametre_Libelle']) ? $parametre['parametre_Libelle'] : '' ) );
-                $parametre_Valeur = (int)( isset($colonnes['parametre_Valeur']) && ( $force || mf_matrice_droits(['api_modifier__parametre_Valeur', 'parametre__MODIFIER']) ) ? $colonnes['parametre_Valeur'] : ( isset($parametre['parametre_Valeur']) ? $parametre['parametre_Valeur'] : '' ) );
                 $parametre_Activable = (bool)( isset($colonnes['parametre_Activable']) && ( $force || mf_matrice_droits(['api_modifier__parametre_Activable', 'parametre__MODIFIER']) ) ? $colonnes['parametre_Activable'] : ( isset($parametre['parametre_Activable']) ? $parametre['parametre_Activable'] : '' ) );
-                $parametre_Actif = (bool)( isset($colonnes['parametre_Actif']) && ( $force || mf_matrice_droits(['api_modifier__parametre_Actif', 'parametre__MODIFIER']) ) ? $colonnes['parametre_Actif'] : ( isset($parametre['parametre_Actif']) ? $parametre['parametre_Actif'] : '' ) );
-                $retour = $this->mf_modifier($Code_parametre, $parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif, true);
+                $retour = $this->mf_modifier($Code_parametre, $parametre_Libelle, $parametre_Activable, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_PARAMETRE__MODIFIER__AUCUN_CHANGEMENT )
                 {
                     $code_erreur = $retour['code_erreur'];
@@ -403,7 +361,7 @@ class parametre_monframework extends entite_monframework
         {
             foreach ($colonnes as $colonne => $valeur)
             {
-                if ( $colonne=='parametre_Libelle' || $colonne=='parametre_Valeur' || $colonne=='parametre_Activable' || $colonne=='parametre_Actif' )
+                if ( $colonne=='parametre_Libelle' || $colonne=='parametre_Activable' )
                 {
                     $valeurs_en_colonnes[$colonne][$Code_parametre]=$valeur;
                     $indices_par_colonne[$colonne][]=$Code_parametre;
@@ -473,9 +431,7 @@ class parametre_monframework extends entite_monframework
         $code_erreur = 0;
         $mf_colonnes_a_modifier=[];
         if ( isset($data['parametre_Libelle']) ) { $mf_colonnes_a_modifier[] = 'parametre_Libelle = ' . format_sql('parametre_Libelle', $data['parametre_Libelle']); }
-        if ( isset($data['parametre_Valeur']) ) { $mf_colonnes_a_modifier[] = 'parametre_Valeur = ' . format_sql('parametre_Valeur', $data['parametre_Valeur']); }
         if ( isset($data['parametre_Activable']) ) { $mf_colonnes_a_modifier[] = 'parametre_Activable = ' . format_sql('parametre_Activable', $data['parametre_Activable']); }
-        if ( isset($data['parametre_Actif']) ) { $mf_colonnes_a_modifier[] = 'parametre_Actif = ' . format_sql('parametre_Actif', $data['parametre_Actif']); }
         if ( count($mf_colonnes_a_modifier)>0 )
         {
             // cond_mysql
@@ -755,16 +711,12 @@ class parametre_monframework extends entite_monframework
                 if ( $argument_cond!='' )
                 {
                     if ( strpos($argument_cond, 'parametre_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_Libelle'] = 'parametre_Libelle'; }
-                    if ( strpos($argument_cond, 'parametre_Valeur')!==false ) { $liste_colonnes_a_indexer['parametre_Valeur'] = 'parametre_Valeur'; }
                     if ( strpos($argument_cond, 'parametre_Activable')!==false ) { $liste_colonnes_a_indexer['parametre_Activable'] = 'parametre_Activable'; }
-                    if ( strpos($argument_cond, 'parametre_Actif')!==false ) { $liste_colonnes_a_indexer['parametre_Actif'] = 'parametre_Actif'; }
                 }
                 if ( isset($options['tris']) )
                 {
                     if ( isset($options['tris']['parametre_Libelle']) ) { $liste_colonnes_a_indexer['parametre_Libelle'] = 'parametre_Libelle'; }
-                    if ( isset($options['tris']['parametre_Valeur']) ) { $liste_colonnes_a_indexer['parametre_Valeur'] = 'parametre_Valeur'; }
                     if ( isset($options['tris']['parametre_Activable']) ) { $liste_colonnes_a_indexer['parametre_Activable'] = 'parametre_Activable'; }
-                    if ( isset($options['tris']['parametre_Actif']) ) { $liste_colonnes_a_indexer['parametre_Actif'] = 'parametre_Actif'; }
                 }
                 if ( count($liste_colonnes_a_indexer)>0 )
                 {
@@ -799,11 +751,11 @@ class parametre_monframework extends entite_monframework
                 $liste_parametre_pas_a_jour = array();
                 if ($toutes_colonnes)
                 {
-                    $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                    $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
                 }
                 else
                 {
-                    $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                    $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
                 }
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('parametre')." WHERE 1{$argument_cond}{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -950,16 +902,12 @@ class parametre_monframework extends entite_monframework
                     if ( $argument_cond!='' )
                     {
                         if ( strpos($argument_cond, 'parametre_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_Libelle'] = 'parametre_Libelle'; }
-                        if ( strpos($argument_cond, 'parametre_Valeur')!==false ) { $liste_colonnes_a_indexer['parametre_Valeur'] = 'parametre_Valeur'; }
                         if ( strpos($argument_cond, 'parametre_Activable')!==false ) { $liste_colonnes_a_indexer['parametre_Activable'] = 'parametre_Activable'; }
-                        if ( strpos($argument_cond, 'parametre_Actif')!==false ) { $liste_colonnes_a_indexer['parametre_Actif'] = 'parametre_Actif'; }
                     }
                     if ( isset($options['tris']) )
                     {
                         if ( isset($options['tris']['parametre_Libelle']) ) { $liste_colonnes_a_indexer['parametre_Libelle'] = 'parametre_Libelle'; }
-                        if ( isset($options['tris']['parametre_Valeur']) ) { $liste_colonnes_a_indexer['parametre_Valeur'] = 'parametre_Valeur'; }
                         if ( isset($options['tris']['parametre_Activable']) ) { $liste_colonnes_a_indexer['parametre_Activable'] = 'parametre_Activable'; }
-                        if ( isset($options['tris']['parametre_Actif']) ) { $liste_colonnes_a_indexer['parametre_Actif'] = 'parametre_Actif'; }
                     }
                     if ( count($liste_colonnes_a_indexer)>0 )
                     {
@@ -994,11 +942,11 @@ class parametre_monframework extends entite_monframework
                     $liste_parametre_pas_a_jour = array();
                     if ($toutes_colonnes)
                     {
-                        $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                        $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
                     }
                     else
                     {
-                        $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                        $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
                     }
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('parametre')." WHERE 1{$argument_cond} AND Code_parametre IN ".Sql_Format_Liste($liste_Code_parametre)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1099,11 +1047,11 @@ class parametre_monframework extends entite_monframework
                 {
                     if ($toutes_colonnes)
                     {
-                        $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                        $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
                     }
                     else
                     {
-                        $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                        $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
                     }
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('parametre') . ' WHERE Code_parametre = ' . $Code_parametre . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1192,11 +1140,11 @@ class parametre_monframework extends entite_monframework
         {
             if ($toutes_colonnes)
             {
-                $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
             }
             else
             {
-                $colonnes='Code_parametre, parametre_Libelle, parametre_Valeur, parametre_Activable, parametre_Actif';
+                $colonnes='Code_parametre, parametre_Libelle, parametre_Activable';
             }
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('parametre')." WHERE Code_parametre = $Code_parametre;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1252,9 +1200,7 @@ class parametre_monframework extends entite_monframework
             if ( $argument_cond!='' )
             {
                 if ( strpos($argument_cond, 'parametre_Libelle')!==false ) { $liste_colonnes_a_indexer['parametre_Libelle'] = 'parametre_Libelle'; }
-                if ( strpos($argument_cond, 'parametre_Valeur')!==false ) { $liste_colonnes_a_indexer['parametre_Valeur'] = 'parametre_Valeur'; }
                 if ( strpos($argument_cond, 'parametre_Activable')!==false ) { $liste_colonnes_a_indexer['parametre_Activable'] = 'parametre_Activable'; }
-                if ( strpos($argument_cond, 'parametre_Actif')!==false ) { $liste_colonnes_a_indexer['parametre_Actif'] = 'parametre_Actif'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -1321,28 +1267,16 @@ class parametre_monframework extends entite_monframework
         return $this->rechercher_parametre_Libelle( $parametre_Libelle );
     }
 
-    public function mf_search_parametre_Valeur( int $parametre_Valeur )
-    {
-        return $this->rechercher_parametre_Valeur( $parametre_Valeur );
-    }
-
     public function mf_search_parametre_Activable( bool $parametre_Activable )
     {
         return $this->rechercher_parametre_Activable( $parametre_Activable );
-    }
-
-    public function mf_search_parametre_Actif( bool $parametre_Actif )
-    {
-        return $this->rechercher_parametre_Actif( $parametre_Actif );
     }
 
     public function mf_search__colonne( string $colonne_db, $recherche )
     {
         switch ($colonne_db) {
             case 'parametre_Libelle': return $this->mf_search_parametre_Libelle( $recherche ); break;
-            case 'parametre_Valeur': return $this->mf_search_parametre_Valeur( $recherche ); break;
             case 'parametre_Activable': return $this->mf_search_parametre_Activable( $recherche ); break;
-            case 'parametre_Actif': return $this->mf_search_parametre_Actif( $recherche ); break;
         }
     }
 
@@ -1358,12 +1292,9 @@ class parametre_monframework extends entite_monframework
     {
         global $mf_initialisation;
         $parametre_Libelle = (string)(isset($ligne['parametre_Libelle'])?$ligne['parametre_Libelle']:$mf_initialisation['parametre_Libelle']);
-        $parametre_Valeur = (int)(isset($ligne['parametre_Valeur'])?$ligne['parametre_Valeur']:$mf_initialisation['parametre_Valeur']);
         $parametre_Activable = (bool)(isset($ligne['parametre_Activable'])?$ligne['parametre_Activable']:$mf_initialisation['parametre_Activable']);
-        $parametre_Actif = (bool)(isset($ligne['parametre_Actif'])?$ligne['parametre_Actif']:$mf_initialisation['parametre_Actif']);
-        $parametre_Valeur = round($parametre_Valeur);
-        Hook_parametre::pre_controller($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif);
-        $mf_cle_unique = Hook_parametre::calcul_cle_unique($parametre_Libelle, $parametre_Valeur, $parametre_Activable, $parametre_Actif);
+        Hook_parametre::pre_controller($parametre_Libelle, $parametre_Activable);
+        $mf_cle_unique = Hook_parametre::calcul_cle_unique($parametre_Libelle, $parametre_Activable);
         $res_requete = executer_requete_mysql('SELECT Code_parametre FROM ' . inst('parametre') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);
         if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
         {

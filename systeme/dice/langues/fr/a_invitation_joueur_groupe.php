@@ -1,26 +1,26 @@
 <?php
 
-$lang_standard['a_invitation_joueur_groupe'] = 'a_invitation_joueur_groupe';
+$lang_standard['a_invitation_joueur_groupe'] = 'Invitation du groupe';
 
-$lang_standard['a_invitation_joueur_groupe_Message'] = 'a_invitation_joueur_groupe_Message';
-$lang_standard['a_invitation_joueur_groupe_Date_envoi'] = 'a_invitation_joueur_groupe_Date_envoi';
+$lang_standard['a_invitation_joueur_groupe_Message'] = 'Message';
+$lang_standard['a_invitation_joueur_groupe_Date_envoi'] = 'Date d\'envoi';
 
 $lang_standard['bouton_ajouter_a_invitation_joueur_groupe'] = 'Ajouter';
-$lang_standard['bouton_creer_a_invitation_joueur_groupe'] = 'Creer';
+$lang_standard['bouton_creer_a_invitation_joueur_groupe'] = 'Créer';
 $lang_standard['bouton_modifier_a_invitation_joueur_groupe'] = 'Modifier';
 $lang_standard['bouton_supprimer_a_invitation_joueur_groupe'] = 'Supprimer';
 $lang_standard['bouton_modifier_a_invitation_joueur_groupe_Message'] = 'Modifier';
 $lang_standard['bouton_modifier_a_invitation_joueur_groupe_Date_envoi'] = 'Modifier';
 
-$lang_standard['form_add_a_invitation_joueur_groupe'] = 'form_add_a_invitation_joueur_groupe';
+$lang_standard['form_add_a_invitation_joueur_groupe'] = 'Ajouter une invitation';
 $lang_standard['form_edit_a_invitation_joueur_groupe'] = 'form_edit_a_invitation_joueur_groupe';
-$lang_standard['form_delete_a_invitation_joueur_groupe'] = 'form_delete_a_invitation_joueur_groupe';
+$lang_standard['form_delete_a_invitation_joueur_groupe'] = 'Supprimer une invitation';
 
 $mf_titre_ligne_table['a_invitation_joueur_groupe'] = '{Code_joueur} - {Code_groupe}';
 
 $mf_tri_defaut_table['a_invitation_joueur_groupe'] = array();
 
-$lang_standard['libelle_liste_a_invitation_joueur_groupe'] = 'libelle_liste_a_invitation_joueur_groupe';
+$lang_standard['libelle_liste_a_invitation_joueur_groupe'] = 'Liste des invitations du groupe';
 
 $mf_initialisation['a_invitation_joueur_groupe_Message'] = '';
 $mf_initialisation['a_invitation_joueur_groupe_Date_envoi'] = '';

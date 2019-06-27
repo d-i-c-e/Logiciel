@@ -17,6 +17,7 @@
         $tab->ajouter_colonne_fichier('joueur_Avatar_Fichier', '');
         $tab->ajouter_colonne('joueur_Date_naissance', false, 'date');
         $tab->ajouter_colonne('joueur_Date_inscription', false, 'date_heure');
+        $tab->ajouter_colonne('joueur_Administrateur', true, '');
         $trans['{tableau_joueur}']=$tab->generer_code();
 
     /* boutons */

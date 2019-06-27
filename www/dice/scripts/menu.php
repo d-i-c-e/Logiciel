@@ -16,6 +16,7 @@ $pages_menu['Mon menu'][]=array( 'adresse' => 'ressource.php', 'nom' => 'ressour
 $pages_menu['Mon menu'][]=array( 'adresse' => 'tag_ressource.php', 'nom' => 'tag_ressource' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'messagerie.php', 'nom' => 'messagerie' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'liste_contacts.php', 'nom' => 'liste_contacts' );
+$pages_menu['Mon menu'][]=array( 'adresse' => 'parametre_valeur.php', 'nom' => 'parametre_valeur' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'a_joueur_parametre.php', 'nom' => 'a_joueur_parametre' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'a_candidature_joueur_groupe.php', 'nom' => 'a_candidature_joueur_groupe' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'a_membre_joueur_groupe.php', 'nom' => 'a_membre_joueur_groupe' );

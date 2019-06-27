@@ -12,7 +12,7 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function pre_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, bool &$groupe_Effectif, int &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
+    static function pre_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, int &$groupe_Effectif, bool &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
     {
         // ici le code
     }
@@ -30,22 +30,22 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function autorisation_ajout(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
+    static function autorisation_ajout(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, int $groupe_Effectif, bool $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
     {
         return true;
     }
 
-    static function data_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, bool &$groupe_Effectif, int &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
+    static function data_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, int &$groupe_Effectif, bool &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
     {
         // ici le code
     }
 
-    static function calcul_signature(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
+    static function calcul_signature(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, int $groupe_Effectif, bool $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
     {
         return md5($groupe_Nom.'-'.$groupe_Description.'-'.$groupe_Logo_Fichier.'-'.$groupe_Effectif.'-'.$groupe_Actif.'-'.$groupe_Date_creation.'-'.$groupe_Delai_suppression_jour.'-'.$groupe_Suppression_active.'-'.$Code_campagne);
     }
 
-    static function calcul_cle_unique(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
+    static function calcul_cle_unique(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, int $groupe_Effectif, bool $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
@@ -80,7 +80,7 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function autorisation_modification(int $Code_groupe, string $groupe_Nom__new, string $groupe_Description__new, string $groupe_Logo_Fichier__new, bool $groupe_Effectif__new, int $groupe_Actif__new, string $groupe_Date_creation__new, int $groupe_Delai_suppression_jour__new, bool $groupe_Suppression_active__new, int $Code_campagne__new)
+    static function autorisation_modification(int $Code_groupe, string $groupe_Nom__new, string $groupe_Description__new, string $groupe_Logo_Fichier__new, int $groupe_Effectif__new, bool $groupe_Actif__new, string $groupe_Date_creation__new, int $groupe_Delai_suppression_jour__new, bool $groupe_Suppression_active__new, int $Code_campagne__new)
     {
         return true;
     }
@@ -100,12 +100,12 @@ class Hook_groupe{
         // ici le code
     }
 
-    static function data_controller__groupe_Effectif(bool $old, bool &$new, int $Code_groupe)
+    static function data_controller__groupe_Effectif(int $old, int &$new, int $Code_groupe)
     {
         // ici le code
     }
 
-    static function data_controller__groupe_Actif(int $old, int &$new, int $Code_groupe)
+    static function data_controller__groupe_Actif(bool $old, bool &$new, int $Code_groupe)
     {
         // ici le code
     }

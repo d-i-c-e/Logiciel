@@ -12,7 +12,7 @@ class Hook_parametre{
         // ici le code
     }
 
-    static function pre_controller(string &$parametre_Libelle, int &$parametre_Valeur, bool &$parametre_Activable, bool &$parametre_Actif, ?int $Code_parametre=null)
+    static function pre_controller(string &$parametre_Libelle, bool &$parametre_Activable, ?int $Code_parametre=null)
     {
         // ici le code
     }
@@ -30,26 +30,26 @@ class Hook_parametre{
         // ici le code
     }
 
-    static function autorisation_ajout(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif)
+    static function autorisation_ajout(string $parametre_Libelle, bool $parametre_Activable)
     {
         return true;
     }
 
-    static function data_controller(string &$parametre_Libelle, int &$parametre_Valeur, bool &$parametre_Activable, bool &$parametre_Actif, ?int $Code_parametre=null)
+    static function data_controller(string &$parametre_Libelle, bool &$parametre_Activable, ?int $Code_parametre=null)
     {
         // ici le code
     }
 
-    static function calcul_signature(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif)
+    static function calcul_signature(string $parametre_Libelle, bool $parametre_Activable)
     {
-        return md5($parametre_Libelle.'-'.$parametre_Valeur.'-'.$parametre_Activable.'-'.$parametre_Actif);
+        return md5($parametre_Libelle.'-'.$parametre_Activable);
     }
 
-    static function calcul_cle_unique(string $parametre_Libelle, int $parametre_Valeur, bool $parametre_Activable, bool $parametre_Actif)
+    static function calcul_cle_unique(string $parametre_Libelle, bool $parametre_Activable)
     {
         // La méthode POST de l'API REST utilise cette fonction pour en déduire l'unicité de la données. Dans le cas contraire, la données est alors mise à jour
         // Attention au risque de collision
-        return sha1($parametre_Libelle.'.'.$parametre_Valeur.'.'.$parametre_Activable.'.'.$parametre_Actif);
+        return sha1($parametre_Libelle.'.'.$parametre_Activable);
     }
 
     static function ajouter(int $Code_parametre)
@@ -66,15 +66,13 @@ class Hook_parametre{
          * $mf_droits_defaut['parametre__MODIFIER']
          *
          * $mf_droits_defaut['api_modifier__parametre_Libelle']
-         * $mf_droits_defaut['api_modifier__parametre_Valeur']
          * $mf_droits_defaut['api_modifier__parametre_Activable']
-         * $mf_droits_defaut['api_modifier__parametre_Actif']
          *
          */
         // ici le code
     }
 
-    static function autorisation_modification(int $Code_parametre, string $parametre_Libelle__new, int $parametre_Valeur__new, bool $parametre_Activable__new, bool $parametre_Actif__new)
+    static function autorisation_modification(int $Code_parametre, string $parametre_Libelle__new, bool $parametre_Activable__new)
     {
         return true;
     }
@@ -84,17 +82,7 @@ class Hook_parametre{
         // ici le code
     }
 
-    static function data_controller__parametre_Valeur(int $old, int &$new, int $Code_parametre)
-    {
-        // ici le code
-    }
-
     static function data_controller__parametre_Activable(bool $old, bool &$new, int $Code_parametre)
-    {
-        // ici le code
-    }
-
-    static function data_controller__parametre_Actif(bool $old, bool &$new, int $Code_parametre)
     {
         // ici le code
     }
@@ -103,7 +91,7 @@ class Hook_parametre{
      * modifier : $Code_parametre permet de se référer à la données modifiée
      * les autres paramètres booléens ($modif...) permettent d'identifier les champs qui ont été modifiés
      */
-    static function modifier(int $Code_parametre, bool $bool__parametre_Libelle, bool $bool__parametre_Valeur, bool $bool__parametre_Activable, bool $bool__parametre_Actif)
+    static function modifier(int $Code_parametre, bool $bool__parametre_Libelle, bool $bool__parametre_Activable)
     {
         // ici le code
     }
@@ -120,7 +108,8 @@ class Hook_parametre{
         // Ici le code
         if ($Code_parametre!=0 && $mf_droits_defaut['parametre__SUPPRIMER'])
         {
-            // Ici le code
+            $table_parametre_valeur = new parametre_valeur();
+            $mf_droits_defaut['parametre__SUPPRIMER'] = $table_parametre_valeur->mfi_compter(array('Code_parametre'=>$Code_parametre))==0;
         }
     }
 
@@ -149,9 +138,7 @@ class Hook_parametre{
          * Balises disponibles :
          * $donnees['Code_parametre']
          * $donnees['parametre_Libelle']
-         * $donnees['parametre_Valeur']
          * $donnees['parametre_Activable']
-         * $donnees['parametre_Actif']
          */
         return true;
     }
@@ -167,9 +154,7 @@ class Hook_parametre{
          * Balises disponibles :
          * $donnees['Code_parametre']
          * $donnees['parametre_Libelle']
-         * $donnees['parametre_Valeur']
          * $donnees['parametre_Activable']
-         * $donnees['parametre_Actif']
          */
         // ici le code
     }

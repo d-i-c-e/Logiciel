@@ -45,9 +45,7 @@
 
         $form = new Formulaire('', $mess);
         $form->ajouter_input("parametre_Libelle", ( isset($_POST['parametre_Libelle']) ? $_POST['parametre_Libelle'] : $mf_initialisation['parametre_Libelle'] ), true);
-        $form->ajouter_input("parametre_Valeur", ( isset($_POST['parametre_Valeur']) ? $_POST['parametre_Valeur'] : $mf_initialisation['parametre_Valeur'] ), true);
         $form->ajouter_select(lister_cles($lang_standard['parametre_Activable_']), "parametre_Activable", ( isset($_POST['parametre_Activable']) ? $_POST['parametre_Activable'] : $mf_initialisation['parametre_Activable'] ), true);
-        $form->ajouter_select(lister_cles($lang_standard['parametre_Actif_']), "parametre_Actif", ( isset($_POST['parametre_Actif']) ? $_POST['parametre_Actif'] : $mf_initialisation['parametre_Actif'] ), true);
 
         $code_html.=recuperer_gabarit('parametre/form_add_parametre.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_add_parametre')), false, true);
 
@@ -61,9 +59,7 @@
 
             $form = new Formulaire('', $mess);
             $form->ajouter_input("parametre_Libelle", ( isset($_POST['parametre_Libelle']) ? $_POST['parametre_Libelle'] : $parametre['parametre_Libelle'] ), true);
-            $form->ajouter_input("parametre_Valeur", ( isset($_POST['parametre_Valeur']) ? $_POST['parametre_Valeur'] : $parametre['parametre_Valeur'] ), true);
             $form->ajouter_select(lister_cles($lang_standard['parametre_Activable_']), "parametre_Activable", ( isset($_POST['parametre_Activable']) ? $_POST['parametre_Activable'] : $parametre['parametre_Activable'] ), true);
-            $form->ajouter_select(lister_cles($lang_standard['parametre_Actif_']), "parametre_Actif", ( isset($_POST['parametre_Actif']) ? $_POST['parametre_Actif'] : $parametre['parametre_Actif'] ), true);
 
             $code_html.=recuperer_gabarit('parametre/form_edit_parametre.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_parametre')), false, true);
 
@@ -85,21 +81,6 @@
         }
 
     }
-    elseif ($mf_action=='modifier_parametre_Valeur')
-    {
-
-        $parametre = $table_parametre->mf_get($Code_parametre, array( 'autocompletion' => true ));
-        if (isset($parametre['Code_parametre']))
-        {
-
-            $form = new Formulaire('', $mess);
-            $form->ajouter_input("parametre_Valeur", ( isset($_POST['parametre_Valeur']) ? $_POST['parametre_Valeur'] : $parametre['parametre_Valeur'] ), true);
-
-            $code_html.=recuperer_gabarit('parametre/form_edit_parametre_Valeur.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_parametre_Valeur')), false, true);
-
-        }
-
-    }
     elseif ($mf_action=='modifier_parametre_Activable')
     {
 
@@ -111,21 +92,6 @@
             $form->ajouter_select(lister_cles($lang_standard['parametre_Activable_']), "parametre_Activable", ( isset($_POST['parametre_Activable']) ? $_POST['parametre_Activable'] : $parametre['parametre_Activable'] ), true);
 
             $code_html.=recuperer_gabarit('parametre/form_edit_parametre_Activable.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_parametre_Activable')), false, true);
-
-        }
-
-    }
-    elseif ($mf_action=='modifier_parametre_Actif')
-    {
-
-        $parametre = $table_parametre->mf_get($Code_parametre, array( 'autocompletion' => true ));
-        if (isset($parametre['Code_parametre']))
-        {
-
-            $form = new Formulaire('', $mess);
-            $form->ajouter_select(lister_cles($lang_standard['parametre_Actif_']), "parametre_Actif", ( isset($_POST['parametre_Actif']) ? $_POST['parametre_Actif'] : $parametre['parametre_Actif'] ), true);
-
-            $code_html.=recuperer_gabarit('parametre/form_edit_parametre_Actif.html', array('{form}' => $form->generer_code(), '{title}' => get_nom_colonne('form_edit_parametre_Actif')), false, true);
 
         }
 

@@ -3,7 +3,7 @@
 $lang_standard['a_ressource_tag_ressource'] = 'a_ressource_tag_ressource';
 
 $lang_standard['bouton_ajouter_a_ressource_tag_ressource'] = 'Ajouter';
-$lang_standard['bouton_creer_a_ressource_tag_ressource'] = 'Creer';
+$lang_standard['bouton_creer_a_ressource_tag_ressource'] = 'Créer';
 $lang_standard['bouton_modifier_a_ressource_tag_ressource'] = 'Modifier';
 $lang_standard['bouton_supprimer_a_ressource_tag_ressource'] = 'Supprimer';
 

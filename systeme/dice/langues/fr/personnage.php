@@ -1,13 +1,13 @@
 <?php
 
-$lang_standard['Code_personnage'] = 'personnage';
+$lang_standard['Code_personnage'] = 'Personnage';
 
-$lang_standard['personnage_Fichier_Fichier'] = 'personnage_Fichier_Fichier';
-$lang_standard['personnage_Conservation'] = 'personnage_Conservation';
+$lang_standard['personnage_Fichier_Fichier'] = 'Fichier';
+$lang_standard['personnage_Conservation'] = 'Conservation';
 $lang_standard['personnage_Conservation_'] = array( 1 => 'Oui', 0 => 'Non' );
 
 $lang_standard['bouton_ajouter_personnage'] = 'Ajouter';
-$lang_standard['bouton_creer_personnage'] = 'Creer';
+$lang_standard['bouton_creer_personnage'] = 'Créer';
 $lang_standard['bouton_modifier_personnage'] = 'Modifier';
 $lang_standard['bouton_supprimer_personnage'] = 'Supprimer';
 $lang_standard['bouton_modifier_personnage_Fichier_Fichier'] = 'Modifier';
@@ -15,15 +15,15 @@ $lang_standard['bouton_modifier_personnage_Conservation'] = 'Modifier';
 $lang_standard['bouton_modifier_personnage__Code_joueur'] = 'Modifier';
 $lang_standard['bouton_modifier_personnage__Code_groupe'] = 'Modifier';
 
-$lang_standard['form_add_personnage'] = 'form_add_personnage';
-$lang_standard['form_edit_personnage'] = 'form_edit_personnage';
-$lang_standard['form_delete_personnage'] = 'form_delete_personnage';
+$lang_standard['form_add_personnage'] = 'Ajouter un personnage';
+$lang_standard['form_edit_personnage'] = 'Modifier un personnage';
+$lang_standard['form_delete_personnage'] = 'Supprimer un personnage';
 
 $mf_titre_ligne_table['personnage'] = '{personnage_Fichier_Fichier}';
 
 $mf_tri_defaut_table['personnage'] = array( 'personnage_Fichier_Fichier' => 'ASC' );
 
-$lang_standard['libelle_liste_personnage'] = 'libelle_liste_personnage';
+$lang_standard['libelle_liste_personnage'] = 'Liste des personnages';
 
 $mf_initialisation['personnage_Fichier_Fichier'] = '';
 $mf_initialisation['personnage_Conservation'] = 0;

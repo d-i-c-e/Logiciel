@@ -125,13 +125,13 @@
 
     /* groupe_Effectif */
         if ( $mf_droits_defaut['api_modifier__groupe_Effectif'] )
-            $trans['{groupe_Effectif}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Effectif' , 'valeur_initiale' => $groupe['groupe_Effectif'], 'class' => 'button' ]);
+            $trans['{groupe_Effectif}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Effectif' , 'valeur_initiale' => $groupe['groupe_Effectif'] ]);
         else
             $trans['{groupe_Effectif}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Effectif' , 'valeur_initiale' => $groupe['groupe_Effectif'] ]);
 
     /* groupe_Actif */
         if ( $mf_droits_defaut['api_modifier__groupe_Actif'] )
-            $trans['{groupe_Actif}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Actif' , 'valeur_initiale' => $groupe['groupe_Actif'] ]);
+            $trans['{groupe_Actif}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Actif' , 'valeur_initiale' => $groupe['groupe_Actif'], 'class' => 'button' ]);
         else
             $trans['{groupe_Actif}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Actif' , 'valeur_initiale' => $groupe['groupe_Actif'] ]);
 

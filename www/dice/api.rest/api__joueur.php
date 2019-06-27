@@ -413,6 +413,7 @@ function options($id, $options)
     $authorization['PUT:joueur_Avatar_Fichier'] = $mf_droits_defaut['api_modifier__joueur_Avatar_Fichier'];
     $authorization['PUT:joueur_Date_naissance'] = $mf_droits_defaut['api_modifier__joueur_Date_naissance'];
     $authorization['PUT:joueur_Date_inscription'] = $mf_droits_defaut['api_modifier__joueur_Date_inscription'];
+    $authorization['PUT:joueur_Administrateur'] = $mf_droits_defaut['api_modifier__joueur_Administrateur'];
     $authorization['DELETE'] = $mf_droits_defaut['joueur__SUPPRIMER'];
     return array('code_erreur' => 0, 'authorization' => $authorization);
 }

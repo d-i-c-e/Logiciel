@@ -1,13 +1,13 @@
 <?php
 
-$lang_standard['a_membre_joueur_groupe'] = 'a_membre_joueur_groupe';
+$lang_standard['a_membre_joueur_groupe'] = 'Membre du groupe';
 
-$lang_standard['a_membre_joueur_groupe_Surnom'] = 'a_membre_joueur_groupe_Surnom';
-$lang_standard['a_membre_joueur_groupe_Grade'] = 'a_membre_joueur_groupe_Grade';
-$lang_standard['a_membre_joueur_groupe_Date_adhesion'] = 'a_membre_joueur_groupe_Date_adhesion';
+$lang_standard['a_membre_joueur_groupe_Surnom'] = 'Surnom';
+$lang_standard['a_membre_joueur_groupe_Grade'] = 'Grade';
+$lang_standard['a_membre_joueur_groupe_Date_adhesion'] = 'Date d\'adhésion';
 
 $lang_standard['bouton_ajouter_a_membre_joueur_groupe'] = 'Ajouter';
-$lang_standard['bouton_creer_a_membre_joueur_groupe'] = 'Creer';
+$lang_standard['bouton_creer_a_membre_joueur_groupe'] = 'Créer';
 $lang_standard['bouton_modifier_a_membre_joueur_groupe'] = 'Modifier';
 $lang_standard['bouton_supprimer_a_membre_joueur_groupe'] = 'Supprimer';
 $lang_standard['bouton_modifier_a_membre_joueur_groupe_Surnom'] = 'Modifier';
@@ -15,14 +15,14 @@ $lang_standard['bouton_modifier_a_membre_joueur_groupe_Grade'] = 'Modifier';
 $lang_standard['bouton_modifier_a_membre_joueur_groupe_Date_adhesion'] = 'Modifier';
 
 $lang_standard['form_add_a_membre_joueur_groupe'] = 'form_add_a_membre_joueur_groupe';
-$lang_standard['form_edit_a_membre_joueur_groupe'] = 'form_edit_a_membre_joueur_groupe';
-$lang_standard['form_delete_a_membre_joueur_groupe'] = 'form_delete_a_membre_joueur_groupe';
+$lang_standard['form_edit_a_membre_joueur_groupe'] = 'Modifier un membre du groupe';
+$lang_standard['form_delete_a_membre_joueur_groupe'] = 'Supprimer un membre du groupe';
 
 $mf_titre_ligne_table['a_membre_joueur_groupe'] = '{Code_groupe} - {Code_joueur}';
 
 $mf_tri_defaut_table['a_membre_joueur_groupe'] = array( 'a_membre_joueur_groupe_Surnom' => 'ASC' );
 
-$lang_standard['libelle_liste_a_membre_joueur_groupe'] = 'libelle_liste_a_membre_joueur_groupe';
+$lang_standard['libelle_liste_a_membre_joueur_groupe'] = 'Liste des membres du groupe';
 
 $mf_initialisation['a_membre_joueur_groupe_Surnom'] = '';
 $mf_initialisation['a_membre_joueur_groupe_Grade'] = 0;

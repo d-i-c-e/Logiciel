@@ -1,15 +1,15 @@
 <?php
 
-$lang_standard['Code_campagne'] = 'campagne';
+$lang_standard['Code_campagne'] = 'Campagne';
 
-$lang_standard['campagne_Nom'] = 'campagne_Nom';
-$lang_standard['campagne_Description'] = 'campagne_Description';
-$lang_standard['campagne_Image_Fichier'] = 'campagne_Image_Fichier';
-$lang_standard['campagne_Nombre_joueur'] = 'campagne_Nombre_joueur';
-$lang_standard['campagne_Nombre_mj'] = 'campagne_Nombre_mj';
+$lang_standard['campagne_Nom'] = 'Nom';
+$lang_standard['campagne_Description'] = 'Description';
+$lang_standard['campagne_Image_Fichier'] = 'Image';
+$lang_standard['campagne_Nombre_joueur'] = 'Nombre de joueur';
+$lang_standard['campagne_Nombre_mj'] = 'Nombre de Maître de jeu';
 
 $lang_standard['bouton_ajouter_campagne'] = 'Ajouter';
-$lang_standard['bouton_creer_campagne'] = 'Creer';
+$lang_standard['bouton_creer_campagne'] = 'CrÃ©er';
 $lang_standard['bouton_modifier_campagne'] = 'Modifier';
 $lang_standard['bouton_supprimer_campagne'] = 'Supprimer';
 $lang_standard['bouton_modifier_campagne_Nom'] = 'Modifier';
@@ -18,15 +18,15 @@ $lang_standard['bouton_modifier_campagne_Image_Fichier'] = 'Modifier';
 $lang_standard['bouton_modifier_campagne_Nombre_joueur'] = 'Modifier';
 $lang_standard['bouton_modifier_campagne_Nombre_mj'] = 'Modifier';
 
-$lang_standard['form_add_campagne'] = 'form_add_campagne';
-$lang_standard['form_edit_campagne'] = 'form_edit_campagne';
-$lang_standard['form_delete_campagne'] = 'form_delete_campagne';
+$lang_standard['form_add_campagne'] = 'Ajouter une campagne';
+$lang_standard['form_edit_campagne'] = 'Modifier une campagne';
+$lang_standard['form_delete_campagne'] = 'Supprimer une campagne';
 
 $mf_titre_ligne_table['campagne'] = '{campagne_Nom}';
 
 $mf_tri_defaut_table['campagne'] = array( 'campagne_Nom' => 'ASC' );
 
-$lang_standard['libelle_liste_campagne'] = 'libelle_liste_campagne';
+$lang_standard['libelle_liste_campagne'] = 'Liste des campagnes';
 
 $mf_initialisation['campagne_Nom'] = '';
 $mf_initialisation['campagne_Description'] = '';

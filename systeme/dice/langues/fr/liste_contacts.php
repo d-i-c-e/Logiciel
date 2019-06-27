@@ -1,11 +1,11 @@
 <?php
 
-$lang_standard['Code_liste_contacts'] = 'liste_contacts';
+$lang_standard['Code_liste_contacts'] = 'Liste de contact';
 
-$lang_standard['liste_contacts_Nom'] = 'liste_contacts_Nom';
+$lang_standard['liste_contacts_Nom'] = 'Libelle';
 
 $lang_standard['bouton_ajouter_liste_contacts'] = 'Ajouter';
-$lang_standard['bouton_creer_liste_contacts'] = 'Creer';
+$lang_standard['bouton_creer_liste_contacts'] = 'Créer';
 $lang_standard['bouton_modifier_liste_contacts'] = 'Modifier';
 $lang_standard['bouton_supprimer_liste_contacts'] = 'Supprimer';
 $lang_standard['bouton_modifier_liste_contacts_Nom'] = 'Modifier';
@@ -19,7 +19,7 @@ $mf_titre_ligne_table['liste_contacts'] = '{liste_contacts_Nom}';
 
 $mf_tri_defaut_table['liste_contacts'] = array( 'liste_contacts_Nom' => 'ASC' );
 
-$lang_standard['libelle_liste_liste_contacts'] = 'libelle_liste_liste_contacts';
+$lang_standard['libelle_liste_liste_contacts'] = 'Liste des listes de contact';
 
 $mf_initialisation['liste_contacts_Nom'] = '';
 

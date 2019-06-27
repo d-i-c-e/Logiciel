@@ -23,6 +23,7 @@ class DB
     private $tag_ressource=null;
     private $messagerie=null;
     private $liste_contacts=null;
+    private $parametre_valeur=null;
     private $a_joueur_parametre=null;
     private $a_candidature_joueur_groupe=null;
     private $a_membre_joueur_groupe=null;
@@ -48,6 +49,7 @@ class DB
     function tag_ressource() { if ( $this->tag_ressource==null ) { $this->tag_ressource = new tag_ressource(); } return $this->tag_ressource; }
     function messagerie() { if ( $this->messagerie==null ) { $this->messagerie = new messagerie(); } return $this->messagerie; }
     function liste_contacts() { if ( $this->liste_contacts==null ) { $this->liste_contacts = new liste_contacts(); } return $this->liste_contacts; }
+    function parametre_valeur() { if ( $this->parametre_valeur==null ) { $this->parametre_valeur = new parametre_valeur(); } return $this->parametre_valeur; }
     function a_joueur_parametre() { if ( $this->a_joueur_parametre==null ) { $this->a_joueur_parametre = new a_joueur_parametre(); } return $this->a_joueur_parametre; }
     function a_candidature_joueur_groupe() { if ( $this->a_candidature_joueur_groupe==null ) { $this->a_candidature_joueur_groupe = new a_candidature_joueur_groupe(); } return $this->a_candidature_joueur_groupe; }
     function a_membre_joueur_groupe() { if ( $this->a_membre_joueur_groupe==null ) { $this->a_membre_joueur_groupe = new a_membre_joueur_groupe(); } return $this->a_membre_joueur_groupe; }
@@ -72,6 +74,7 @@ class DB
         tag_ressource::mf_raz_instance();
         messagerie::mf_raz_instance();
         liste_contacts::mf_raz_instance();
+        parametre_valeur::mf_raz_instance();
         a_joueur_parametre::mf_raz_instance();
         a_candidature_joueur_groupe::mf_raz_instance();
         a_membre_joueur_groupe::mf_raz_instance();
@@ -98,6 +101,7 @@ class DB
             case 'tag_ressource': return $this->tag_ressource(); break;
             case 'messagerie': return $this->messagerie(); break;
             case 'liste_contacts': return $this->liste_contacts(); break;
+            case 'parametre_valeur': return $this->parametre_valeur(); break;
             case 'a_joueur_parametre': return $this->a_joueur_parametre(); break;
             case 'a_candidature_joueur_groupe': return $this->a_candidature_joueur_groupe(); break;
             case 'a_membre_joueur_groupe': return $this->a_membre_joueur_groupe(); break;

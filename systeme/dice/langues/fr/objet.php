@@ -1,27 +1,27 @@
 <?php
 
-$lang_standard['Code_objet'] = 'objet';
+$lang_standard['Code_objet'] = 'Objet de la carte';
 
-$lang_standard['objet_Libelle'] = 'objet_Libelle';
-$lang_standard['objet_Image_Fichier'] = 'objet_Image_Fichier';
+$lang_standard['objet_Libelle'] = 'Libelle';
+$lang_standard['objet_Image_Fichier'] = 'Image';
 
 $lang_standard['bouton_ajouter_objet'] = 'Ajouter';
-$lang_standard['bouton_creer_objet'] = 'Creer';
+$lang_standard['bouton_creer_objet'] = 'Créer';
 $lang_standard['bouton_modifier_objet'] = 'Modifier';
 $lang_standard['bouton_supprimer_objet'] = 'Supprimer';
 $lang_standard['bouton_modifier_objet_Libelle'] = 'Modifier';
 $lang_standard['bouton_modifier_objet_Image_Fichier'] = 'Modifier';
 $lang_standard['bouton_modifier_objet__Code_type'] = 'Modifier';
 
-$lang_standard['form_add_objet'] = 'form_add_objet';
-$lang_standard['form_edit_objet'] = 'form_edit_objet';
-$lang_standard['form_delete_objet'] = 'form_delete_objet';
+$lang_standard['form_add_objet'] = 'Ajouter un objet';
+$lang_standard['form_edit_objet'] = 'Modifier un objet';
+$lang_standard['form_delete_objet'] = 'Supprimer un objet';
 
 $mf_titre_ligne_table['objet'] = '{objet_Libelle}';
 
 $mf_tri_defaut_table['objet'] = array( 'objet_Libelle' => 'ASC' );
 
-$lang_standard['libelle_liste_objet'] = 'libelle_liste_objet';
+$lang_standard['libelle_liste_objet'] = 'Liste des objets';
 
 $mf_initialisation['objet_Libelle'] = '';
 $mf_initialisation['objet_Image_Fichier'] = '';

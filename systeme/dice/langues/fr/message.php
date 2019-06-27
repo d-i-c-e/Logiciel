@@ -1,12 +1,12 @@
 <?php
 
-$lang_standard['Code_message'] = 'message';
+$lang_standard['Code_message'] = 'Message';
 
-$lang_standard['message_Texte'] = 'message_Texte';
-$lang_standard['message_Date'] = 'message_Date';
+$lang_standard['message_Texte'] = 'Texte';
+$lang_standard['message_Date'] = 'Date d\'envoi';
 
 $lang_standard['bouton_ajouter_message'] = 'Ajouter';
-$lang_standard['bouton_creer_message'] = 'Creer';
+$lang_standard['bouton_creer_message'] = 'Créer';
 $lang_standard['bouton_modifier_message'] = 'Modifier';
 $lang_standard['bouton_supprimer_message'] = 'Supprimer';
 $lang_standard['bouton_modifier_message_Texte'] = 'Modifier';
@@ -14,15 +14,15 @@ $lang_standard['bouton_modifier_message_Date'] = 'Modifier';
 $lang_standard['bouton_modifier_message__Code_messagerie'] = 'Modifier';
 $lang_standard['bouton_modifier_message__Code_joueur'] = 'Modifier';
 
-$lang_standard['form_add_message'] = 'form_add_message';
-$lang_standard['form_edit_message'] = 'form_edit_message';
-$lang_standard['form_delete_message'] = 'form_delete_message';
+$lang_standard['form_add_message'] = 'Ajouter un message';
+$lang_standard['form_edit_message'] = 'Modifier un message';
+$lang_standard['form_delete_message'] = 'Supprimer un message';
 
 $mf_titre_ligne_table['message'] = '{message_Texte}';
 
 $mf_tri_defaut_table['message'] = array();
 
-$lang_standard['libelle_liste_message'] = 'libelle_liste_message';
+$lang_standard['libelle_liste_message'] = 'Liste des messages';
 
 $mf_initialisation['message_Texte'] = '';
 $mf_initialisation['message_Date'] = '';

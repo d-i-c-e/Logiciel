@@ -2015,6 +2015,7 @@ function mf_formatage_db_type_php(array &$donnees): void
     define('MF_JOUEUR_AVATAR_FICHIER', 'joueur_Avatar_Fichier');
     define('MF_JOUEUR_DATE_NAISSANCE', 'joueur_Date_naissance');
     define('MF_JOUEUR_DATE_INSCRIPTION', 'joueur_Date_inscription');
+    define('MF_JOUEUR_ADMINISTRATEUR', 'joueur_Administrateur');
 
     // MESSAGE
     define('MF_MESSAGE__ID', 'Code_message');
@@ -2026,9 +2027,7 @@ function mf_formatage_db_type_php(array &$donnees): void
     // PARAMETRE
     define('MF_PARAMETRE__ID', 'Code_parametre');
     define('MF_PARAMETRE_LIBELLE', 'parametre_Libelle');
-    define('MF_PARAMETRE_VALEUR', 'parametre_Valeur');
     define('MF_PARAMETRE_ACTIVABLE', 'parametre_Activable');
-    define('MF_PARAMETRE_ACTIF', 'parametre_Actif');
 
     // GROUPE
     define('MF_GROUPE__ID', 'Code_groupe');
@@ -2098,9 +2097,16 @@ function mf_formatage_db_type_php(array &$donnees): void
     define('MF_LISTE_CONTACTS_NOM', 'liste_contacts_Nom');
     define('MF_LISTE_CONTACTS_CODE_JOUEUR', 'Code_joueur');
 
+    // PARAMETRE_VALEUR
+    define('MF_PARAMETRE_VALEUR__ID', 'Code_parametre_valeur');
+    define('MF_PARAMETRE_VALEUR_LIBELLE', 'parametre_valeur_Libelle');
+    define('MF_PARAMETRE_VALEUR_CODE_PARAMETRE', 'Code_parametre');
+
     // A_JOUEUR_PARAMETRE
     define('MF_A_JOUEUR_PARAMETRE_CODE_JOUEUR', 'Code_joueur');
     define('MF_A_JOUEUR_PARAMETRE_CODE_PARAMETRE', 'Code_parametre');
+    define('MF_A_JOUEUR_PARAMETRE_VALEUR_CHOISIE', 'a_joueur_parametre_Valeur_choisie');
+    define('MF_A_JOUEUR_PARAMETRE_ACTIF', 'a_joueur_parametre_Actif');
 
     // A_CANDIDATURE_JOUEUR_GROUPE
     define('MF_A_CANDIDATURE_JOUEUR_GROUPE_CODE_JOUEUR', 'Code_joueur');
@@ -2142,7 +2148,7 @@ function mf_formatage_db_type_php(array &$donnees): void
 
     function get_liste_dump()
     {
-        return inst('joueur').' '.inst('message').' '.inst('parametre').' '.inst('groupe').' '.inst('personnage').' '.inst('campagne').' '.inst('tag_campagne').' '.inst('carte').' '.inst('objet').' '.inst('type').' '.inst('ressource').' '.inst('tag_ressource').' '.inst('messagerie').' '.inst('liste_contacts').' '.inst('a_joueur_parametre').' '.inst('a_candidature_joueur_groupe').' '.inst('a_membre_joueur_groupe').' '.inst('a_invitation_joueur_groupe').' '.inst('a_carte_objet').' '.inst('a_campagne_tag_campagne').' '.inst('a_ressource_tag_ressource').' '.inst('a_liste_contact_joueur');
+        return inst('joueur').' '.inst('message').' '.inst('parametre').' '.inst('groupe').' '.inst('personnage').' '.inst('campagne').' '.inst('tag_campagne').' '.inst('carte').' '.inst('objet').' '.inst('type').' '.inst('ressource').' '.inst('tag_ressource').' '.inst('messagerie').' '.inst('liste_contacts').' '.inst('parametre_valeur').' '.inst('a_joueur_parametre').' '.inst('a_candidature_joueur_groupe').' '.inst('a_membre_joueur_groupe').' '.inst('a_invitation_joueur_groupe').' '.inst('a_carte_objet').' '.inst('a_campagne_tag_campagne').' '.inst('a_ressource_tag_ressource').' '.inst('a_liste_contact_joueur');
     }
 
     Hook_mf_systeme::initialisation();

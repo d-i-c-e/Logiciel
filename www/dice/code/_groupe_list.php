@@ -15,8 +15,8 @@
         $tab->ajouter_colonne('groupe_Nom', false, '');
         // $tab->ajouter_colonne('groupe_Description', false, '');
         $tab->ajouter_colonne_fichier('groupe_Logo_Fichier', '');
-        $tab->ajouter_colonne('groupe_Effectif', true, '');
-        $tab->ajouter_colonne('groupe_Actif', false, '');
+        $tab->ajouter_colonne('groupe_Effectif', false, '');
+        $tab->ajouter_colonne('groupe_Actif', true, '');
         $tab->ajouter_colonne('groupe_Date_creation', false, 'date_heure');
         $tab->ajouter_colonne('groupe_Delai_suppression_jour', false, '');
         $tab->ajouter_colonne('groupe_Suppression_active', true, '');

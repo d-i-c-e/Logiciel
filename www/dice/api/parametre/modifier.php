@@ -16,9 +16,7 @@
     $Code_parametre = lecture_parametre_api("Code_parametre", 0 );
     $champs = array();
     if ( isset_parametre_api("parametre_Libelle") ) $champs['parametre_Libelle'] = lecture_parametre_api("parametre_Libelle");
-    if ( isset_parametre_api("parametre_Valeur") ) $champs['parametre_Valeur'] = lecture_parametre_api("parametre_Valeur");
     if ( isset_parametre_api("parametre_Activable") ) $champs['parametre_Activable'] = lecture_parametre_api("parametre_Activable");
-    if ( isset_parametre_api("parametre_Actif") ) $champs['parametre_Actif'] = lecture_parametre_api("parametre_Actif");
     $retour = $table_parametre->mf_modifier_2( array( $Code_parametre => $champs ) );
     if ( $retour['code_erreur']==0 )
     {

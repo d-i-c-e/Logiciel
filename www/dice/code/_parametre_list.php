@@ -13,9 +13,7 @@
         $tab->set_ligne_selectionnee('Code_parametre', mf_Code_parametre());
         $tab->modifier_code_action("apercu_parametre");
         $tab->ajouter_colonne('parametre_Libelle', false, '');
-        $tab->ajouter_colonne('parametre_Valeur', false, '');
         $tab->ajouter_colonne('parametre_Activable', true, '');
-        $tab->ajouter_colonne('parametre_Actif', true, '');
         $trans['{tableau_parametre}']=$tab->generer_code();
 
     /* boutons */

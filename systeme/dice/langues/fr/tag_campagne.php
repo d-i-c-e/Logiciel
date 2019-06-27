@@ -1,24 +1,24 @@
 <?php
 
-$lang_standard['Code_tag_campagne'] = 'tag_campagne';
+$lang_standard['Code_tag_campagne'] = 'Tag de campagne';
 
-$lang_standard['tag_campagne_Libelle'] = 'tag_campagne_Libelle';
+$lang_standard['tag_campagne_Libelle'] = 'Libelle';
 
 $lang_standard['bouton_ajouter_tag_campagne'] = 'Ajouter';
-$lang_standard['bouton_creer_tag_campagne'] = 'Creer';
+$lang_standard['bouton_creer_tag_campagne'] = 'Créer';
 $lang_standard['bouton_modifier_tag_campagne'] = 'Modifier';
 $lang_standard['bouton_supprimer_tag_campagne'] = 'Supprimer';
 $lang_standard['bouton_modifier_tag_campagne_Libelle'] = 'Modifier';
 
-$lang_standard['form_add_tag_campagne'] = 'form_add_tag_campagne';
+$lang_standard['form_add_tag_campagne'] = 'Ajouter un tag de campagne';
 $lang_standard['form_edit_tag_campagne'] = 'form_edit_tag_campagne';
-$lang_standard['form_delete_tag_campagne'] = 'form_delete_tag_campagne';
+$lang_standard['form_delete_tag_campagne'] = 'Supprimer un tag de campagne';
 
 $mf_titre_ligne_table['tag_campagne'] = '{tag_campagne_Libelle}';
 
 $mf_tri_defaut_table['tag_campagne'] = array( 'tag_campagne_Libelle' => 'ASC' );
 
-$lang_standard['libelle_liste_tag_campagne'] = 'libelle_liste_tag_campagne';
+$lang_standard['libelle_liste_tag_campagne'] = 'Liste des tag de campagne';
 
 $mf_initialisation['tag_campagne_Libelle'] = '';
 

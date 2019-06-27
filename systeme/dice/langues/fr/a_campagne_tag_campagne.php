@@ -3,7 +3,7 @@
 $lang_standard['a_campagne_tag_campagne'] = 'a_campagne_tag_campagne';
 
 $lang_standard['bouton_ajouter_a_campagne_tag_campagne'] = 'Ajouter';
-$lang_standard['bouton_creer_a_campagne_tag_campagne'] = 'Creer';
+$lang_standard['bouton_creer_a_campagne_tag_campagne'] = 'Créer';
 $lang_standard['bouton_modifier_a_campagne_tag_campagne'] = 'Modifier';
 $lang_standard['bouton_supprimer_a_campagne_tag_campagne'] = 'Supprimer';
 

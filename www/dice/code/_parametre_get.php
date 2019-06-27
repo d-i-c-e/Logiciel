@@ -23,26 +23,12 @@
         }
         $trans['{bouton_modifier_parametre_Libelle}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_parametre_Libelle') : '';
 
-        // parametre_Valeur
-        if ( $mf_droits_defaut['api_modifier__parametre_Valeur'] )
-        {
-            $menu_a_droite->ajouter_bouton( BOUTON_LIBELLE_MODIFIER_PREC . get_nom_colonne('bouton_modifier_parametre_Valeur') . BOUTON_LIBELLE_MODIFIER_SUIV, get_nom_page_courante().'?act=modifier_parametre_Valeur&Code_parametre='.$Code_parametre, 'lien', 'bouton_modifier_parametre_Valeur');
-        }
-        $trans['{bouton_modifier_parametre_Valeur}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_parametre_Valeur') : '';
-
         // parametre_Activable
         if ( $mf_droits_defaut['api_modifier__parametre_Activable'] )
         {
             $menu_a_droite->ajouter_bouton( BOUTON_LIBELLE_MODIFIER_PREC . get_nom_colonne('bouton_modifier_parametre_Activable') . BOUTON_LIBELLE_MODIFIER_SUIV, get_nom_page_courante().'?act=modifier_parametre_Activable&Code_parametre='.$Code_parametre, 'lien', 'bouton_modifier_parametre_Activable');
         }
         $trans['{bouton_modifier_parametre_Activable}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_parametre_Activable') : '';
-
-        // parametre_Actif
-        if ( $mf_droits_defaut['api_modifier__parametre_Actif'] )
-        {
-            $menu_a_droite->ajouter_bouton( BOUTON_LIBELLE_MODIFIER_PREC . get_nom_colonne('bouton_modifier_parametre_Actif') . BOUTON_LIBELLE_MODIFIER_SUIV, get_nom_page_courante().'?act=modifier_parametre_Actif&Code_parametre='.$Code_parametre, 'lien', 'bouton_modifier_parametre_Actif');
-        }
-        $trans['{bouton_modifier_parametre_Actif}'] = BOUTON_INTEGRABLE ? $menu_a_droite->generer_code_bouton('bouton_modifier_parametre_Actif') : '';
 
     /* prec_et_suiv */
     if ( $table_parametre->mf_compter()<100 )
@@ -76,21 +62,9 @@
         else
             $trans['{parametre_Libelle}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Libelle' , 'valeur_initiale' => $parametre['parametre_Libelle'] ]);
 
-    /* parametre_Valeur */
-        if ( $mf_droits_defaut['api_modifier__parametre_Valeur'] )
-            $trans['{parametre_Valeur}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Valeur' , 'valeur_initiale' => $parametre['parametre_Valeur'] ]);
-        else
-            $trans['{parametre_Valeur}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Valeur' , 'valeur_initiale' => $parametre['parametre_Valeur'] ]);
-
     /* parametre_Activable */
         if ( $mf_droits_defaut['api_modifier__parametre_Activable'] )
             $trans['{parametre_Activable}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Activable' , 'valeur_initiale' => $parametre['parametre_Activable'], 'class' => 'button' ]);
         else
             $trans['{parametre_Activable}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Activable' , 'valeur_initiale' => $parametre['parametre_Activable'] ]);
-
-    /* parametre_Actif */
-        if ( $mf_droits_defaut['api_modifier__parametre_Actif'] )
-            $trans['{parametre_Actif}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Actif' , 'valeur_initiale' => $parametre['parametre_Actif'], 'class' => 'button' ]);
-        else
-            $trans['{parametre_Actif}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Actif' , 'valeur_initiale' => $parametre['parametre_Actif'] ]);
 

@@ -1,20 +1,20 @@
 <?php
 
-$lang_standard['Code_groupe'] = 'groupe';
+$lang_standard['Code_groupe'] = 'Groupe';
 
-$lang_standard['groupe_Nom'] = 'groupe_Nom';
-$lang_standard['groupe_Description'] = 'groupe_Description';
-$lang_standard['groupe_Logo_Fichier'] = 'groupe_Logo_Fichier';
-$lang_standard['groupe_Effectif'] = 'groupe_Effectif';
-$lang_standard['groupe_Effectif_'] = array( 1 => 'Oui', 0 => 'Non' );
-$lang_standard['groupe_Actif'] = 'groupe_Actif';
-$lang_standard['groupe_Date_creation'] = 'groupe_Date_creation';
-$lang_standard['groupe_Delai_suppression_jour'] = 'groupe_Delai_suppression_jour';
-$lang_standard['groupe_Suppression_active'] = 'groupe_Suppression_active';
+$lang_standard['groupe_Nom'] = 'Nom';
+$lang_standard['groupe_Description'] = 'Description';
+$lang_standard['groupe_Logo_Fichier'] = 'Logo';
+$lang_standard['groupe_Effectif'] = 'Effectif';
+$lang_standard['groupe_Actif'] = 'Actif';
+$lang_standard['groupe_Actif_'] = array( 1 => 'Oui', 0 => 'Non' );
+$lang_standard['groupe_Date_creation'] = 'Date  de création';
+$lang_standard['groupe_Delai_suppression_jour'] = 'Délai de suppression ( en jour )';
+$lang_standard['groupe_Suppression_active'] = 'Activer la suppression';
 $lang_standard['groupe_Suppression_active_'] = array( 1 => 'Oui', 0 => 'Non' );
 
 $lang_standard['bouton_ajouter_groupe'] = 'Ajouter';
-$lang_standard['bouton_creer_groupe'] = 'Creer';
+$lang_standard['bouton_creer_groupe'] = 'Créer';
 $lang_standard['bouton_modifier_groupe'] = 'Modifier';
 $lang_standard['bouton_supprimer_groupe'] = 'Supprimer';
 $lang_standard['bouton_modifier_groupe_Nom'] = 'Modifier';
@@ -27,7 +27,7 @@ $lang_standard['bouton_modifier_groupe_Delai_suppression_jour'] = 'Modifier';
 $lang_standard['bouton_modifier_groupe_Suppression_active'] = 'Modifier';
 $lang_standard['bouton_modifier_groupe__Code_campagne'] = 'Modifier';
 
-$lang_standard['form_add_groupe'] = 'form_add_groupe';
+$lang_standard['form_add_groupe'] = 'Ajouter un groupe';
 $lang_standard['form_edit_groupe'] = 'form_edit_groupe';
 $lang_standard['form_delete_groupe'] = 'form_delete_groupe';
 
@@ -35,7 +35,7 @@ $mf_titre_ligne_table['groupe'] = '{groupe_Nom}';
 
 $mf_tri_defaut_table['groupe'] = array( 'groupe_Nom' => 'ASC' );
 
-$lang_standard['libelle_liste_groupe'] = 'libelle_liste_groupe';
+$lang_standard['libelle_liste_groupe'] = 'Liste des groupes';
 
 $mf_initialisation['groupe_Nom'] = '';
 $mf_initialisation['groupe_Description'] = '';

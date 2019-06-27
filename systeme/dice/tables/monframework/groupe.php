@@ -94,29 +94,29 @@ class groupe_monframework extends entite_monframework
 
         if ( isset($liste_colonnes['groupe_Effectif']) )
         {
-            if ( typeMyql2Sql($liste_colonnes['groupe_Effectif']['Type'])!='BOOL' )
+            if ( typeMyql2Sql($liste_colonnes['groupe_Effectif']['Type'])!='INT' )
             {
-                executer_requete_mysql('ALTER TABLE '.inst('groupe').' CHANGE groupe_Effectif groupe_Effectif BOOL;', true);
+                executer_requete_mysql('ALTER TABLE '.inst('groupe').' CHANGE groupe_Effectif groupe_Effectif INT;', true);
             }
             unset($liste_colonnes['groupe_Effectif']);
         }
         else
         {
-            executer_requete_mysql('ALTER TABLE '.inst('groupe').' ADD groupe_Effectif BOOL;', true);
+            executer_requete_mysql('ALTER TABLE '.inst('groupe').' ADD groupe_Effectif INT;', true);
             executer_requete_mysql('UPDATE '.inst('groupe').' SET groupe_Effectif=' . format_sql('groupe_Effectif', $mf_initialisation['groupe_Effectif']) . ';', true);
         }
 
         if ( isset($liste_colonnes['groupe_Actif']) )
         {
-            if ( typeMyql2Sql($liste_colonnes['groupe_Actif']['Type'])!='INT' )
+            if ( typeMyql2Sql($liste_colonnes['groupe_Actif']['Type'])!='BOOL' )
             {
-                executer_requete_mysql('ALTER TABLE '.inst('groupe').' CHANGE groupe_Actif groupe_Actif INT;', true);
+                executer_requete_mysql('ALTER TABLE '.inst('groupe').' CHANGE groupe_Actif groupe_Actif BOOL;', true);
             }
             unset($liste_colonnes['groupe_Actif']);
         }
         else
         {
-            executer_requete_mysql('ALTER TABLE '.inst('groupe').' ADD groupe_Actif INT;', true);
+            executer_requete_mysql('ALTER TABLE '.inst('groupe').' ADD groupe_Actif BOOL;', true);
             executer_requete_mysql('UPDATE '.inst('groupe').' SET groupe_Actif=' . format_sql('groupe_Actif', $mf_initialisation['groupe_Actif']) . ';', true);
         }
 
@@ -220,13 +220,13 @@ class groupe_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne, ?bool $force=false)
+    public function mf_ajouter(string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, int $groupe_Effectif, bool $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, int $Code_campagne, ?bool $force=false)
     {
         if ( $force===null ) { $force=false; }
         $Code_groupe = 0;
         $code_erreur = 0;
         $Code_campagne = round($Code_campagne);
-        $groupe_Actif = round($groupe_Actif);
+        $groupe_Effectif = round($groupe_Effectif);
         $groupe_Date_creation = format_datetime($groupe_Date_creation);
         $groupe_Delai_suppression_jour = round($groupe_Delai_suppression_jour);
         Hook_groupe::pre_controller($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne);
@@ -251,8 +251,8 @@ class groupe_monframework extends entite_monframework
             $groupe_Nom = text_sql($groupe_Nom);
             $groupe_Description = text_sql($groupe_Description);
             $groupe_Logo_Fichier = text_sql($groupe_Logo_Fichier);
-            $groupe_Effectif = ($groupe_Effectif==1 ? 1 : 0);
-            $groupe_Actif = round($groupe_Actif);
+            $groupe_Effectif = round($groupe_Effectif);
+            $groupe_Actif = ($groupe_Actif==1 ? 1 : 0);
             $groupe_Date_creation = format_datetime($groupe_Date_creation);
             $groupe_Delai_suppression_jour = round($groupe_Delai_suppression_jour);
             $groupe_Suppression_active = ($groupe_Suppression_active==1 ? 1 : 0);
@@ -309,8 +309,8 @@ class groupe_monframework extends entite_monframework
         $groupe_Nom = (string)(isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
         $groupe_Description = (string)(isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
         $groupe_Logo_Fichier = (string)(isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
-        $groupe_Effectif = (bool)(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
-        $groupe_Actif = (int)(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
+        $groupe_Effectif = (int)(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
+        $groupe_Actif = (bool)(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
         $groupe_Date_creation = (string)(isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
         $groupe_Delai_suppression_jour = (int)(isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
         $groupe_Suppression_active = (bool)(isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']);
@@ -328,8 +328,8 @@ class groupe_monframework extends entite_monframework
             $groupe_Nom = text_sql(isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
             $groupe_Description = text_sql(isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
             $groupe_Logo_Fichier = text_sql(isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
-            $groupe_Effectif = (isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']==1 ? 1 : 0);
-            $groupe_Actif = round(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
+            $groupe_Effectif = round(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
+            $groupe_Actif = (isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']==1 ? 1 : 0);
             $groupe_Date_creation = format_datetime(isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
             $groupe_Delai_suppression_jour = round(isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
             $groupe_Suppression_active = (isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']==1 ? 1 : 0);
@@ -367,13 +367,13 @@ class groupe_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier( int $Code_groupe, string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, bool $groupe_Effectif, int $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, ?int $Code_campagne=null, ?bool $force=null)
+    public function mf_modifier( int $Code_groupe, string $groupe_Nom, string $groupe_Description, string $groupe_Logo_Fichier, int $groupe_Effectif, bool $groupe_Actif, string $groupe_Date_creation, int $groupe_Delai_suppression_jour, bool $groupe_Suppression_active, ?int $Code_campagne=null, ?bool $force=null)
     {
         if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_groupe = round($Code_groupe);
         $Code_campagne = round($Code_campagne);
-        $groupe_Actif = round($groupe_Actif);
+        $groupe_Effectif = round($groupe_Effectif);
         $groupe_Date_creation = format_datetime($groupe_Date_creation);
         $groupe_Delai_suppression_jour = round($groupe_Delai_suppression_jour);
         Hook_groupe::pre_controller($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne, $Code_groupe);
@@ -468,8 +468,8 @@ class groupe_monframework extends entite_monframework
                 $groupe_Nom = (string)( isset($colonnes['groupe_Nom']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Nom', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Nom'] : ( isset($groupe['groupe_Nom']) ? $groupe['groupe_Nom'] : '' ) );
                 $groupe_Description = (string)( isset($colonnes['groupe_Description']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Description', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Description'] : ( isset($groupe['groupe_Description']) ? $groupe['groupe_Description'] : '' ) );
                 $groupe_Logo_Fichier = (string)( isset($colonnes['groupe_Logo_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Logo_Fichier', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Logo_Fichier'] : ( isset($groupe['groupe_Logo_Fichier']) ? $groupe['groupe_Logo_Fichier'] : '' ) );
-                $groupe_Effectif = (bool)( isset($colonnes['groupe_Effectif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Effectif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Effectif'] : ( isset($groupe['groupe_Effectif']) ? $groupe['groupe_Effectif'] : '' ) );
-                $groupe_Actif = (int)( isset($colonnes['groupe_Actif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Actif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Actif'] : ( isset($groupe['groupe_Actif']) ? $groupe['groupe_Actif'] : '' ) );
+                $groupe_Effectif = (int)( isset($colonnes['groupe_Effectif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Effectif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Effectif'] : ( isset($groupe['groupe_Effectif']) ? $groupe['groupe_Effectif'] : '' ) );
+                $groupe_Actif = (bool)( isset($colonnes['groupe_Actif']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Actif', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Actif'] : ( isset($groupe['groupe_Actif']) ? $groupe['groupe_Actif'] : '' ) );
                 $groupe_Date_creation = (string)( isset($colonnes['groupe_Date_creation']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Date_creation', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Date_creation'] : ( isset($groupe['groupe_Date_creation']) ? $groupe['groupe_Date_creation'] : '' ) );
                 $groupe_Delai_suppression_jour = (int)( isset($colonnes['groupe_Delai_suppression_jour']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Delai_suppression_jour', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Delai_suppression_jour'] : ( isset($groupe['groupe_Delai_suppression_jour']) ? $groupe['groupe_Delai_suppression_jour'] : '' ) );
                 $groupe_Suppression_active = (bool)( isset($colonnes['groupe_Suppression_active']) && ( $force || mf_matrice_droits(['api_modifier__groupe_Suppression_active', 'groupe__MODIFIER']) ) ? $colonnes['groupe_Suppression_active'] : ( isset($groupe['groupe_Suppression_active']) ? $groupe['groupe_Suppression_active'] : '' ) );
@@ -1482,12 +1482,12 @@ class groupe_monframework extends entite_monframework
         return $this->rechercher_groupe_Logo_Fichier( $groupe_Logo_Fichier, $Code_campagne );
     }
 
-    public function mf_search_groupe_Effectif( bool $groupe_Effectif, ?int $Code_campagne=null )
+    public function mf_search_groupe_Effectif( int $groupe_Effectif, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Effectif( $groupe_Effectif, $Code_campagne );
     }
 
-    public function mf_search_groupe_Actif( int $groupe_Actif, ?int $Code_campagne=null )
+    public function mf_search_groupe_Actif( bool $groupe_Actif, ?int $Code_campagne=null )
     {
         return $this->rechercher_groupe_Actif( $groupe_Actif, $Code_campagne );
     }
@@ -1535,12 +1535,12 @@ class groupe_monframework extends entite_monframework
         $groupe_Nom = (string)(isset($ligne['groupe_Nom'])?$ligne['groupe_Nom']:$mf_initialisation['groupe_Nom']);
         $groupe_Description = (string)(isset($ligne['groupe_Description'])?$ligne['groupe_Description']:$mf_initialisation['groupe_Description']);
         $groupe_Logo_Fichier = (string)(isset($ligne['groupe_Logo_Fichier'])?$ligne['groupe_Logo_Fichier']:$mf_initialisation['groupe_Logo_Fichier']);
-        $groupe_Effectif = (bool)(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
-        $groupe_Actif = (int)(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
+        $groupe_Effectif = (int)(isset($ligne['groupe_Effectif'])?$ligne['groupe_Effectif']:$mf_initialisation['groupe_Effectif']);
+        $groupe_Actif = (bool)(isset($ligne['groupe_Actif'])?$ligne['groupe_Actif']:$mf_initialisation['groupe_Actif']);
         $groupe_Date_creation = (string)(isset($ligne['groupe_Date_creation'])?$ligne['groupe_Date_creation']:$mf_initialisation['groupe_Date_creation']);
         $groupe_Delai_suppression_jour = (int)(isset($ligne['groupe_Delai_suppression_jour'])?$ligne['groupe_Delai_suppression_jour']:$mf_initialisation['groupe_Delai_suppression_jour']);
         $groupe_Suppression_active = (bool)(isset($ligne['groupe_Suppression_active'])?$ligne['groupe_Suppression_active']:$mf_initialisation['groupe_Suppression_active']);
-        $groupe_Actif = round($groupe_Actif);
+        $groupe_Effectif = round($groupe_Effectif);
         $groupe_Date_creation = format_datetime($groupe_Date_creation);
         $groupe_Delai_suppression_jour = round($groupe_Delai_suppression_jour);
         Hook_groupe::pre_controller($groupe_Nom, $groupe_Description, $groupe_Logo_Fichier, $groupe_Effectif, $groupe_Actif, $groupe_Date_creation, $groupe_Delai_suppression_jour, $groupe_Suppression_active, $Code_campagne);

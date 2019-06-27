@@ -20,6 +20,7 @@
     if ( isset_parametre_api("joueur_Avatar_Fichier") ) $champs['joueur_Avatar_Fichier'] = lecture_parametre_api("joueur_Avatar_Fichier");
     if ( isset_parametre_api("joueur_Date_naissance") ) $champs['joueur_Date_naissance'] = lecture_parametre_api("joueur_Date_naissance");
     if ( isset_parametre_api("joueur_Date_inscription") ) $champs['joueur_Date_inscription'] = lecture_parametre_api("joueur_Date_inscription");
+    if ( isset_parametre_api("joueur_Administrateur") ) $champs['joueur_Administrateur'] = lecture_parametre_api("joueur_Administrateur");
     $retour = $table_joueur->mf_modifier_2( array( $Code_joueur => $champs ) );
     if ( $retour['code_erreur']==0 )
     {

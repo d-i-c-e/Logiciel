@@ -1,25 +1,25 @@
 <?php
 
-$lang_standard['Code_type'] = 'type';
+$lang_standard['Code_type'] = 'Type de l\'objet';
 
-$lang_standard['type_Libelle'] = 'type_Libelle';
+$lang_standard['type_Libelle'] = 'Libelle';
 
 $lang_standard['bouton_ajouter_type'] = 'Ajouter';
-$lang_standard['bouton_creer_type'] = 'Creer';
+$lang_standard['bouton_creer_type'] = 'Créer';
 $lang_standard['bouton_modifier_type'] = 'Modifier';
 $lang_standard['bouton_supprimer_type'] = 'Supprimer';
 $lang_standard['bouton_modifier_type_Libelle'] = 'Modifier';
 $lang_standard['bouton_modifier_type__Code_ressource'] = 'Modifier';
 
-$lang_standard['form_add_type'] = 'form_add_type';
-$lang_standard['form_edit_type'] = 'form_edit_type';
-$lang_standard['form_delete_type'] = 'form_delete_type';
+$lang_standard['form_add_type'] = 'Ajouter un type d\'objet';
+$lang_standard['form_edit_type'] = 'Modifier un type d\'objet';
+$lang_standard['form_delete_type'] = 'Supprimer un type d\'objet';
 
 $mf_titre_ligne_table['type'] = '{type_Libelle}';
 
 $mf_tri_defaut_table['type'] = array( 'type_Libelle' => 'ASC' );
 
-$lang_standard['libelle_liste_type'] = 'libelle_liste_type';
+$lang_standard['libelle_liste_type'] = 'Liste des types d\'objets';
 
 $mf_initialisation['type_Libelle'] = '';
 

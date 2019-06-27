@@ -134,6 +134,20 @@ class joueur_monframework extends entite_monframework
             executer_requete_mysql('UPDATE '.inst('joueur').' SET joueur_Date_inscription=' . format_sql('joueur_Date_inscription', $mf_initialisation['joueur_Date_inscription']) . ';', true);
         }
 
+        if ( isset($liste_colonnes['joueur_Administrateur']) )
+        {
+            if ( typeMyql2Sql($liste_colonnes['joueur_Administrateur']['Type'])!='BOOL' )
+            {
+                executer_requete_mysql('ALTER TABLE '.inst('joueur').' CHANGE joueur_Administrateur joueur_Administrateur BOOL;', true);
+            }
+            unset($liste_colonnes['joueur_Administrateur']);
+        }
+        else
+        {
+            executer_requete_mysql('ALTER TABLE '.inst('joueur').' ADD joueur_Administrateur BOOL;', true);
+            executer_requete_mysql('UPDATE '.inst('joueur').' SET joueur_Administrateur=' . format_sql('joueur_Administrateur', $mf_initialisation['joueur_Administrateur']) . ';', true);
+        }
+
         if ( isset($liste_colonnes['mf_signature']) )
         {
             unset($liste_colonnes['mf_signature']);
@@ -183,14 +197,14 @@ class joueur_monframework extends entite_monframework
 
     }
 
-    public function mf_ajouter(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, ?bool $force=false)
+    public function mf_ajouter(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, bool $joueur_Administrateur, ?bool $force=false)
     {
         if ( $force===null ) { $force=false; }
         $Code_joueur = 0;
         $code_erreur = 0;
         $joueur_Date_naissance = format_date($joueur_Date_naissance);
         $joueur_Date_inscription = format_datetime($joueur_Date_inscription);
-        Hook_joueur::pre_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription);
+        Hook_joueur::pre_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur);
         if (!$force)
         {
             if (!self::$maj_droits_ajouter_en_cours)
@@ -201,14 +215,14 @@ class joueur_monframework extends entite_monframework
             }
         }
         if ( !$force && !mf_matrice_droits(['joueur__AJOUTER']) ) $code_erreur = REFUS_JOUEUR__AJOUTER;
-        elseif ( !Hook_joueur::autorisation_ajout($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription) ) $code_erreur = REFUS_JOUEUR__AJOUT_BLOQUEE;
+        elseif ( !Hook_joueur::autorisation_ajout($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur) ) $code_erreur = REFUS_JOUEUR__AJOUT_BLOQUEE;
         elseif ( ACTIVER_CONNEXION_EMAIL && $this->rechercher_joueur_Email($joueur_Email)!=0 ) $code_erreur = ERR_JOUEUR__AJOUTER__JOUEUR_EMAIL_DOUBLON;
         elseif ( $this->rechercher_joueur_Identifiant($joueur_Identifiant)!=0 ) $code_erreur = ERR_JOUEUR__AJOUTER__JOUEUR_IDENTIFIANT_DOUBLON;
         else
         {
-            Hook_joueur::data_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription);
-            $mf_signature = text_sql(Hook_joueur::calcul_signature($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription));
-            $mf_cle_unique = text_sql(Hook_joueur::calcul_cle_unique($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription));
+            Hook_joueur::data_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur);
+            $mf_signature = text_sql(Hook_joueur::calcul_signature($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur));
+            $mf_cle_unique = text_sql(Hook_joueur::calcul_cle_unique($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur));
             $joueur_Email = text_sql($joueur_Email);
             $joueur_Identifiant = text_sql($joueur_Identifiant);
             $salt = salt(100);
@@ -216,7 +230,8 @@ class joueur_monframework extends entite_monframework
             $joueur_Avatar_Fichier = text_sql($joueur_Avatar_Fichier);
             $joueur_Date_naissance = format_date($joueur_Date_naissance);
             $joueur_Date_inscription = format_datetime($joueur_Date_inscription);
-            $requete = "INSERT INTO ".inst('joueur')." ( mf_signature, mf_cle_unique, mf_date_creation, mf_date_modification, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription ) VALUES ( '$mf_signature', '$mf_cle_unique', '".get_now()."', '".get_now()."', '$joueur_Email', '$joueur_Identifiant', '$joueur_Password', '$joueur_Avatar_Fichier', ".( $joueur_Date_naissance!='' ? "'$joueur_Date_naissance'" : 'NULL' ).", ".( $joueur_Date_inscription!='' ? "'$joueur_Date_inscription'" : 'NULL' )." );";
+            $joueur_Administrateur = ($joueur_Administrateur==1 ? 1 : 0);
+            $requete = "INSERT INTO ".inst('joueur')." ( mf_signature, mf_cle_unique, mf_date_creation, mf_date_modification, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur ) VALUES ( '$mf_signature', '$mf_cle_unique', '".get_now()."', '".get_now()."', '$joueur_Email', '$joueur_Identifiant', '$joueur_Password', '$joueur_Avatar_Fichier', ".( $joueur_Date_naissance!='' ? "'$joueur_Date_naissance'" : 'NULL' ).", ".( $joueur_Date_inscription!='' ? "'$joueur_Date_inscription'" : 'NULL' ).", $joueur_Administrateur );";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql($requete, true);
@@ -255,7 +270,8 @@ class joueur_monframework extends entite_monframework
         $joueur_Avatar_Fichier = (string)(isset($ligne['joueur_Avatar_Fichier'])?$ligne['joueur_Avatar_Fichier']:$mf_initialisation['joueur_Avatar_Fichier']);
         $joueur_Date_naissance = (string)(isset($ligne['joueur_Date_naissance'])?$ligne['joueur_Date_naissance']:$mf_initialisation['joueur_Date_naissance']);
         $joueur_Date_inscription = (string)(isset($ligne['joueur_Date_inscription'])?$ligne['joueur_Date_inscription']:$mf_initialisation['joueur_Date_inscription']);
-        return $this->mf_ajouter($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $force);
+        $joueur_Administrateur = (bool)(isset($ligne['joueur_Administrateur'])?$ligne['joueur_Administrateur']:$mf_initialisation['joueur_Administrateur']);
+        return $this->mf_ajouter($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur, $force);
     }
 
     public function mf_ajouter_3(array $lignes) // array( array( 'colonne1' => 'valeur1', 'colonne2' => 'valeur2',  [...] ), [...] )
@@ -272,11 +288,12 @@ class joueur_monframework extends entite_monframework
             $joueur_Avatar_Fichier = text_sql(isset($ligne['joueur_Avatar_Fichier'])?$ligne['joueur_Avatar_Fichier']:$mf_initialisation['joueur_Avatar_Fichier']);
             $joueur_Date_naissance = format_date(isset($ligne['joueur_Date_naissance'])?$ligne['joueur_Date_naissance']:$mf_initialisation['joueur_Date_naissance']);
             $joueur_Date_inscription = format_datetime(isset($ligne['joueur_Date_inscription'])?$ligne['joueur_Date_inscription']:$mf_initialisation['joueur_Date_inscription']);
-            $values.=($values!="" ? "," : "")."('$joueur_Email', '$joueur_Identifiant', '$joueur_Password', '$joueur_Avatar_Fichier', ".( $joueur_Date_naissance!='' ? "'$joueur_Date_naissance'" : 'NULL' ).", ".( $joueur_Date_inscription!='' ? "'$joueur_Date_inscription'" : 'NULL' ).")";
+            $joueur_Administrateur = (isset($ligne['joueur_Administrateur'])?$ligne['joueur_Administrateur']:$mf_initialisation['joueur_Administrateur']==1 ? 1 : 0);
+            $values.=($values!="" ? "," : "")."('$joueur_Email', '$joueur_Identifiant', '$joueur_Password', '$joueur_Avatar_Fichier', ".( $joueur_Date_naissance!='' ? "'$joueur_Date_naissance'" : 'NULL' ).", ".( $joueur_Date_inscription!='' ? "'$joueur_Date_inscription'" : 'NULL' ).", $joueur_Administrateur)";
         }
         if ($values!='')
         {
-            $requete = "INSERT INTO ".inst('joueur')." ( joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription ) VALUES $values;";
+            $requete = "INSERT INTO ".inst('joueur')." ( joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur ) VALUES $values;";
             $cle = md5($requete).salt(10);
             self::$cache_db->pause($cle);
             executer_requete_mysql( $requete , true);
@@ -303,14 +320,14 @@ class joueur_monframework extends entite_monframework
         return array('code_erreur' => $code_erreur);
     }
 
-    public function mf_modifier( int $Code_joueur, string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, ?bool $force=null)
+    public function mf_modifier( int $Code_joueur, string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, bool $joueur_Administrateur, ?bool $force=null)
     {
         if ( $force===null ) { $force=false; }
         $code_erreur = 0;
         $Code_joueur = round($Code_joueur);
         $joueur_Date_naissance = format_date($joueur_Date_naissance);
         $joueur_Date_inscription = format_datetime($joueur_Date_inscription);
-        Hook_joueur::pre_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $Code_joueur);
+        Hook_joueur::pre_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur, $Code_joueur);
         if (!$force)
         {
             if (!self::$maj_droits_modifier_en_cours)
@@ -323,11 +340,11 @@ class joueur_monframework extends entite_monframework
         if ( !$force && !mf_matrice_droits(['joueur__MODIFIER']) ) $code_erreur = REFUS_JOUEUR__MODIFIER;
         elseif ( !$this->mf_tester_existance_Code_joueur($Code_joueur) ) $code_erreur = ERR_JOUEUR__MODIFIER__CODE_JOUEUR_INEXISTANT;
         elseif ( CONTROLE_ACCES_DONNEES_DEFAUT && !Hook_mf_systeme::controle_acces_donnees('Code_joueur', $Code_joueur) ) $code_erreur = ACCES_CODE_JOUEUR_REFUSE;
-        elseif ( !Hook_joueur::autorisation_modification($Code_joueur, $joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription) ) $code_erreur = REFUS_JOUEUR__MODIFICATION_BLOQUEE;
+        elseif ( !Hook_joueur::autorisation_modification($Code_joueur, $joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur) ) $code_erreur = REFUS_JOUEUR__MODIFICATION_BLOQUEE;
         elseif ( $this->rechercher_joueur_Identifiant($joueur_Identifiant)!=0 && $this->rechercher_joueur_Identifiant($joueur_Identifiant)!=$Code_joueur ) $code_erreur = ERR_JOUEUR__AJOUTER__JOUEUR_IDENTIFIANT_DOUBLON;
         else
         {
-            Hook_joueur::data_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $Code_joueur);
+            Hook_joueur::data_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur, $Code_joueur);
             $joueur = $this->mf_get_2( $Code_joueur, array('autocompletion' => false, 'masquer_mdp' => false) );
             $mf_colonnes_a_modifier=[];
             $bool__joueur_Email = false; if ( $joueur_Email!=$joueur['joueur_Email'] ) { Hook_joueur::data_controller__joueur_Email($joueur['joueur_Email'], $joueur_Email, $Code_joueur); if ( $joueur_Email!=$joueur['joueur_Email'] ) { $mf_colonnes_a_modifier[] = 'joueur_Email=' . format_sql('joueur_Email', $joueur_Email); $bool__joueur_Email = true; } }
@@ -336,9 +353,10 @@ class joueur_monframework extends entite_monframework
             $bool__joueur_Avatar_Fichier = false; if ( $joueur_Avatar_Fichier!=$joueur['joueur_Avatar_Fichier'] ) { Hook_joueur::data_controller__joueur_Avatar_Fichier($joueur['joueur_Avatar_Fichier'], $joueur_Avatar_Fichier, $Code_joueur); if ( $joueur_Avatar_Fichier!=$joueur['joueur_Avatar_Fichier'] ) { $mf_colonnes_a_modifier[] = 'joueur_Avatar_Fichier=' . format_sql('joueur_Avatar_Fichier', $joueur_Avatar_Fichier); $bool__joueur_Avatar_Fichier = true; } }
             $bool__joueur_Date_naissance = false; if ( $joueur_Date_naissance!=$joueur['joueur_Date_naissance'] ) { Hook_joueur::data_controller__joueur_Date_naissance($joueur['joueur_Date_naissance'], $joueur_Date_naissance, $Code_joueur); if ( $joueur_Date_naissance!=$joueur['joueur_Date_naissance'] ) { $mf_colonnes_a_modifier[] = 'joueur_Date_naissance=' . format_sql('joueur_Date_naissance', $joueur_Date_naissance); $bool__joueur_Date_naissance = true; } }
             $bool__joueur_Date_inscription = false; if ( $joueur_Date_inscription!=$joueur['joueur_Date_inscription'] ) { Hook_joueur::data_controller__joueur_Date_inscription($joueur['joueur_Date_inscription'], $joueur_Date_inscription, $Code_joueur); if ( $joueur_Date_inscription!=$joueur['joueur_Date_inscription'] ) { $mf_colonnes_a_modifier[] = 'joueur_Date_inscription=' . format_sql('joueur_Date_inscription', $joueur_Date_inscription); $bool__joueur_Date_inscription = true; } }
+            $bool__joueur_Administrateur = false; if ( $joueur_Administrateur!=$joueur['joueur_Administrateur'] ) { Hook_joueur::data_controller__joueur_Administrateur($joueur['joueur_Administrateur'], $joueur_Administrateur, $Code_joueur); if ( $joueur_Administrateur!=$joueur['joueur_Administrateur'] ) { $mf_colonnes_a_modifier[] = 'joueur_Administrateur=' . format_sql('joueur_Administrateur', $joueur_Administrateur); $bool__joueur_Administrateur = true; } }
             if (count($mf_colonnes_a_modifier)>0) {
-                $mf_signature = text_sql(Hook_joueur::calcul_signature($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription));
-                $mf_cle_unique = text_sql(Hook_joueur::calcul_cle_unique($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription));
+                $mf_signature = text_sql(Hook_joueur::calcul_signature($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur));
+                $mf_cle_unique = text_sql(Hook_joueur::calcul_cle_unique($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur));
                 $mf_colonnes_a_modifier[] = 'mf_signature=\'' . $mf_signature . '\'';
                 $mf_colonnes_a_modifier[] = 'mf_cle_unique=\'' . $mf_cle_unique . '\'';
                 $mf_colonnes_a_modifier[] = 'mf_date_modification=\'' . get_now() . '\'';
@@ -355,7 +373,7 @@ class joueur_monframework extends entite_monframework
                 {
                     self::$cache_db->clear();
                     self::$cache_db->reprendre($cle);
-                    Hook_joueur::modifier($Code_joueur, $bool__joueur_Email, $bool__joueur_Identifiant, $bool__joueur_Password, $bool__joueur_Avatar_Fichier, $bool__joueur_Date_naissance, $bool__joueur_Date_inscription);
+                    Hook_joueur::modifier($Code_joueur, $bool__joueur_Email, $bool__joueur_Identifiant, $bool__joueur_Password, $bool__joueur_Avatar_Fichier, $bool__joueur_Date_naissance, $bool__joueur_Date_inscription, $bool__joueur_Administrateur);
                 }
             }
             else
@@ -400,7 +418,8 @@ class joueur_monframework extends entite_monframework
                 $joueur_Avatar_Fichier = (string)( isset($colonnes['joueur_Avatar_Fichier']) && ( $force || mf_matrice_droits(['api_modifier__joueur_Avatar_Fichier', 'joueur__MODIFIER']) ) ? $colonnes['joueur_Avatar_Fichier'] : ( isset($joueur['joueur_Avatar_Fichier']) ? $joueur['joueur_Avatar_Fichier'] : '' ) );
                 $joueur_Date_naissance = (string)( isset($colonnes['joueur_Date_naissance']) && ( $force || mf_matrice_droits(['api_modifier__joueur_Date_naissance', 'joueur__MODIFIER']) ) ? $colonnes['joueur_Date_naissance'] : ( isset($joueur['joueur_Date_naissance']) ? $joueur['joueur_Date_naissance'] : '' ) );
                 $joueur_Date_inscription = (string)( isset($colonnes['joueur_Date_inscription']) && ( $force || mf_matrice_droits(['api_modifier__joueur_Date_inscription', 'joueur__MODIFIER']) ) ? $colonnes['joueur_Date_inscription'] : ( isset($joueur['joueur_Date_inscription']) ? $joueur['joueur_Date_inscription'] : '' ) );
-                $retour = $this->mf_modifier($Code_joueur, $joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, true);
+                $joueur_Administrateur = (bool)( isset($colonnes['joueur_Administrateur']) && ( $force || mf_matrice_droits(['api_modifier__joueur_Administrateur', 'joueur__MODIFIER']) ) ? $colonnes['joueur_Administrateur'] : ( isset($joueur['joueur_Administrateur']) ? $joueur['joueur_Administrateur'] : '' ) );
+                $retour = $this->mf_modifier($Code_joueur, $joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur, true);
                 if ( $retour['code_erreur']!=0 && $retour['code_erreur'] != ERR_JOUEUR__MODIFIER__AUCUN_CHANGEMENT )
                 {
                     $code_erreur = $retour['code_erreur'];
@@ -436,7 +455,7 @@ class joueur_monframework extends entite_monframework
         {
             foreach ($colonnes as $colonne => $valeur)
             {
-                if ( $colonne=='joueur_Email' || $colonne=='joueur_Identifiant' || $colonne=='joueur_Password' || $colonne=='joueur_Avatar_Fichier' || $colonne=='joueur_Date_naissance' || $colonne=='joueur_Date_inscription' )
+                if ( $colonne=='joueur_Email' || $colonne=='joueur_Identifiant' || $colonne=='joueur_Password' || $colonne=='joueur_Avatar_Fichier' || $colonne=='joueur_Date_naissance' || $colonne=='joueur_Date_inscription' || $colonne=='joueur_Administrateur' )
                 {
                     $valeurs_en_colonnes[$colonne][$Code_joueur]=$valeur;
                     $indices_par_colonne[$colonne][]=$Code_joueur;
@@ -511,6 +530,7 @@ class joueur_monframework extends entite_monframework
         if ( isset($data['joueur_Avatar_Fichier']) ) { $mf_colonnes_a_modifier[] = 'joueur_Avatar_Fichier = ' . format_sql('joueur_Avatar_Fichier', $data['joueur_Avatar_Fichier']); }
         if ( isset($data['joueur_Date_naissance']) ) { $mf_colonnes_a_modifier[] = 'joueur_Date_naissance = ' . format_sql('joueur_Date_naissance', $data['joueur_Date_naissance']); }
         if ( isset($data['joueur_Date_inscription']) ) { $mf_colonnes_a_modifier[] = 'joueur_Date_inscription = ' . format_sql('joueur_Date_inscription', $data['joueur_Date_inscription']); }
+        if ( isset($data['joueur_Administrateur']) ) { $mf_colonnes_a_modifier[] = 'joueur_Administrateur = ' . format_sql('joueur_Administrateur', $data['joueur_Administrateur']); }
         if ( count($mf_colonnes_a_modifier)>0 )
         {
             // cond_mysql
@@ -795,6 +815,7 @@ class joueur_monframework extends entite_monframework
                     if ( strpos($argument_cond, 'joueur_Avatar_Fichier')!==false ) { $liste_colonnes_a_indexer['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier'; }
                     if ( strpos($argument_cond, 'joueur_Date_naissance')!==false ) { $liste_colonnes_a_indexer['joueur_Date_naissance'] = 'joueur_Date_naissance'; }
                     if ( strpos($argument_cond, 'joueur_Date_inscription')!==false ) { $liste_colonnes_a_indexer['joueur_Date_inscription'] = 'joueur_Date_inscription'; }
+                    if ( strpos($argument_cond, 'joueur_Administrateur')!==false ) { $liste_colonnes_a_indexer['joueur_Administrateur'] = 'joueur_Administrateur'; }
                 }
                 if ( isset($options['tris']) )
                 {
@@ -804,6 +825,7 @@ class joueur_monframework extends entite_monframework
                     if ( isset($options['tris']['joueur_Avatar_Fichier']) ) { $liste_colonnes_a_indexer['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier'; }
                     if ( isset($options['tris']['joueur_Date_naissance']) ) { $liste_colonnes_a_indexer['joueur_Date_naissance'] = 'joueur_Date_naissance'; }
                     if ( isset($options['tris']['joueur_Date_inscription']) ) { $liste_colonnes_a_indexer['joueur_Date_inscription'] = 'joueur_Date_inscription'; }
+                    if ( isset($options['tris']['joueur_Administrateur']) ) { $liste_colonnes_a_indexer['joueur_Administrateur'] = 'joueur_Administrateur'; }
                 }
                 if ( count($liste_colonnes_a_indexer)>0 )
                 {
@@ -838,11 +860,11 @@ class joueur_monframework extends entite_monframework
                 $liste_joueur_pas_a_jour = array();
                 if ($toutes_colonnes)
                 {
-                    $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                    $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
                 }
                 else
                 {
-                    $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                    $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
                 }
                 $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('joueur')." WHERE 1{$argument_cond}{$argument_tris}{$argument_limit};", false);
                 while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -995,6 +1017,7 @@ class joueur_monframework extends entite_monframework
                         if ( strpos($argument_cond, 'joueur_Avatar_Fichier')!==false ) { $liste_colonnes_a_indexer['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier'; }
                         if ( strpos($argument_cond, 'joueur_Date_naissance')!==false ) { $liste_colonnes_a_indexer['joueur_Date_naissance'] = 'joueur_Date_naissance'; }
                         if ( strpos($argument_cond, 'joueur_Date_inscription')!==false ) { $liste_colonnes_a_indexer['joueur_Date_inscription'] = 'joueur_Date_inscription'; }
+                        if ( strpos($argument_cond, 'joueur_Administrateur')!==false ) { $liste_colonnes_a_indexer['joueur_Administrateur'] = 'joueur_Administrateur'; }
                     }
                     if ( isset($options['tris']) )
                     {
@@ -1004,6 +1027,7 @@ class joueur_monframework extends entite_monframework
                         if ( isset($options['tris']['joueur_Avatar_Fichier']) ) { $liste_colonnes_a_indexer['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier'; }
                         if ( isset($options['tris']['joueur_Date_naissance']) ) { $liste_colonnes_a_indexer['joueur_Date_naissance'] = 'joueur_Date_naissance'; }
                         if ( isset($options['tris']['joueur_Date_inscription']) ) { $liste_colonnes_a_indexer['joueur_Date_inscription'] = 'joueur_Date_inscription'; }
+                        if ( isset($options['tris']['joueur_Administrateur']) ) { $liste_colonnes_a_indexer['joueur_Administrateur'] = 'joueur_Administrateur'; }
                     }
                     if ( count($liste_colonnes_a_indexer)>0 )
                     {
@@ -1038,11 +1062,11 @@ class joueur_monframework extends entite_monframework
                     $liste_joueur_pas_a_jour = array();
                     if ($toutes_colonnes)
                     {
-                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
                     }
                     else
                     {
-                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
                     }
                     $res_requete = executer_requete_mysql("SELECT $colonnes FROM ".inst('joueur')." WHERE 1{$argument_cond} AND Code_joueur IN ".Sql_Format_Liste($liste_Code_joueur)."{$argument_tris}{$argument_limit};", false);
                     while ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1149,11 +1173,11 @@ class joueur_monframework extends entite_monframework
                 {
                     if ($toutes_colonnes)
                     {
-                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
                     }
                     else
                     {
-                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                        $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
                     }
                     $res_requete = executer_requete_mysql('SELECT ' . $colonnes . ' FROM ' . inst('joueur') . ' WHERE Code_joueur = ' . $Code_joueur . ';', false);
                     if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1246,11 +1270,11 @@ class joueur_monframework extends entite_monframework
         {
             if ($toutes_colonnes)
             {
-                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
             }
             else
             {
-                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
             }
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('joueur')." WHERE Code_joueur = $Code_joueur;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1312,11 +1336,11 @@ class joueur_monframework extends entite_monframework
         {
             if ($toutes_colonnes)
             {
-                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
             }
             else
             {
-                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription';
+                $colonnes='Code_joueur, joueur_Email, joueur_Identifiant, joueur_Password, joueur_Avatar_Fichier, joueur_Date_naissance, joueur_Date_inscription, joueur_Administrateur';
             }
             $res_requete = executer_requete_mysql('SELECT ' . $colonnes . " FROM ".inst('joueur')." WHERE Code_joueur = $Code_joueur;", false);
             if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
@@ -1381,6 +1405,7 @@ class joueur_monframework extends entite_monframework
                 if ( strpos($argument_cond, 'joueur_Avatar_Fichier')!==false ) { $liste_colonnes_a_indexer['joueur_Avatar_Fichier'] = 'joueur_Avatar_Fichier'; }
                 if ( strpos($argument_cond, 'joueur_Date_naissance')!==false ) { $liste_colonnes_a_indexer['joueur_Date_naissance'] = 'joueur_Date_naissance'; }
                 if ( strpos($argument_cond, 'joueur_Date_inscription')!==false ) { $liste_colonnes_a_indexer['joueur_Date_inscription'] = 'joueur_Date_inscription'; }
+                if ( strpos($argument_cond, 'joueur_Administrateur')!==false ) { $liste_colonnes_a_indexer['joueur_Administrateur'] = 'joueur_Administrateur'; }
             }
             if ( count($liste_colonnes_a_indexer)>0 )
             {
@@ -1472,6 +1497,11 @@ class joueur_monframework extends entite_monframework
         return $this->rechercher_joueur_Date_inscription( $joueur_Date_inscription );
     }
 
+    public function mf_search_joueur_Administrateur( bool $joueur_Administrateur )
+    {
+        return $this->rechercher_joueur_Administrateur( $joueur_Administrateur );
+    }
+
     public function mf_search__colonne( string $colonne_db, $recherche )
     {
         switch ($colonne_db) {
@@ -1481,6 +1511,7 @@ class joueur_monframework extends entite_monframework
             case 'joueur_Avatar_Fichier': return $this->mf_search_joueur_Avatar_Fichier( $recherche ); break;
             case 'joueur_Date_naissance': return $this->mf_search_joueur_Date_naissance( $recherche ); break;
             case 'joueur_Date_inscription': return $this->mf_search_joueur_Date_inscription( $recherche ); break;
+            case 'joueur_Administrateur': return $this->mf_search_joueur_Administrateur( $recherche ); break;
         }
     }
 
@@ -1501,10 +1532,11 @@ class joueur_monframework extends entite_monframework
         $joueur_Avatar_Fichier = (string)(isset($ligne['joueur_Avatar_Fichier'])?$ligne['joueur_Avatar_Fichier']:$mf_initialisation['joueur_Avatar_Fichier']);
         $joueur_Date_naissance = (string)(isset($ligne['joueur_Date_naissance'])?$ligne['joueur_Date_naissance']:$mf_initialisation['joueur_Date_naissance']);
         $joueur_Date_inscription = (string)(isset($ligne['joueur_Date_inscription'])?$ligne['joueur_Date_inscription']:$mf_initialisation['joueur_Date_inscription']);
+        $joueur_Administrateur = (bool)(isset($ligne['joueur_Administrateur'])?$ligne['joueur_Administrateur']:$mf_initialisation['joueur_Administrateur']);
         $joueur_Date_naissance = format_date($joueur_Date_naissance);
         $joueur_Date_inscription = format_datetime($joueur_Date_inscription);
-        Hook_joueur::pre_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription);
-        $mf_cle_unique = Hook_joueur::calcul_cle_unique($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription);
+        Hook_joueur::pre_controller($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur);
+        $mf_cle_unique = Hook_joueur::calcul_cle_unique($joueur_Email, $joueur_Identifiant, $joueur_Password, $joueur_Avatar_Fichier, $joueur_Date_naissance, $joueur_Date_inscription, $joueur_Administrateur);
         $res_requete = executer_requete_mysql('SELECT Code_joueur FROM ' . inst('joueur') . ' WHERE mf_cle_unique = \''.$mf_cle_unique.'\'', false);
         if ( $row_requete = mysqli_fetch_array($res_requete, MYSQLI_ASSOC) )
         {

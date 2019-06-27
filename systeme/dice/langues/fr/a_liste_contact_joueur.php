@@ -2,17 +2,17 @@
 
 $lang_standard['a_liste_contact_joueur'] = 'a_liste_contact_joueur';
 
-$lang_standard['a_liste_contact_joueur_Date_creation'] = 'a_liste_contact_joueur_Date_creation';
+$lang_standard['a_liste_contact_joueur_Date_creation'] = 'Date d\'ajout a la liste';
 
 $lang_standard['bouton_ajouter_a_liste_contact_joueur'] = 'Ajouter';
-$lang_standard['bouton_creer_a_liste_contact_joueur'] = 'Creer';
+$lang_standard['bouton_creer_a_liste_contact_joueur'] = 'Créer';
 $lang_standard['bouton_modifier_a_liste_contact_joueur'] = 'Modifier';
 $lang_standard['bouton_supprimer_a_liste_contact_joueur'] = 'Supprimer';
 $lang_standard['bouton_modifier_a_liste_contact_joueur_Date_creation'] = 'Modifier';
 
-$lang_standard['form_add_a_liste_contact_joueur'] = 'form_add_a_liste_contact_joueur';
+$lang_standard['form_add_a_liste_contact_joueur'] = 'Ajouter un joueur a une liste de contact';
 $lang_standard['form_edit_a_liste_contact_joueur'] = 'form_edit_a_liste_contact_joueur';
-$lang_standard['form_delete_a_liste_contact_joueur'] = 'form_delete_a_liste_contact_joueur';
+$lang_standard['form_delete_a_liste_contact_joueur'] = 'Supprimer un joueur d\'une liste de contact';
 
 $mf_titre_ligne_table['a_liste_contact_joueur'] = '{Code_liste_contacts} - {Code_joueur}';
 

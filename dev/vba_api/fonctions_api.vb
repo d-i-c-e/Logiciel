@@ -26,18 +26,19 @@ End Function
 '   | joueur |
 '   +--------+
 
-Function joueur__ajouter(ByVal joueur_Email As String, ByVal joueur_Identifiant As String, ByVal joueur_Password As String, ByVal joueur_Avatar_Fichier As String, ByVal joueur_Date_naissance As String, ByVal joueur_Date_inscription As String) As Long
+Function joueur__ajouter(ByVal joueur_Email As String, ByVal joueur_Identifiant As String, ByVal joueur_Password As String, ByVal joueur_Avatar_Fichier As String, ByVal joueur_Date_naissance As String, ByVal joueur_Date_inscription As String, ByVal joueur_Administrateur As String) As Long
     joueur_Email = requete.convert_encode_url(joueur_Email)
     joueur_Identifiant = requete.convert_encode_url(joueur_Identifiant)
     joueur_Password = requete.convert_encode_url(joueur_Password)
     joueur_Avatar_Fichier = requete.convert_encode_url(joueur_Avatar_Fichier)
     joueur_Date_naissance = requete.convert_encode_url(joueur_Date_naissance)
     joueur_Date_inscription = requete.convert_encode_url(joueur_Date_inscription)
-    requete.requete_serveur "joueur/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&joueur_Email=" & joueur_Email & "&joueur_Identifiant=" & joueur_Identifiant & "&joueur_Password=" & joueur_Password & "&joueur_Avatar_Fichier=" & joueur_Avatar_Fichier & "&joueur_Date_naissance=" & joueur_Date_naissance & "&joueur_Date_inscription=" & joueur_Date_inscription
+    joueur_Administrateur = requete.convert_encode_url(joueur_Administrateur)
+    requete.requete_serveur "joueur/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&joueur_Email=" & joueur_Email & "&joueur_Identifiant=" & joueur_Identifiant & "&joueur_Password=" & joueur_Password & "&joueur_Avatar_Fichier=" & joueur_Avatar_Fichier & "&joueur_Date_naissance=" & joueur_Date_naissance & "&joueur_Date_inscription=" & joueur_Date_inscription & "&joueur_Administrateur=" & joueur_Administrateur
     joueur__ajouter = requete.retour_ok()
 End Function
 
-Function joueur__modifier(ByVal Code_joueur As String, ByVal joueur_Email As String, ByVal joueur_Identifiant As String, ByVal joueur_Password As String, ByVal joueur_Avatar_Fichier As String, ByVal joueur_Date_naissance As String, ByVal joueur_Date_inscription As String) As Long
+Function joueur__modifier(ByVal Code_joueur As String, ByVal joueur_Email As String, ByVal joueur_Identifiant As String, ByVal joueur_Password As String, ByVal joueur_Avatar_Fichier As String, ByVal joueur_Date_naissance As String, ByVal joueur_Date_inscription As String, ByVal joueur_Administrateur As String) As Long
     Code_joueur = requete.convert_encode_url(Code_joueur)
     joueur_Email = requete.convert_encode_url(joueur_Email)
     joueur_Identifiant = requete.convert_encode_url(joueur_Identifiant)
@@ -45,7 +46,8 @@ Function joueur__modifier(ByVal Code_joueur As String, ByVal joueur_Email As Str
     joueur_Avatar_Fichier = requete.convert_encode_url(joueur_Avatar_Fichier)
     joueur_Date_naissance = requete.convert_encode_url(joueur_Date_naissance)
     joueur_Date_inscription = requete.convert_encode_url(joueur_Date_inscription)
-    requete.requete_serveur "joueur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&joueur_Email=" & joueur_Email & "&joueur_Identifiant=" & joueur_Identifiant & "&joueur_Password=" & joueur_Password & "&joueur_Avatar_Fichier=" & joueur_Avatar_Fichier & "&joueur_Date_naissance=" & joueur_Date_naissance & "&joueur_Date_inscription=" & joueur_Date_inscription
+    joueur_Administrateur = requete.convert_encode_url(joueur_Administrateur)
+    requete.requete_serveur "joueur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&joueur_Email=" & joueur_Email & "&joueur_Identifiant=" & joueur_Identifiant & "&joueur_Password=" & joueur_Password & "&joueur_Avatar_Fichier=" & joueur_Avatar_Fichier & "&joueur_Date_naissance=" & joueur_Date_naissance & "&joueur_Date_inscription=" & joueur_Date_inscription & "&joueur_Administrateur=" & joueur_Administrateur
     joueur__modifier = requete.retour_ok()
 End Function
 
@@ -89,6 +91,13 @@ Function joueur__modifier__joueur_Date_inscription(ByVal Code_joueur As String, 
     joueur_Date_inscription = requete.convert_encode_url(joueur_Date_inscription)
     requete.requete_serveur "joueur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&joueur_Date_inscription=" & joueur_Date_inscription
     joueur__modifier__joueur_Date_inscription = requete.retour_ok()
+End Function
+
+Function joueur__modifier__joueur_Administrateur(ByVal Code_joueur As String, ByVal joueur_Administrateur As String) As Long
+    Code_joueur = requete.convert_encode_url(Code_joueur)
+    joueur_Administrateur = requete.convert_encode_url(joueur_Administrateur)
+    requete.requete_serveur "joueur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&joueur_Administrateur=" & joueur_Administrateur
+    joueur__modifier__joueur_Administrateur = requete.retour_ok()
 End Function
 
 Function joueur__supprimer(ByVal Code_joueur As String) As Long
@@ -170,22 +179,18 @@ End Function
 '   | parametre |
 '   +-----------+
 
-Function parametre__ajouter(ByVal parametre_Libelle As String, ByVal parametre_Valeur As String, ByVal parametre_Activable As String, ByVal parametre_Actif As String) As Long
+Function parametre__ajouter(ByVal parametre_Libelle As String, ByVal parametre_Activable As String) As Long
     parametre_Libelle = requete.convert_encode_url(parametre_Libelle)
-    parametre_Valeur = requete.convert_encode_url(parametre_Valeur)
     parametre_Activable = requete.convert_encode_url(parametre_Activable)
-    parametre_Actif = requete.convert_encode_url(parametre_Actif)
-    requete.requete_serveur "parametre/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&parametre_Libelle=" & parametre_Libelle & "&parametre_Valeur=" & parametre_Valeur & "&parametre_Activable=" & parametre_Activable & "&parametre_Actif=" & parametre_Actif
+    requete.requete_serveur "parametre/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&parametre_Libelle=" & parametre_Libelle & "&parametre_Activable=" & parametre_Activable
     parametre__ajouter = requete.retour_ok()
 End Function
 
-Function parametre__modifier(ByVal Code_parametre As String, ByVal parametre_Libelle As String, ByVal parametre_Valeur As String, ByVal parametre_Activable As String, ByVal parametre_Actif As String) As Long
+Function parametre__modifier(ByVal Code_parametre As String, ByVal parametre_Libelle As String, ByVal parametre_Activable As String) As Long
     Code_parametre = requete.convert_encode_url(Code_parametre)
     parametre_Libelle = requete.convert_encode_url(parametre_Libelle)
-    parametre_Valeur = requete.convert_encode_url(parametre_Valeur)
     parametre_Activable = requete.convert_encode_url(parametre_Activable)
-    parametre_Actif = requete.convert_encode_url(parametre_Actif)
-    requete.requete_serveur "parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre & "&parametre_Libelle=" & parametre_Libelle & "&parametre_Valeur=" & parametre_Valeur & "&parametre_Activable=" & parametre_Activable & "&parametre_Actif=" & parametre_Actif
+    requete.requete_serveur "parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre & "&parametre_Libelle=" & parametre_Libelle & "&parametre_Activable=" & parametre_Activable
     parametre__modifier = requete.retour_ok()
 End Function
 
@@ -196,25 +201,11 @@ Function parametre__modifier__parametre_Libelle(ByVal Code_parametre As String, 
     parametre__modifier__parametre_Libelle = requete.retour_ok()
 End Function
 
-Function parametre__modifier__parametre_Valeur(ByVal Code_parametre As String, ByVal parametre_Valeur As String) As Long
-    Code_parametre = requete.convert_encode_url(Code_parametre)
-    parametre_Valeur = requete.convert_encode_url(parametre_Valeur)
-    requete.requete_serveur "parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre & "&parametre_Valeur=" & parametre_Valeur
-    parametre__modifier__parametre_Valeur = requete.retour_ok()
-End Function
-
 Function parametre__modifier__parametre_Activable(ByVal Code_parametre As String, ByVal parametre_Activable As String) As Long
     Code_parametre = requete.convert_encode_url(Code_parametre)
     parametre_Activable = requete.convert_encode_url(parametre_Activable)
     requete.requete_serveur "parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre & "&parametre_Activable=" & parametre_Activable
     parametre__modifier__parametre_Activable = requete.retour_ok()
-End Function
-
-Function parametre__modifier__parametre_Actif(ByVal Code_parametre As String, ByVal parametre_Actif As String) As Long
-    Code_parametre = requete.convert_encode_url(Code_parametre)
-    parametre_Actif = requete.convert_encode_url(parametre_Actif)
-    requete.requete_serveur "parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre & "&parametre_Actif=" & parametre_Actif
-    parametre__modifier__parametre_Actif = requete.retour_ok()
 End Function
 
 Function parametre__supprimer(ByVal Code_parametre As String) As Long
@@ -837,23 +828,88 @@ Function liste_contacts__lister(ByVal Code_joueur As String) As Long
     liste_contacts__lister = requete.retour_ok()
 End Function
 
+'   +------------------+
+'   | parametre_valeur |
+'   +------------------+
+
+Function parametre_valeur__ajouter(ByVal Code_parametre As String, ByVal parametre_valeur_Libelle As String) As Long
+    parametre_valeur_Libelle = requete.convert_encode_url(parametre_valeur_Libelle)
+    Code_parametre = requete.convert_encode_url(Code_parametre)
+    requete.requete_serveur "parametre_valeur/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre & "&parametre_valeur_Libelle=" & parametre_valeur_Libelle
+    parametre_valeur__ajouter = requete.retour_ok()
+End Function
+
+Function parametre_valeur__modifier(ByVal Code_parametre_valeur As String, ByVal Code_parametre As String, ByVal parametre_valeur_Libelle As String) As Long
+    Code_parametre_valeur = requete.convert_encode_url(Code_parametre_valeur)
+    parametre_valeur_Libelle = requete.convert_encode_url(parametre_valeur_Libelle)
+    Code_parametre = requete.convert_encode_url(Code_parametre)
+    requete.requete_serveur "parametre_valeur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre_valeur=" & Code_parametre_valeur & "&Code_parametre=" & Code_parametre & "&parametre_valeur_Libelle=" & parametre_valeur_Libelle
+    parametre_valeur__modifier = requete.retour_ok()
+End Function
+
+Function parametre_valeur__modifier__parametre_valeur_Libelle(ByVal Code_parametre_valeur As String, ByVal parametre_valeur_Libelle As String) As Long
+    Code_parametre_valeur = requete.convert_encode_url(Code_parametre_valeur)
+    parametre_valeur_Libelle = requete.convert_encode_url(parametre_valeur_Libelle)
+    requete.requete_serveur "parametre_valeur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre_valeur=" & Code_parametre_valeur & "&parametre_valeur_Libelle=" & parametre_valeur_Libelle
+    parametre_valeur__modifier__parametre_valeur_Libelle = requete.retour_ok()
+End Function
+
+Function parametre_valeur__modifier__Code_parametre(ByVal Code_parametre_valeur As String, ByVal Code_parametre As String) As Long
+    Code_parametre_valeur = requete.convert_encode_url(Code_parametre_valeur)
+    Code_parametre = requete.convert_encode_url(Code_parametre)
+    requete.requete_serveur "parametre_valeur/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre_valeur=" & Code_parametre_valeur & "&Code_parametre=" & Code_parametre
+    parametre_valeur__modifier__parametre_valeur_Libelle = requete.retour_ok()
+End Function
+
+Function parametre_valeur__supprimer(ByVal Code_parametre_valeur As String) As Long
+    Code_parametre_valeur = requete.convert_encode_url(Code_parametre_valeur)
+    requete.requete_serveur "parametre_valeur/supprimer.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre_valeur=" & Code_parametre_valeur
+    parametre_valeur__supprimer = requete.retour_ok()
+End Function
+
+Function parametre_valeur__lister(ByVal Code_parametre As String) As Long
+    Code_parametre = requete.convert_encode_url(Code_parametre)
+    requete.requete_serveur "parametre_valeur/lister.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_parametre=" & Code_parametre
+    parametre_valeur__lister = requete.retour_ok()
+End Function
+
 '   +--------------------+
 '   | a_joueur_parametre |
 '   +--------------------+
 
-Function a_joueur_parametre__ajouter(ByVal Code_joueur As String, ByVal Code_parametre As String) As Long
+Function a_joueur_parametre__ajouter(ByVal Code_joueur As String, ByVal Code_parametre As String, ByVal a_joueur_parametre_Valeur_choisie As String, ByVal a_joueur_parametre_Actif As String) As Long
+    a_joueur_parametre_Valeur_choisie = requete.convert_encode_url(a_joueur_parametre_Valeur_choisie)
+    a_joueur_parametre_Actif = requete.convert_encode_url(a_joueur_parametre_Actif)
     Code_joueur = requete.convert_encode_url(Code_joueur)
     Code_parametre = requete.convert_encode_url(Code_parametre)
-    requete.requete_serveur "a_joueur_parametre/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&Code_parametre=" & Code_parametre
+    requete.requete_serveur "a_joueur_parametre/ajouter.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&Code_parametre=" & Code_parametre & "&a_joueur_parametre_Valeur_choisie=" & a_joueur_parametre_Valeur_choisie & "&a_joueur_parametre_Actif=" & a_joueur_parametre_Actif
     a_joueur_parametre__ajouter = requete.retour_ok()
 End Function
 
-Function a_joueur_parametre__modifier(ByVal Code_joueur As String, ByVal Code_parametre As String) As Long
+Function a_joueur_parametre__modifier(ByVal Code_joueur As String, ByVal Code_parametre As String, ByVal a_joueur_parametre_Valeur_choisie As String, ByVal a_joueur_parametre_Actif As String) As Long
     Code_a_joueur_parametre = requete.convert_encode_url(Code_a_joueur_parametre)
+    a_joueur_parametre_Valeur_choisie = requete.convert_encode_url(a_joueur_parametre_Valeur_choisie)
+    a_joueur_parametre_Actif = requete.convert_encode_url(a_joueur_parametre_Actif)
     Code_joueur = requete.convert_encode_url(Code_joueur)
     Code_parametre = requete.convert_encode_url(Code_parametre)
-    requete.requete_serveur "a_joueur_parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&Code_parametre=" & Code_parametre
+    requete.requete_serveur "a_joueur_parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&Code_parametre=" & Code_parametre & "&a_joueur_parametre_Valeur_choisie=" & a_joueur_parametre_Valeur_choisie & "&a_joueur_parametre_Actif=" & a_joueur_parametre_Actif
     a_joueur_parametre__modifier = requete.retour_ok()
+End Function
+
+Function a_joueur_parametre__modifier__a_joueur_parametre_Valeur_choisie(ByVal Code_joueur As String, ByVal Code_parametre As String, ByVal a_joueur_parametre_Valeur_choisie As String) As Long
+    Code_joueur = requete.convert_encode_url(Code_joueur)
+    Code_parametre = requete.convert_encode_url(Code_parametre)
+    a_joueur_parametre_Valeur_choisie = requete.convert_encode_url(a_joueur_parametre_Valeur_choisie)
+    requete.requete_serveur "a_joueur_parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&Code_parametre=" & Code_parametre & "&a_joueur_parametre_Valeur_choisie=" & a_joueur_parametre_Valeur_choisie
+    a_joueur_parametre__modifier__a_joueur_parametre_Valeur_choisie = requete.retour_ok()
+End Function
+
+Function a_joueur_parametre__modifier__a_joueur_parametre_Actif(ByVal Code_joueur As String, ByVal Code_parametre As String, ByVal a_joueur_parametre_Actif As String) As Long
+    Code_joueur = requete.convert_encode_url(Code_joueur)
+    Code_parametre = requete.convert_encode_url(Code_parametre)
+    a_joueur_parametre_Actif = requete.convert_encode_url(a_joueur_parametre_Actif)
+    requete.requete_serveur "a_joueur_parametre/modifier.php?" & "vue=tableau" & "&mf_token=" & mf_token & "&Code_joueur=" & Code_joueur & "&Code_parametre=" & Code_parametre & "&a_joueur_parametre_Actif=" & a_joueur_parametre_Actif
+    a_joueur_parametre__modifier__a_joueur_parametre_Actif = requete.retour_ok()
 End Function
 
 Function a_joueur_parametre__supprimer(ByVal Code_joueur As String, ByVal Code_parametre As String) As Long

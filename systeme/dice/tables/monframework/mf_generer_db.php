@@ -14,6 +14,7 @@ ressource::initialiser_structure();
 tag_ressource::initialiser_structure();
 messagerie::initialiser_structure();
 liste_contacts::initialiser_structure();
+parametre_valeur::initialiser_structure();
 a_joueur_parametre::initialiser_structure();
 a_candidature_joueur_groupe::initialiser_structure();
 a_membre_joueur_groupe::initialiser_structure();

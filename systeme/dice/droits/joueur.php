@@ -14,3 +14,4 @@ $mf_droits_defaut['api_modifier__joueur_Password'] = false;
 $mf_droits_defaut['api_modifier__joueur_Avatar_Fichier'] = false;
 $mf_droits_defaut['api_modifier__joueur_Date_naissance'] = false;
 $mf_droits_defaut['api_modifier__joueur_Date_inscription'] = false;
+$mf_droits_defaut['api_modifier__joueur_Administrateur'] = false;

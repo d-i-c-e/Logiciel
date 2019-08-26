@@ -29,14 +29,16 @@
     else
     {
 
-        include __DIR__ . '/_parametre_valeur_list.php';
+        /* debut developpement */
+//         include __DIR__ . '/_parametre_valeur_list.php';
 
-        $code_html.=recuperer_gabarit('main/section.html', array(
-            '{fonction}'  => 'lister',
-            '{nom_table}' => 'parametre_valeur',
-            '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_parametre_valeur')),
-            '{contenu}'   => recuperer_gabarit('parametre_valeur/bloc_lister.html', $trans),
-        ));
+//         $code_html.=recuperer_gabarit('main/section.html', array(
+//             '{fonction}'  => 'lister',
+//             '{nom_table}' => 'parametre_valeur',
+//             '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_parametre_valeur')),
+//             '{contenu}'   => recuperer_gabarit('parametre_valeur/bloc_lister.html', $trans),
+//         ));
+        /* fin developpement */
 
     }
 

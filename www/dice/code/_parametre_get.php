@@ -68,3 +68,6 @@
         else
             $trans['{parametre_Activable}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_parametre' => $parametre['Code_parametre']) , 'DB_name' => 'parametre_Activable' , 'valeur_initiale' => $parametre['parametre_Activable'] ]);
 
+
+/* debut developpement */
+    include __DIR__ . '/_parametre_valeur_list.php';

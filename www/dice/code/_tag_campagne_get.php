@@ -55,3 +55,7 @@
         else
             $trans['{tag_campagne_Libelle}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_tag_campagne' => $tag_campagne['Code_tag_campagne']) , 'DB_name' => 'tag_campagne_Libelle' , 'valeur_initiale' => $tag_campagne['tag_campagne_Libelle'] ]);
 
+
+/* debut developpement */
+    include __DIR__ . '/_a_campagne_tag_campagne_list.php';
+            

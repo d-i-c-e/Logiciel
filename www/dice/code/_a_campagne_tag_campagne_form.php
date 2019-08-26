@@ -30,14 +30,16 @@
     else
     {
 
-        include __DIR__ . '/_a_campagne_tag_campagne_list.php';
+        /* debut developpement */
+//         include __DIR__ . '/_a_campagne_tag_campagne_list.php';
 
-        $code_html.=recuperer_gabarit('main/section.html', array(
-            '{fonction}'  => 'lister',
-            '{nom_table}' => 'a_campagne_tag_campagne',
-            '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_a_campagne_tag_campagne')),
-            '{contenu}'   => recuperer_gabarit('a_campagne_tag_campagne/bloc_lister.html', $trans),
-        ));
+//         $code_html.=recuperer_gabarit('main/section.html', array(
+//             '{fonction}'  => 'lister',
+//             '{nom_table}' => 'a_campagne_tag_campagne',
+//             '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_a_campagne_tag_campagne')),
+//             '{contenu}'   => recuperer_gabarit('a_campagne_tag_campagne/bloc_lister.html', $trans),
+//         ));
+        /* fin developpement */
 
     }
 

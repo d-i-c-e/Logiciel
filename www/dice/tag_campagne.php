@@ -7,11 +7,13 @@ if ( !$cache->start() )
 
     /* Chargement des tables */
         $table_tag_campagne = new tag_campagne();
+        $table_a_campagne_tag_campagne = new a_campagne_tag_campagne();
 
     require __DIR__ . '/scripts/lecture_parametres.php';
 
     /* Chargement des actions */
         include __DIR__ . '/code/_tag_campagne_actions.php';
+        include __DIR__ . '/code/_a_campagne_tag_campagne_actions.php';
 
     require __DIR__ . '/scripts/genealogie.php';
 
@@ -24,6 +26,9 @@ if ( !$cache->start() )
     $code_html = '';
     /* Chargement des forms */
         include __DIR__ . '/code/_tag_campagne_form.php';
+        if (mf_Code_tag_campagne()) {
+            include __DIR__ . '/code/_a_campagne_tag_campagne_form.php';
+        }
 
     $menu_a_droite->ajouter_bouton_deconnexion();
 

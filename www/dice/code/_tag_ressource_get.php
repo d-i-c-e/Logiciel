@@ -55,3 +55,6 @@
         else
             $trans['{tag_ressource_Libelle}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_tag_ressource' => $tag_ressource['Code_tag_ressource']) , 'DB_name' => 'tag_ressource_Libelle' , 'valeur_initiale' => $tag_ressource['tag_ressource_Libelle'] ]);
 
+
+/* debut developpement */
+    include __DIR__ . '/_a_ressource_tag_ressource_list.php';

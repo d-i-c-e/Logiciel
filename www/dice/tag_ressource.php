@@ -7,11 +7,13 @@ if ( !$cache->start() )
 
     /* Chargement des tables */
         $table_tag_ressource = new tag_ressource();
+        $table_a_ressource_tag_ressource = new a_ressource_tag_ressource();
 
     require __DIR__ . '/scripts/lecture_parametres.php';
 
     /* Chargement des actions */
         include __DIR__ . '/code/_tag_ressource_actions.php';
+        include __DIR__ . '/code/_a_ressource_tag_ressource_actions.php';
 
     require __DIR__ . '/scripts/genealogie.php';
 
@@ -24,6 +26,9 @@ if ( !$cache->start() )
     $code_html = '';
     /* Chargement des forms */
         include __DIR__ . '/code/_tag_ressource_form.php';
+        if (mf_Code_tag_ressource()) {
+            include __DIR__ . '/code/_a_ressource_tag_ressource_form.php';
+        }
 
     $menu_a_droite->ajouter_bouton_deconnexion();
 

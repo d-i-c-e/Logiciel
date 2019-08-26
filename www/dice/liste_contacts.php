@@ -28,7 +28,7 @@ if ( !$cache->start() )
     $menu_a_droite->ajouter_bouton_deconnexion();
 
     echo recuperer_gabarit('main/page.html', array(
-            '{titre_page}' => 'liste_contacts',
+            '{titre_page}' => 'Liste de contacts',
             '{css}' => $css,
             '{js}' => $js,
             '{menu_principal}' => $menu,

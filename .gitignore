@@ -11,3 +11,5 @@ systeme/dice/tables/monframework/cache/*
 systeme/dice/tables/monframework/mf_connexion.sessions/*
 
 data/*
+
+fichiers/dice/

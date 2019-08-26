@@ -70,10 +70,7 @@
             $trans['{objet_Libelle}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_objet' => $objet['Code_objet']) , 'DB_name' => 'objet_Libelle' , 'valeur_initiale' => $objet['objet_Libelle'] ]);
 
     /* objet_Image_Fichier */
-        if ( $mf_droits_defaut['api_modifier__objet_Image_Fichier'] )
-            $trans['{objet_Image_Fichier}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_objet' => $objet['Code_objet']) , 'DB_name' => 'objet_Image_Fichier' , 'valeur_initiale' => $objet['objet_Image_Fichier'] ]);
-        else
-            $trans['{objet_Image_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_objet' => $objet['Code_objet']) , 'DB_name' => 'objet_Image_Fichier' , 'valeur_initiale' => $objet['objet_Image_Fichier'] ]);
+        $trans['{objet_Image_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_objet' => $objet['Code_objet']) , 'DB_name' => 'objet_Image_Fichier' , 'valeur_initiale' => get_image($objet['objet_Image_Fichier'], 300, 300, false) , 'class' => 'html' , 'maj_auto' => false ]);
 
     /* Code_type */
         if ( $mf_droits_defaut['api_modifier_ref__objet__Code_type'] )

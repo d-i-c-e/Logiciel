@@ -28,6 +28,9 @@ class Hook_campagne{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['campagne__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $campagne_Nom, string $campagne_Description, string $campagne_Image_Fichier, int $campagne_Nombre_joueur, int $campagne_Nombre_mj)
@@ -73,6 +76,13 @@ class Hook_campagne{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__campagne_Nom'] = true;
+            $mf_droits_defaut['api_modifier__campagne_Description'] = true;
+            $mf_droits_defaut['api_modifier__campagne_Image_Fichier'] = true;
+            $mf_droits_defaut['api_modifier__campagne_Nombre_joueur'] = true;
+            $mf_droits_defaut['api_modifier__campagne_Nombre_mj'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_campagne, string $campagne_Nom__new, string $campagne_Description__new, string $campagne_Image_Fichier__new, int $campagne_Nombre_joueur__new, int $campagne_Nombre_mj__new)
@@ -124,6 +134,9 @@ class Hook_campagne{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['campagne__SUPPRIMER'] = true;
+        }
         if ($Code_campagne!=0 && $mf_droits_defaut['campagne__SUPPRIMER'])
         {
             $table_groupe = new groupe();

@@ -107,3 +107,6 @@
         else
             $trans['{campagne_Nombre_mj}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']) , 'DB_name' => 'campagne_Nombre_mj' , 'valeur_initiale' => $campagne['campagne_Nombre_mj'] ]);
 
+
+/* debut developpement */
+            include __DIR__ . '/_a_campagne_tag_campagne_list.php';

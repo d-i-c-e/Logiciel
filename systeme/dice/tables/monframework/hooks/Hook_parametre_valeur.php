@@ -28,6 +28,9 @@ class Hook_parametre_valeur{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['parametre_valeur__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $parametre_valeur_Libelle, int $Code_parametre)
@@ -71,6 +74,9 @@ class Hook_parametre_valeur{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__parametre_valeur_Libelle'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_parametre_valeur, string $parametre_valeur_Libelle__new, int $Code_parametre__new)
@@ -107,6 +113,9 @@ class Hook_parametre_valeur{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['parametre_valeur__SUPPRIMER'] = true;
+        }
         if ($Code_parametre_valeur!=0 && $mf_droits_defaut['parametre_valeur__SUPPRIMER'])
         {
             // Ici le code

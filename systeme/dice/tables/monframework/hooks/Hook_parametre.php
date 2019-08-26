@@ -28,6 +28,9 @@ class Hook_parametre{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['parametre__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $parametre_Libelle, bool $parametre_Activable)
@@ -70,6 +73,10 @@ class Hook_parametre{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__parametre_Libelle'] = true;
+            $mf_droits_defaut['api_modifier__parametre_Activable'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_parametre, string $parametre_Libelle__new, bool $parametre_Activable__new)
@@ -106,6 +113,9 @@ class Hook_parametre{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['parametre__SUPPRIMER'] = true;
+        }
         if ($Code_parametre!=0 && $mf_droits_defaut['parametre__SUPPRIMER'])
         {
             $table_parametre_valeur = new parametre_valeur();

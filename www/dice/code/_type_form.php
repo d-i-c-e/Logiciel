@@ -29,14 +29,16 @@
     else
     {
 
-        include __DIR__ . '/_type_list.php';
+        /* debut developpement */
+//         include __DIR__ . '/_type_list.php';
 
-        $code_html.=recuperer_gabarit('main/section.html', array(
-            '{fonction}'  => 'lister',
-            '{nom_table}' => 'type',
-            '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_type')),
-            '{contenu}'   => recuperer_gabarit('type/bloc_lister.html', $trans),
-        ));
+//         $code_html.=recuperer_gabarit('main/section.html', array(
+//             '{fonction}'  => 'lister',
+//             '{nom_table}' => 'type',
+//             '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_type')),
+//             '{contenu}'   => recuperer_gabarit('type/bloc_lister.html', $trans),
+//         ));
+        /* fin developpement */
 
     }
 

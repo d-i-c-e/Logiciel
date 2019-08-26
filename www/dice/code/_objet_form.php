@@ -29,14 +29,16 @@
     else
     {
 
-        include __DIR__ . '/_objet_list.php';
+        /* debut developpement */
+//         include __DIR__ . '/_objet_list.php';
 
-        $code_html.=recuperer_gabarit('main/section.html', array(
-            '{fonction}'  => 'lister',
-            '{nom_table}' => 'objet',
-            '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_objet')),
-            '{contenu}'   => recuperer_gabarit('objet/bloc_lister.html', $trans),
-        ));
+//         $code_html.=recuperer_gabarit('main/section.html', array(
+//             '{fonction}'  => 'lister',
+//             '{nom_table}' => 'objet',
+//             '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_objet')),
+//             '{contenu}'   => recuperer_gabarit('objet/bloc_lister.html', $trans),
+//         ));
+        /* fin developpement */
 
     }
 

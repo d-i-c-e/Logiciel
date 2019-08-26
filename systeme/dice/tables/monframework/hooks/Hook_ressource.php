@@ -28,6 +28,9 @@ class Hook_ressource{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['ressource__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $ressource_Nom)
@@ -69,6 +72,9 @@ class Hook_ressource{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__ressource_Nom'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_ressource, string $ressource_Nom__new)
@@ -100,6 +106,9 @@ class Hook_ressource{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['ressource__SUPPRIMER'] = true;
+        }
         if ($Code_ressource!=0 && $mf_droits_defaut['ressource__SUPPRIMER'])
         {
             $table_type = new type();

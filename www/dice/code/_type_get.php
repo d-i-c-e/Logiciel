@@ -68,3 +68,7 @@
         else
             $trans['{Code_ressource}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_type' => $type['Code_type']) , 'DB_name' => 'Code_ressource' , 'valeur_initiale' => $type['Code_ressource'] , 'nom_table' => 'type' ]);
 
+
+/* debut developpement */            
+    include __DIR__ . '/_objet_list.php';
+    

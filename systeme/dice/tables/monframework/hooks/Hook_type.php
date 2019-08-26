@@ -28,6 +28,9 @@ class Hook_type{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['type__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $type_Libelle, int $Code_ressource)
@@ -71,6 +74,9 @@ class Hook_type{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__type_Libelle'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_type, string $type_Libelle__new, int $Code_ressource__new)
@@ -107,6 +113,9 @@ class Hook_type{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['type__SUPPRIMER'] = true;
+        }
         if ($Code_type!=0 && $mf_droits_defaut['type__SUPPRIMER'])
         {
             $table_objet = new objet();

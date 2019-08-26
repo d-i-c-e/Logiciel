@@ -6,14 +6,14 @@ $pages_menu['Mon menu'][]=array( 'adresse' => 'joueur.php', 'nom' => 'joueur' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'groupe.php', 'nom' => 'groupe' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'personnage.php', 'nom' => 'personnage' );
 
-$pages_menu['Paramétrage'][]=array( 'adresse' => 'campagne.php', 'nom' => 'campagne' );
-$pages_menu['Paramétrage'][]=array( 'adresse' => 'parametre.php', 'nom' => 'parametre' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'campagne.php', 'nom' => 'Campagne' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'parametre.php', 'nom' => 'Paramètre' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'parametre_valeur.php', 'nom' => 'parametre_valeur' );
 $pages_menu['Paramétrage'][]=array( 'adresse' => 'ressource.php', 'nom' => 'Ressources' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'objet.php', 'nom' => 'objet' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'type.php', 'nom' => 'type' );
-$pages_menu['Paramétrage'][]=array( 'adresse' => 'messagerie.php', 'nom' => 'messagerie' );
-$pages_menu['Paramétrage'][]=array( 'adresse' => 'liste_contacts.php', 'nom' => 'liste_contacts' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'messagerie.php', 'nom' => 'Messagerie' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'liste_contacts.php', 'nom' => 'Liste de contact' );
 
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'message.php', 'nom' => 'message' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'carte.php', 'nom' => 'carte' );

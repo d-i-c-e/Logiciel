@@ -28,6 +28,9 @@ class Hook_objet{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['objet__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $objet_Libelle, string $objet_Image_Fichier, int $Code_type)
@@ -72,6 +75,10 @@ class Hook_objet{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__objet_Libelle'] = true;
+            $mf_droits_defaut['api_modifier__objet_Image_Fichier'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_objet, string $objet_Libelle__new, string $objet_Image_Fichier__new, int $Code_type__new)
@@ -113,6 +120,9 @@ class Hook_objet{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['objet__SUPPRIMER'] = true;
+        }
         if ($Code_objet!=0 && $mf_droits_defaut['objet__SUPPRIMER'])
         {
             // Ici le code

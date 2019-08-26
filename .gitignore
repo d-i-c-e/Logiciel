@@ -8,3 +8,7 @@ systeme/dice/cache_systeme/
 systeme/dice/cache_worker/
 
 systeme/dice/tables/monframework/cache/
+
+systeme/dice/tables/monframework/mf_connexion.sessions/
+
+outil_developpeur.php

@@ -7,11 +7,13 @@ if ( !$cache->start() )
 
     /* Chargement des tables */
         $table_parametre = new parametre();
+        $table_parametre_valeur = new parametre_valeur();
 
     require __DIR__ . '/scripts/lecture_parametres.php';
 
     /* Chargement des actions */
         include __DIR__ . '/code/_parametre_actions.php';
+        include __DIR__ . '/code/_parametre_valeur_actions.php';
 
     require __DIR__ . '/scripts/genealogie.php';
 
@@ -24,6 +26,9 @@ if ( !$cache->start() )
     $code_html = '';
     /* Chargement des forms */
         include __DIR__ . '/code/_parametre_form.php';
+        if (mf_Code_parametre()) {
+            include __DIR__ . '/code/_parametre_valeur_form.php';
+        }
 
     $menu_a_droite->ajouter_bouton_deconnexion();
 

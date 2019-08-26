@@ -6,20 +6,20 @@ $pages_menu['Mon menu'][]=array( 'adresse' => 'joueur.php', 'nom' => 'joueur' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'groupe.php', 'nom' => 'groupe' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'personnage.php', 'nom' => 'personnage' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'campagne.php', 'nom' => 'campagne' );
-$pages_menu['Mon menu'][]=array( 'adresse' => 'parametre.php', 'nom' => 'parametre' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'parametre.php', 'nom' => 'parametre' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'parametre_valeur.php', 'nom' => 'parametre_valeur' );
-$pages_menu['Mon menu'][]=array( 'adresse' => 'ressource.php', 'nom' => 'Ressources' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'ressource.php', 'nom' => 'Ressources' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'objet.php', 'nom' => 'objet' );
 // $pages_menu['Mon menu'][]=array( 'adresse' => 'type.php', 'nom' => 'type' );
 
 /* Éléments liés a tout les utilisateurs, pas sujet a beaucoup de modification */
-$pages_menu['Mon menu'][]=array( 'adresse' => 'messagerie.php', 'nom' => 'messagerie' );
-$pages_menu['Mon menu'][]=array( 'adresse' => 'liste_contacts.php', 'nom' => 'liste_contacts' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'messagerie.php', 'nom' => 'messagerie' );
+$pages_menu['Paramétrage'][]=array( 'adresse' => 'liste_contacts.php', 'nom' => 'liste_contacts' );
 
 $pages_menu['Mon menu'][]=array( 'adresse' => 'message.php', 'nom' => 'message' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'carte.php', 'nom' => 'carte' );
 
-$pages_menu['Mon menu'][]=array( 'adresse' => 'a_joueur_parametre.php', 'nom' => 'a_joueur_parametre' );
+// $pages_menu['Mon menu'][]=array( 'adresse' => 'a_joueur_parametre.php', 'nom' => 'a_joueur_parametre' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'a_candidature_joueur_groupe.php', 'nom' => 'a_candidature_joueur_groupe' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'a_membre_joueur_groupe.php', 'nom' => 'a_membre_joueur_groupe' );
 $pages_menu['Mon menu'][]=array( 'adresse' => 'a_invitation_joueur_groupe.php', 'nom' => 'a_invitation_joueur_groupe' );

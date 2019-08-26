@@ -28,6 +28,9 @@ class Hook_tag_ressource{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['tag_ressource__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $tag_ressource_Libelle)

@@ -28,6 +28,9 @@ class Hook_tag_campagne{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['tag_campagne__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $tag_campagne_Libelle)

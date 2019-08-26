@@ -28,6 +28,9 @@ class Hook_joueur{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['joueur__AJOUTER'] = true;
+        }
     }
 
     static function autorisation_ajout(string $joueur_Email, string $joueur_Identifiant, string $joueur_Password, string $joueur_Avatar_Fichier, string $joueur_Date_naissance, string $joueur_Date_inscription, bool $joueur_Administrateur)
@@ -55,6 +58,9 @@ class Hook_joueur{
     static function ajouter(int $Code_joueur)
     {
         // ici le code
+        $db = new DB();
+        // ajout des messageries
+        // ajout des liste de contact
     }
 
     static function hook_actualiser_les_droits_modifier(?int $Code_joueur=null)
@@ -76,6 +82,15 @@ class Hook_joueur{
          *
          */
         // ici le code
+        if (get_joueur_courant(MF_JOUEUR__ID) == $Code_joueur) {
+            $mf_droits_defaut['joueur__MODIFIER_PWD'] = true;
+            $mf_droits_defaut['api_modifier__joueur_Email'] = true;
+            $mf_droits_defaut['api_modifier__joueur_Identifiant'] = true;
+            $mf_droits_defaut['api_modifier__joueur_Avatar_Fichier'] = true;
+        }
+        if (est_administrateur() && get_joueur_courant(MF_JOUEUR__ID) != $Code_joueur) {
+            $mf_droits_defaut['api_modifier__joueur_Administrateur'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_joueur, string $joueur_Email__new, string $joueur_Identifiant__new, string $joueur_Password__new, string $joueur_Avatar_Fichier__new, string $joueur_Date_naissance__new, string $joueur_Date_inscription__new, bool $joueur_Administrateur__new)

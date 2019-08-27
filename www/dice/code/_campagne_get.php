@@ -90,10 +90,9 @@
             $trans['{campagne_Description}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']) , 'DB_name' => 'campagne_Description' , 'valeur_initiale' => $campagne['campagne_Description'] , 'class' => 'text' ]);
 
     /* campagne_Image_Fichier */
-        if ( $mf_droits_defaut['api_modifier__campagne_Image_Fichier'] )
-            $trans['{campagne_Image_Fichier}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']) , 'DB_name' => 'campagne_Image_Fichier' , 'valeur_initiale' => $campagne['campagne_Image_Fichier'] ]);
-        else
-            $trans['{campagne_Image_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']) , 'DB_name' => 'campagne_Image_Fichier' , 'valeur_initiale' => $campagne['campagne_Image_Fichier'] ]);
+        /* debut developpement */
+            $trans['{campagne_Image_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']) , 'DB_name' => 'campagne_Image_Fichier' , 'valeur_initiale' => get_image($campagne['campagne_Image_Fichier'], 300, 300, false) , 'class' => 'html' , 'maj_auto' => false ]);
+        /* fin developpement */
 
     /* campagne_Nombre_joueur */
         if ( $mf_droits_defaut['api_modifier__campagne_Nombre_joueur'] )

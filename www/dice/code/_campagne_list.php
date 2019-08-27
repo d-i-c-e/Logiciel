@@ -13,8 +13,10 @@
         $tab->set_ligne_selectionnee('Code_campagne', mf_Code_campagne());
         $tab->modifier_code_action("apercu_campagne");
         $tab->ajouter_colonne('campagne_Nom', false, '');
-        // $tab->ajouter_colonne('campagne_Description', false, '');
-        $tab->ajouter_colonne_fichier('campagne_Image_Fichier', '');
+        /* debut developpement */
+//         $tab->ajouter_colonne('campagne_Description', false, '');
+//         $tab->ajouter_colonne_fichier('campagne_Image_Fichier', '');
+        /* fin developpement */
         $tab->ajouter_colonne('campagne_Nombre_joueur', false, '');
         $tab->ajouter_colonne('campagne_Nombre_mj', false, '');
         $trans['{tableau_campagne}']=$tab->generer_code();

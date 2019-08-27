@@ -15,6 +15,16 @@ class Hook_groupe{
     static function pre_controller(string &$groupe_Nom, string &$groupe_Description, string &$groupe_Logo_Fichier, int &$groupe_Effectif, bool &$groupe_Actif, string &$groupe_Date_creation, int &$groupe_Delai_suppression_jour, bool &$groupe_Suppression_active, int &$Code_campagne, ?int $Code_groupe=null)
     {
         // ici le code
+        $db = new DB();
+        if ($Code_groupe == 0) {
+            $groupe_Actif = true;
+            $groupe_Date_creation = get_now();
+            $groupe_Delai_suppression_jour = 0;
+            $groupe_Suppression_active = false;
+            $groupe_Effectif = 1;
+        } else {
+            $groupe_Effectif = $db -> a_membre_joueur_groupe() -> mf_compter($Code_groupe, 0);
+        }
     }
 
     static function hook_actualiser_les_droits_ajouter(?int $Code_campagne=null)
@@ -55,6 +65,8 @@ class Hook_groupe{
     static function ajouter(int $Code_groupe)
     {
         // ici le code
+        $db = new DB();
+        $db -> a_membre_joueur_groupe() -> mf_ajouter($Code_groupe, get_joueur_courant(MF_JOUEUR__ID), '', 'ADMIN', get_now());
     }
 
     static function hook_actualiser_les_droits_modifier(?int $Code_groupe=null)

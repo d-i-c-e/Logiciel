@@ -47,11 +47,13 @@
         $form->ajouter_input("groupe_Nom", ( isset($_POST['groupe_Nom']) ? $_POST['groupe_Nom'] : $mf_initialisation['groupe_Nom'] ), true);
         $form->ajouter_textarea("groupe_Description", ( isset($_POST['groupe_Description']) ? $_POST['groupe_Description'] : $mf_initialisation['groupe_Description'] ), true);
         $form->ajouter_input("groupe_Logo_Fichier", ( isset($_POST['groupe_Logo_Fichier']) ? $_POST['groupe_Logo_Fichier'] : "" ), true, "file");
-        $form->ajouter_input("groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $mf_initialisation['groupe_Effectif'] ), true);
-        $form->ajouter_select(lister_cles($lang_standard['groupe_Actif_']), "groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $mf_initialisation['groupe_Actif'] ), true);
-        $form->ajouter_input("groupe_Date_creation", ( isset($_POST['groupe_Date_creation']) ? $_POST['groupe_Date_creation'] : $mf_initialisation['groupe_Date_creation'] ), true);
-        $form->ajouter_input("groupe_Delai_suppression_jour", ( isset($_POST['groupe_Delai_suppression_jour']) ? $_POST['groupe_Delai_suppression_jour'] : $mf_initialisation['groupe_Delai_suppression_jour'] ), true);
-        $form->ajouter_select(lister_cles($lang_standard['groupe_Suppression_active_']), "groupe_Suppression_active", ( isset($_POST['groupe_Suppression_active']) ? $_POST['groupe_Suppression_active'] : $mf_initialisation['groupe_Suppression_active'] ), true);
+        /* debut developpement */
+//         $form->ajouter_input("groupe_Effectif", ( isset($_POST['groupe_Effectif']) ? $_POST['groupe_Effectif'] : $mf_initialisation['groupe_Effectif'] ), true);
+//         $form->ajouter_select(lister_cles($lang_standard['groupe_Actif_']), "groupe_Actif", ( isset($_POST['groupe_Actif']) ? $_POST['groupe_Actif'] : $mf_initialisation['groupe_Actif'] ), true);
+//         $form->ajouter_input("groupe_Date_creation", ( isset($_POST['groupe_Date_creation']) ? $_POST['groupe_Date_creation'] : $mf_initialisation['groupe_Date_creation'] ), true);
+//         $form->ajouter_input("groupe_Delai_suppression_jour", ( isset($_POST['groupe_Delai_suppression_jour']) ? $_POST['groupe_Delai_suppression_jour'] : $mf_initialisation['groupe_Delai_suppression_jour'] ), true);
+//         $form->ajouter_select(lister_cles($lang_standard['groupe_Suppression_active_']), "groupe_Suppression_active", ( isset($_POST['groupe_Suppression_active']) ? $_POST['groupe_Suppression_active'] : $mf_initialisation['groupe_Suppression_active'] ), true);
+        /* fin developpement */
         if (!isset($est_charge['campagne']))
         {
             $form->ajouter_select(lister_cles($lang_standard['Code_campagne_']), "Code_campagne", ( isset($_POST['Code_campagne']) ? $_POST['Code_campagne'] : 0 ), true);

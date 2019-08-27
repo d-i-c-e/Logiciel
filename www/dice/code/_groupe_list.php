@@ -13,8 +13,10 @@
         $tab->set_ligne_selectionnee('Code_groupe', mf_Code_groupe());
         $tab->modifier_code_action("apercu_groupe");
         $tab->ajouter_colonne('groupe_Nom', false, '');
-        // $tab->ajouter_colonne('groupe_Description', false, '');
-        $tab->ajouter_colonne_fichier('groupe_Logo_Fichier', '');
+        /* debut developpement */
+//         $tab->ajouter_colonne('groupe_Description', false, '');
+//         $tab->ajouter_colonne_fichier('groupe_Logo_Fichier', '');
+        /* fin developpement */
         $tab->ajouter_colonne('groupe_Effectif', false, '');
         $tab->ajouter_colonne('groupe_Actif', true, '');
         $tab->ajouter_colonne('groupe_Date_creation', false, 'date_heure');

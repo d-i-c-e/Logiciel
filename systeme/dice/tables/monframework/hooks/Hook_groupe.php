@@ -90,6 +90,13 @@ class Hook_groupe{
          *
          */
         // ici le code
+        if (est_admin_groupe($Code_groupe)) {
+            $mf_droits_defaut['api_modifier__groupe_Nom'] = true;
+            $mf_droits_defaut['api_modifier__groupe_Description'] = true;
+            $mf_droits_defaut['api_modifier__groupe_Actif'] = true;
+            $mf_droits_defaut['api_modifier__groupe_Delai_suppression_jour'] = true;
+            $mf_droits_defaut['api_modifier__groupe_Suppression_active'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_groupe, string $groupe_Nom__new, string $groupe_Description__new, string $groupe_Logo_Fichier__new, int $groupe_Effectif__new, bool $groupe_Actif__new, string $groupe_Date_creation__new, int $groupe_Delai_suppression_jour__new, bool $groupe_Suppression_active__new, int $Code_campagne__new)

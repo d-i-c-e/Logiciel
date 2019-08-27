@@ -118,11 +118,10 @@
             $trans['{groupe_Description}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Description' , 'valeur_initiale' => $groupe['groupe_Description'] , 'class' => 'text' ]);
 
     /* groupe_Logo_Fichier */
-        if ( $mf_droits_defaut['api_modifier__groupe_Logo_Fichier'] )
-            $trans['{groupe_Logo_Fichier}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Logo_Fichier' , 'valeur_initiale' => $groupe['groupe_Logo_Fichier'] ]);
-        else
-            $trans['{groupe_Logo_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Logo_Fichier' , 'valeur_initiale' => $groupe['groupe_Logo_Fichier'] ]);
-
+        /* debut developpement */
+            $trans['{groupe_Logo_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Logo_Fichier' , 'valeur_initiale' => get_image($groupe['groupe_Logo_Fichier'], 300, 300, false) , 'class' => 'html' , 'maj_auto' => false ]);
+        /* fin developpement */
+        
     /* groupe_Effectif */
         if ( $mf_droits_defaut['api_modifier__groupe_Effectif'] )
             $trans['{groupe_Effectif}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'groupe_Effectif' , 'valeur_initiale' => $groupe['groupe_Effectif'] ]);

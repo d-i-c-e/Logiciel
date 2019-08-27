@@ -7,11 +7,13 @@ if ( !$cache->start() )
 
     /* Chargement des tables */
         $table_groupe = new groupe();
+        $table_a_membre_joueur_groupe = new a_membre_joueur_groupe();
 
     require __DIR__ . '/scripts/lecture_parametres.php';
 
     /* Chargement des actions */
         include __DIR__ . '/code/_groupe_actions.php';
+        include __DIR__ . '/code/_a_membre_joueur_groupe_actions.php';
 
     require __DIR__ . '/scripts/genealogie.php';
 
@@ -24,6 +26,9 @@ if ( !$cache->start() )
     $code_html = '';
     /* Chargement des forms */
         include __DIR__ . '/code/_groupe_form.php';
+        if (mf_Code_groupe()) {
+            include __DIR__ . '/code/_a_membre_joueur_groupe_form.php';
+        }
 
     $menu_a_droite->ajouter_bouton_deconnexion();
 

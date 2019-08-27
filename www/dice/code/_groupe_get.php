@@ -158,3 +158,6 @@
         else
             $trans['{Code_campagne}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_groupe' => $groupe['Code_groupe']) , 'DB_name' => 'Code_campagne' , 'valeur_initiale' => $groupe['Code_campagne'] , 'nom_table' => 'groupe' ]);
 
+
+/* debut developpement */
+    include __DIR__ . '/_a_membre_joueur_groupe_list.php';

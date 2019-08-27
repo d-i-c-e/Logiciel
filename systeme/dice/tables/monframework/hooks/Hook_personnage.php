@@ -73,6 +73,11 @@ class Hook_personnage{
          *
          */
         // ici le code
+        $db = new DB();
+        $personnage = $db -> personnage() -> mf_get($Code_personnage);
+        if (get_joueur_courant(MF_JOUEUR__ID) == $personnage[MF_PERSONNAGE_CODE_JOUEUR]) {
+            $mf_droits_defaut['api_modifier__personnage_Fichier_Fichier'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_personnage, string $personnage_Fichier_Fichier__new, bool $personnage_Conservation__new, int $Code_joueur__new, int $Code_groupe__new)

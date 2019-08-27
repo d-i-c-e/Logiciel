@@ -30,14 +30,16 @@
     else
     {
 
-        include __DIR__ . '/_a_membre_joueur_groupe_list.php';
+        /* debut developpement */
+//         include __DIR__ . '/_a_membre_joueur_groupe_list.php';
 
-        $code_html.=recuperer_gabarit('main/section.html', array(
-            '{fonction}'  => 'lister',
-            '{nom_table}' => 'a_membre_joueur_groupe',
-            '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_a_membre_joueur_groupe')),
-            '{contenu}'   => recuperer_gabarit('a_membre_joueur_groupe/bloc_lister.html', $trans),
-        ));
+//         $code_html.=recuperer_gabarit('main/section.html', array(
+//             '{fonction}'  => 'lister',
+//             '{nom_table}' => 'a_membre_joueur_groupe',
+//             '{titre}'     => htmlspecialchars(get_nom_colonne('libelle_liste_a_membre_joueur_groupe')),
+//             '{contenu}'   => recuperer_gabarit('a_membre_joueur_groupe/bloc_lister.html', $trans),
+//         ));
+        /* fin developpement */
 
     }
 

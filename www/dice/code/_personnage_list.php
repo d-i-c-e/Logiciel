@@ -12,8 +12,10 @@
         $tab->ajouter_ref_Colonne_Code("Code_personnage");
         $tab->set_ligne_selectionnee('Code_personnage', mf_Code_personnage());
         $tab->modifier_code_action("apercu_personnage");
-        $tab->ajouter_colonne_fichier('personnage_Fichier_Fichier', '');
-        $tab->ajouter_colonne('personnage_Conservation', true, '');
+        /* debut developpement */
+//         $tab->ajouter_colonne_fichier('personnage_Fichier_Fichier', '');
+//         $tab->ajouter_colonne('personnage_Conservation', true, '');
+        /* fin developpement */
         if (!isset($est_charge['joueur']))
         {
             $tab->ajouter_colonne('Code_joueur', true, '');

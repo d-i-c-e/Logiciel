@@ -2,9 +2,9 @@
 
 $pages_menu=array();
 
-$pages_menu['Mon menu'][]=array( 'adresse' => 'joueur.php', 'nom' => 'joueur' );
-$pages_menu['Mon menu'][]=array( 'adresse' => 'groupe.php', 'nom' => 'groupe' );
-$pages_menu['Mon menu'][]=array( 'adresse' => 'personnage.php', 'nom' => 'personnage' );
+$pages_menu['Contenu joueur'][]=array( 'adresse' => 'joueur.php', 'nom' => 'Joueur' );
+$pages_menu['Contenu joueur'][]=array( 'adresse' => 'groupe.php', 'nom' => 'Groupe' );
+$pages_menu['Contenu joueur'][]=array( 'adresse' => 'personnage.php', 'nom' => 'Personnage' );
 
 $pages_menu['Paramétrage'][]=array( 'adresse' => 'campagne.php', 'nom' => 'Campagne' );
 $pages_menu['Paramétrage'][]=array( 'adresse' => 'parametre.php', 'nom' => 'Paramètre' );

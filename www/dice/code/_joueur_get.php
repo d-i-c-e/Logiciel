@@ -112,10 +112,9 @@
         $trans['{joueur_Password}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Password' , 'valeur_initiale' => $trans['{bouton_modpwd_joueur}'] , 'class' => 'html' , 'maj_auto' => false ]);
 
     /* joueur_Avatar_Fichier */
-        if ( $mf_droits_defaut['api_modifier__joueur_Avatar_Fichier'] )
-            $trans['{joueur_Avatar_Fichier}'] = ajouter_champ_modifiable_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Avatar_Fichier' , 'valeur_initiale' => $joueur['joueur_Avatar_Fichier'] ]);
-        else
-            $trans['{joueur_Avatar_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Avatar_Fichier' , 'valeur_initiale' => $joueur['joueur_Avatar_Fichier'] ]);
+        /* debut developpement */
+            $trans['{joueur_Avatar_Fichier}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_joueur' => $joueur['Code_joueur']) , 'DB_name' => 'joueur_Avatar_Fichier' , 'valeur_initiale' => get_image($joueur['joueur_Avatar_Fichier'], 300, 300, false) , 'class' => 'html' , 'maj_auto' => false ]);
+        /* fin developpement */
 
     /* joueur_Date_naissance */
         if ( $mf_droits_defaut['api_modifier__joueur_Date_naissance'] )

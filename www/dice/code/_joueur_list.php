@@ -14,7 +14,9 @@
         $tab->modifier_code_action("apercu_joueur");
         $tab->ajouter_colonne('joueur_Email', false, '');
         $tab->ajouter_colonne('joueur_Identifiant', false, '');
-        $tab->ajouter_colonne_fichier('joueur_Avatar_Fichier', '');
+        /* debut developpement */
+//         $tab->ajouter_colonne_fichier('joueur_Avatar_Fichier', '');
+        /* fin developpement */
         $tab->ajouter_colonne('joueur_Date_naissance', false, 'date');
         $tab->ajouter_colonne('joueur_Date_inscription', false, 'date_heure');
         $tab->ajouter_colonne('joueur_Administrateur', true, '');

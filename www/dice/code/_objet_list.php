@@ -13,7 +13,9 @@
         $tab->set_ligne_selectionnee('Code_objet', mf_Code_objet());
         $tab->modifier_code_action("apercu_objet");
         $tab->ajouter_colonne('objet_Libelle', false, '');
-        $tab->ajouter_colonne_fichier('objet_Image_Fichier', '');
+        /* debut developpement */
+//         $tab->ajouter_colonne_fichier('objet_Image_Fichier', '');
+        /* fin developpement */
         if (!isset($est_charge['type']))
         {
             $tab->ajouter_colonne('Code_type', true, '');

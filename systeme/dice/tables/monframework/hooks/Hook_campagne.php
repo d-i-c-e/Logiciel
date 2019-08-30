@@ -213,9 +213,10 @@ class Hook_campagne{
                 if ($i < NB_MAXI_PROPO_AUTO_COMPLETE) {
                     $t = htmlspecialchars($mots_cles_tag_campagne[MF_TAG_CAMPAGNE_LIBELLE]);
                     $cache = new Cache('id');
-                    $id = $cache->read('requete_tag_campagne', 9999);
-                    var_dump('<pre>'); var_dump($id); var_dump('</pre>');
-                    $donnees['campagne_Auto_completion_tag_campagne'] .= '<button type="button" class="btn btn btn-info btn-sm" style="width: 100%; white-space: normal;" onclick="$(\'#form_dyn_' . $id . '\').val(this.innerHTML);maj_form_dyn_' . $id . '();set_autocomplete(0);">' . $t . '</button>';
+                    $id = $cache->read('requete_tag_campagne', 365 * 24 * 60);
+                    set_log($id);
+                    $donnees['campagne_Auto_completion_tag_campagne'] .= '<button type="button" class="btn btn btn-info btn-sm" style="width: 100%; white-space: normal;" onclick="$(input[name=\'tag_campagne\']).val(this.innerHTML); set_autocomplete(0);">' . $t . '</button>';
+//                     $donnees['campagne_Auto_completion_tag_campagne'] .= '<button type="button" class="btn btn btn-info btn-sm" style="width: 100%; white-space: normal;" onclick="$(\'#form_dyn_' . $id . '\').val(this.innerHTML);maj_form_dyn_' . $id . '();set_autocomplete(0);">' . $t . '</button>';
                     $i++;
                 }
             }

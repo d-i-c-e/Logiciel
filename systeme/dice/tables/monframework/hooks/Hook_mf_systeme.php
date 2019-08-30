@@ -57,8 +57,17 @@ class Hook_mf_systeme{
     {
         switch ($name_session)
         {
-            case 'test':
-                $value = null;
+            case 'requete_tag_campagne':
+                $value = substr($value, 0, 255);
+                break;
+            case 'requete_campagne':
+                $value = substr($value, 0, 255);
+                break;
+            case 'requete_tag_ressource':
+                $value = substr($value, 0, 255);
+                break;
+            case 'requete_ressource':
+                $value = substr($value, 0, 255);
                 break;
             default:
                 $value = null;

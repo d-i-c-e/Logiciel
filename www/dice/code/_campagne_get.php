@@ -107,5 +107,26 @@
             $trans['{campagne_Nombre_mj}'] = get_valeur_html_maj_auto_interface([ 'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']) , 'DB_name' => 'campagne_Nombre_mj' , 'valeur_initiale' => $campagne['campagne_Nombre_mj'] ]);
 
 
-/* debut developpement */
+        /* debut developpement */
             include __DIR__ . '/_a_campagne_tag_campagne_list.php';
+
+            // requete_tag_campagne
+            $trans['{requete_tag_campagne}'] = ajouter_champ_session_modifiable_interface([
+                'name' => 'requete_tag_campagne',
+                'valeur_initiale' => '',
+                'type' => 'VARCHAR',
+                'mode_formulaire' => false,
+                'attributs' => [ 'autocomplete' => 'off' , 'placeholder' => 'Tag de campagne' , 'name' => 'tag_campagne' ],
+                'onchange_js' => "set_autocomplete(1);"
+            ]);
+            $cache_ = new Cache('id');
+            $cache_->write('requete_tag_campagne', mf_get_last_id_champ());
+            $trans['{auto_completion_tag_campagne}'] = '<div id="autocomplete_1" class="autocomplete" style="display: none;">' . get_valeur_html_maj_auto_interface([
+                'liste_valeurs_cle_table' => array('Code_campagne' => $campagne['Code_campagne']),
+                'DB_name' => 'campagne_Auto_completion_tag_campagne',
+                'valeur_initiale' => $campagne['campagne_Auto_completion_tag_campagne'],
+                'mode_formulaire' => false,
+                'class' => 'html'
+            ]) . '</div>';
+
+            

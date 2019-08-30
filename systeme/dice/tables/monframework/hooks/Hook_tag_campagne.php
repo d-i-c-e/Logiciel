@@ -72,6 +72,9 @@ class Hook_tag_campagne{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__tag_campagne_Libelle'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_tag_campagne, string $tag_campagne_Libelle__new)
@@ -103,6 +106,9 @@ class Hook_tag_campagne{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['tag_campagne__SUPPRIMER'] = true;
+        }
         if ($Code_tag_campagne!=0 && $mf_droits_defaut['tag_campagne__SUPPRIMER'])
         {
             // Ici le code

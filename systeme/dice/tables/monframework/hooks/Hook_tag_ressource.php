@@ -72,6 +72,9 @@ class Hook_tag_ressource{
          *
          */
         // ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['api_modifier__tag_ressource_Libelle'] = true;
+        }
     }
 
     static function autorisation_modification(int $Code_tag_ressource, string $tag_ressource_Libelle__new)
@@ -103,6 +106,9 @@ class Hook_tag_ressource{
          *
          */
         // Ici le code
+        if (est_administrateur()) {
+            $mf_droits_defaut['tag_ressource__SUPPRIMER'] = true;
+        }
         if ($Code_tag_ressource!=0 && $mf_droits_defaut['tag_ressource__SUPPRIMER'])
         {
             // Ici le code

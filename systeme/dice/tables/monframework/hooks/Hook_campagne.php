@@ -5,6 +5,7 @@ class Hook_campagne{
     static function initialisation() // première instanciation
     {
         // ici le code
+        definir_colonne_completion('campagne', 'campagne_Auto_completion_tag_campagne', 'VARCHAR', '');
     }
 
     static function actualisation() // à chaque instanciation
@@ -194,6 +195,37 @@ class Hook_campagne{
          * $donnees['campagne_Nombre_mj']
          */
         // ici le code
+        $db = new DB();
+        
+        // auto complétion tag
+        $requete_tag_campagne = mf_get_value_session('requete_tag_campagne', '');
+        $donnees['campagne_Auto_completion_tag_campagne'] = '';
+        if ($requete_tag_campagne!='')
+        {
+            $liste_tag_campagne = explode(' ', $requete_tag_campagne);
+            $sql = [];
+            foreach ($liste_tag_campagne as $tag_campagne) {
+                $sql[] = MF_TAG_CAMPAGNE_LIBELLE . ' LIKE \'%' . text_sql($tag_campagne) . '%\'';
+            }
+            $liste_mots_cles_tag_campagne = $db -> tag_campagne()->mf_lister([OPTION_COND_MYSQL=>$sql]);
+            $i = 0;
+            foreach ($liste_mots_cles_tag_campagne as $mots_cles_tag_campagne) {
+                if ($i < NB_MAXI_PROPO_AUTO_COMPLETE) {
+                    $t = htmlspecialchars($mots_cles_tag_campagne[MF_TAG_CAMPAGNE_LIBELLE]);
+                    $cache = new Cache('id');
+                    $id = $cache->read('requete_tag_campagne', 9999);
+                    var_dump('<pre>'); var_dump($id); var_dump('</pre>');
+                    $donnees['campagne_Auto_completion_tag_campagne'] .= '<button type="button" class="btn btn btn-info btn-sm" style="width: 100%; white-space: normal;" onclick="$(\'#form_dyn_' . $id . '\').val(this.innerHTML);maj_form_dyn_' . $id . '();set_autocomplete(0);">' . $t . '</button>';
+                    $i++;
+                }
+            }
+            if (count($liste_mots_cles_tag_campagne) > NB_MAXI_PROPO_AUTO_COMPLETE) {
+                $i = count($liste_mots_cles_tag_campagne) - NB_MAXI_PROPO_AUTO_COMPLETE;
+                $donnees['campagne_Auto_completion_tag_campagne'] .= '<button type="button" class="btn btn-primary btn-sm disabled" style="width: 100%; white-space: normal;"> + ' . $i . ' autre' . ($i>1 ? 's' : '') . ' résultat' . ($i>1 ? 's' : '') . '</button>';
+            }
+        }
+        $donnees['campagne_Auto_completion_tag_campagne'] = '<div style="position: absolute; background-color: white; z-index: 1;">' . $donnees['campagne_Auto_completion_tag_campagne'] . '</div>';
+        
     }
 
     // API callbacks

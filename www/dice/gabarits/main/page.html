@@ -114,6 +114,42 @@
     </div>
 </div>
 
+    <script type="text/javascript">
+
+    var autocomplete=0;
+    
+    function set_autocomplete(i) {autocomplete=i;};
+    function maj_affichage_autocomplete() {
+    	$(".autocomplete").hide();
+    	$("#autocomplete_" + autocomplete).show();
+    	gestion_width(autocomplete);
+	}
+    setInterval(maj_affichage_autocomplete, 100);
+
+    $(function() { $("#resultat_requeteur > div").addClass('row'); });
+    
+    function gestion_width(id_autocomplete) {
+        
+        var id_input = '';
+        
+        switch (id_autocomplete) {
+            case 1: id_input += 'requete_tag_campagne'; break;
+            case 2: id_input += 'praticien'; break;
+            case 3: id_input += 'adresse'; break;
+            case 4: id_input += 'adresse'; break;
+            default: id_input = 'UNKNOW'; break;
+        }
+        
+        if (id_input != 'UNKNOW') {
+            var elem_width = $("input[name='" + id_input + "']").css('width');
+            if (elem_width != 0) {
+                $("#autocomplete_" + id_autocomplete + " div div").css('width', elem_width);
+            }
+        }
+
+    }
+    </script>
+
 {footer}
 
 {script_end}

@@ -7,13 +7,19 @@
     {campagne_Nom}
     {campagne_Description}
     {campagne_Image_Fichier}
+    <div class="row" style="margin-bottom: 11px;">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+            {bouton_modifier_campagne_Image_Fichier}
+        </div>
+    </div>
     {campagne_Nombre_joueur}
     {campagne_Nombre_mj}
   </div>
 
   <div class="col-lg-6">
     <h2>Ajouter un tag a la campagne</h2>
-    /* faire auto complétion */
+    {requete_tag_campagne}{auto_completion_tag_campagne}
     <br>
     <h2>Tags associés</h2>
     {tableau_a_campagne_tag_campagne}

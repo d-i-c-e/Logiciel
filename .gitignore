@@ -8,6 +8,9 @@ systeme/dice/tables/monframework/cache/*
 .buildpath
 .project
 
+.idea/*
+dice.iml
+
 systeme/dice/tables/monframework/mf_connexion.sessions/*
 
 data/*
